@@ -195,23 +195,46 @@
   .match-col { display:flex; flex-direction:column; gap:10px; }
   .match-card {
     display:flex; align-items:center; justify-content:center; gap:8px; text-align:center;
-    min-height:64px; padding:10px 12px; border-radius:16px; cursor:pointer;
+    height:76px; padding:10px 12px; border-radius:16px; cursor:pointer;
     background:#fff; border:3px solid #eee; box-shadow:0 2px 8px rgba(0,0,0,0.07);
     font-weight:800; transition:border-color 0.15s, background 0.15s, transform 0.1s;
   }
-  .match-card.left { flex-direction:column; gap:2px; }
+  .match-card.left { flex-direction:row; gap:10px; }
+  .match-card.matched { height:auto; min-height:76px; flex-direction:column; gap:3px; }
   .match-card .mc-letter { font-size:1.5rem; font-weight:900; line-height:1; }
   .match-card .mc-emoji { font-size:2.1rem; line-height:1; }
   .match-card .mc-en { font-size:1.15rem; color:#333; word-break:break-word; }
-  .match-card .mc-zh { font-size:0.9rem; color:#e91e63; font-weight:800; margin-top:3px; }
+  .match-card .mc-zh { font-size:0.92rem; color:#3a7d5c; font-weight:800; margin-top:4px; }
   .match-card.selected { border-color:#2193b0; background:#eafaff; transform:scale(1.04); }
+  .match-card.speaking { border-color:#ffb300; box-shadow:0 0 0 4px rgba(255,179,0,0.28); }
   .match-card.matched { border-color:#22b866; background:#e6f9ed; cursor:default; }
-  .match-card.matched.left { opacity:0.85; }
+  .match-card.matched.left { opacity:0.9; }
   .match-card.wrong { animation:shake 0.4s; border-color:#e74c3c; background:#fdecea; }
   @keyframes shake { 0%,100%{transform:translateX(0)} 20%,60%{transform:translateX(-6px)} 40%,80%{transform:translateX(6px)} }
   .match-done { text-align:center; padding:26px 10px 8px; }
   .match-done-emoji { font-size:3.4rem; animation:pop 0.5s ease; }
   .match-done div { font-size:1.15rem; font-weight:800; color:#333; margin:8px 0 16px; }
+
+  /* ── Speaking indicator ── */
+  .speaking-badge {
+    position:fixed; left:50%; bottom:24px; transform:translateX(-50%) translateY(20px);
+    z-index:700; display:flex; align-items:center; gap:9px;
+    background:rgba(40,40,50,0.92); color:#fff; padding:9px 18px; border-radius:50px;
+    font-size:0.95rem; font-weight:700; box-shadow:0 6px 20px rgba(0,0,0,0.3);
+    opacity:0; pointer-events:none; transition:opacity 0.15s, transform 0.15s;
+  }
+  .speaking-badge.show { opacity:1; transform:translateX(-50%) translateY(0); }
+  .speaking-badge .bars { display:inline-flex; align-items:flex-end; gap:3px; height:18px; }
+  .speaking-badge .bars i { width:3px; background:#4ecdc4; border-radius:2px; animation:sndbar 0.9s ease-in-out infinite; }
+  .speaking-badge .bars i:nth-child(1){height:7px;animation-delay:0s}
+  .speaking-badge .bars i:nth-child(2){height:14px;animation-delay:0.15s}
+  .speaking-badge .bars i:nth-child(3){height:18px;animation-delay:0.3s}
+  .speaking-badge .bars i:nth-child(4){height:11px;animation-delay:0.45s}
+  @keyframes sndbar { 0%,100%{transform:scaleY(0.4)} 50%{transform:scaleY(1)} }
+  /* generic "currently speaking" highlight for any tappable word */
+  .word-row.speaking, .modal-extra-row.speaking, .modal-main-word.speaking, .theme-card.speaking {
+    box-shadow:0 0 0 3px #ffb300;
+  }
 
   @media (max-width:600px) { header h1 { font-size:1.7rem; } .theme-grid { grid-template-columns: repeat(auto-fill, minmax(115px,1fr)); gap:9px; } .basics-grid { grid-template-columns: 1fr; } .tab-btn { font-size:0.8rem; padding:7px 11px; } }
   @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration:0.001ms !important; transition-duration:0.001ms !important; } .word-row:hover, .theme-card:hover, .letter-card:hover, .modal-extra-row:hover { transform:none; } }
@@ -286,6 +309,11 @@
 <div id="daily" class="section">
   <div class="section-title">🏠 日常用品 Daily Life Items</div>
   <div class="theme-grid" id="daily-grid"></div>
+</div>
+
+<div class="speaking-badge" id="speaking-badge" role="status" aria-live="polite">
+  <span class="bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+  <span>發音中…</span>
 </div>
 
 <button class="fab-random" id="fab-random" type="button" aria-label="隨機一字（閃卡）" title="隨機一字">🎲</button>
@@ -4933,33 +4961,69 @@ const SPEECH_OK = 'speechSynthesis' in window && 'SpeechSynthesisUtterance' in w
 let _voices = [];
 let _selVoice = null;
 let _speed = 0.85;
+let _warmed = false;
+const VOICE_KEY = 'abc-learning-voice-v1';
+
+// Prefer high-quality CLOUD voices (nicer sound). The trade-off is a short
+// streaming delay, which we soften with warm-up + a "speaking…" indicator.
+function _voiceScore(v) {
+  let s = 0;
+  if (/Google/.test(v.name)) s += 10;                           // best-sounding
+  if (/Natural|Aria|Jenny|Samantha|Daniel|Karen/.test(v.name)) s += 5;
+  if (!v.localService) s += 2;                                  // cloud tends to sound better
+  if (v.lang === 'en-US') s += 2; else if (v.lang.startsWith('en')) s += 1;
+  return s;
+}
 
 function _loadVoices() {
   if (!SPEECH_OK) return;
   const all = speechSynthesis.getVoices().filter(v => v.lang && v.lang.startsWith('en'));
   const sel = document.getElementById('voice-select');
   if (!sel || all.length === 0) return;
-  // prefer Google / high-quality voices first
-  const score = v => (v.name.includes('Google') ? 2 : /Samantha|Daniel|Karen/.test(v.name) ? 1 : 0);
-  const sorted = [...all].sort((a, b) => score(b) - score(a));
+  const sorted = [...all].sort((a, b) => _voiceScore(b) - _voiceScore(a));
   const frag = document.createDocumentFragment();
   sorted.forEach((v, i) => {
     const opt = document.createElement('option');
     opt.value = i;
-    opt.textContent = v.name + (v.localService ? '' : ' ☁️');
+    opt.textContent = v.name + (v.localService ? ' ⚡' : ' ☁️');
     frag.appendChild(opt);
   });
   sel.textContent = '';
   sel.appendChild(frag);
   _voices = sorted;
-  _selVoice = _voices[0];
+  // restore the user's previously chosen voice, if it's still available
+  let saved = null;
+  try { saved = localStorage.getItem(VOICE_KEY); } catch (e) {}
+  const savedIdx = saved ? _voices.findIndex(v => v.name === saved) : -1;
+  if (savedIdx >= 0) { _selVoice = _voices[savedIdx]; sel.value = savedIdx; }
+  else if (!_selVoice || !_voices.includes(_selVoice)) { _selVoice = _voices[0]; sel.value = 0; }
+}
+
+// Warm up the engine on the first user gesture: a silent utterance forces the
+// synthesizer to initialize now, so the first *real* word plays without lag.
+function _warmUp() {
+  if (_warmed || !SPEECH_OK) return;
+  _warmed = true;
+  try {
+    const u = new SpeechSynthesisUtterance(' ');
+    u.volume = 0;
+    if (_selVoice) u.voice = _selVoice;
+    speechSynthesis.speak(u);
+  } catch (e) {}
 }
 
 if (SPEECH_OK) {
-  speechSynthesis.onvoiceschanged = _loadVoices;
   _loadVoices();
+  speechSynthesis.onvoiceschanged = _loadVoices;
+  // some browsers only expose voices after a tick
+  setTimeout(_loadVoices, 250);
+  document.addEventListener('pointerdown', _warmUp, { once: true });
+  document.addEventListener('keydown', _warmUp, { once: true });
+
   document.getElementById('voice-select').addEventListener('change', function () {
     _selVoice = _voices[this.value] || null;
+    try { if (_selVoice) localStorage.setItem(VOICE_KEY, _selVoice.name); } catch (e) {}
+    speak('Hello!');  // quick preview of the chosen voice
   });
   document.getElementById('speed-range').addEventListener('input', function () {
     _speed = parseFloat(this.value);
@@ -4972,13 +5036,33 @@ if (SPEECH_OK) {
   if (vb) vb.style.display = 'none';
 }
 
-function speak(text) {
+// ── Speaking indicator ───────────────────────────
+const _badge = document.getElementById('speaking-badge');
+let _speakingEl = null;   // element currently highlighted as "speaking"
+
+function _showSpeaking(el) {
+  if (_badge) _badge.classList.add('show');
+  if (_speakingEl) _speakingEl.classList.remove('speaking');
+  _speakingEl = el || null;
+  if (_speakingEl) _speakingEl.classList.add('speaking');
+}
+function _hideSpeaking() {
+  if (_badge) _badge.classList.remove('show');
+  if (_speakingEl) { _speakingEl.classList.remove('speaking'); _speakingEl = null; }
+}
+
+// speak(text, el?) — el is the tappable element to highlight while speaking
+function speak(text, el) {
   if (!SPEECH_OK) return;
   const u = new SpeechSynthesisUtterance(text);
   if (_selVoice) u.voice = _selVoice;
-  u.lang = 'en-US';
+  u.lang = (_selVoice && _selVoice.lang) || 'en-US';
   u.rate = _speed;
+  u.onstart = () => _showSpeaking(el);
+  u.onend = _hideSpeaking;
+  u.onerror = _hideSpeaking;
   speechSynthesis.cancel();
+  _showSpeaking(el);          // show immediately, before engine actually starts
   speechSynthesis.speak(u);
 }
 
@@ -5158,7 +5242,7 @@ function handleSpeakEvent(e) {
   }
   const el = e.target.closest('[data-word]');
   if (!el) return;
-  speak(el.dataset.word);
+  speak(el.dataset.word, el);
   markLearned(el.dataset.word);
   el.classList.add('pop');
   setTimeout(() => el.classList.remove('pop'), 300);
@@ -5390,7 +5474,7 @@ function selectLeft(card) {
   if (_matchSelLeft) _matchSelLeft.classList.remove('selected');
   _matchSelLeft = card;
   card.classList.add('selected');
-  speak(card.dataset.mword);   // hear the word (letter + pronunciation)
+  speak(card.dataset.mword, card);   // hear the word (letter + pronunciation)
 }
 
 function selectRight(card) {
