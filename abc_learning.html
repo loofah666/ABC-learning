@@ -200,11 +200,14 @@
     font-weight:800; transition:border-color 0.15s, background 0.15s, transform 0.1s;
   }
   .match-card.left { flex-direction:row; gap:10px; }
-  .match-card.matched { height:auto; min-height:76px; flex-direction:column; gap:3px; }
+  .match-card.matched { flex-direction:column; gap:1px; }
   .match-card .mc-letter { font-size:1.5rem; font-weight:900; line-height:1; }
   .match-card .mc-emoji { font-size:2.1rem; line-height:1; }
   .match-card .mc-en { font-size:1.15rem; color:#333; word-break:break-word; }
-  .match-card .mc-zh { font-size:0.92rem; color:#3a7d5c; font-weight:800; margin-top:4px; }
+  .match-card .mc-zh { font-size:0.88rem; color:#3a7d5c; font-weight:800; }
+  .match-card.matched .mc-emoji { font-size:1.6rem; }
+  .match-card.matched .mc-letter { font-size:1.15rem; }
+  .match-card.matched .mc-en { font-size:1rem; }
   .match-card.selected { border-color:#2193b0; background:#eafaff; transform:scale(1.04); }
   .match-card.speaking { border-color:#ffb300; box-shadow:0 0 0 4px rgba(255,179,0,0.28); }
   .match-card.matched { border-color:#22b866; background:#e6f9ed; cursor:default; }
