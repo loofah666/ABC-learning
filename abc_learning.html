@@ -175,6 +175,44 @@
   .flash-btn.listen { background:linear-gradient(135deg,#4ecdc4,#44cf6c); }
   .flash-btn.next { background:linear-gradient(135deg,#ff6b9d,#ffa94d); }
 
+  /* ── Matching game ── */
+  .fab-match {
+    position:fixed; right:18px; bottom:88px; z-index:400;
+    width:60px; height:60px; border-radius:50%; border:none; cursor:pointer;
+    background:linear-gradient(135deg,#4ecdc4,#2193b0); color:#fff; font-size:1.6rem;
+    box-shadow:0 6px 18px rgba(33,147,176,0.45); transition:transform 0.18s;
+  }
+  .fab-match:hover, .fab-match:focus-visible { transform:scale(1.12) rotate(8deg); }
+  .fab-match:active { transform:scale(0.95); }
+
+  .match-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.55); z-index:600; align-items:center; justify-content:center; padding:16px; }
+  .match-overlay.open { display:flex; }
+  .match-close { position:absolute; top:16px; right:18px; background:rgba(255,255,255,0.9); border:none; border-radius:50%; width:40px; height:40px; font-size:1.3rem; cursor:pointer; color:#666; z-index:2; }
+  .match-panel { background:#fff9f0; border-radius:24px; width:100%; max-width:560px; max-height:92vh; overflow-y:auto; padding:22px 18px; box-shadow:0 20px 60px rgba(0,0,0,0.35); }
+  .match-title { text-align:center; font-size:1.4rem; font-weight:900; color:#2193b0; }
+  .match-sub { text-align:center; font-size:0.86rem; color:#999; margin:4px 0 18px; }
+  .match-board { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .match-col { display:flex; flex-direction:column; gap:10px; }
+  .match-card {
+    display:flex; align-items:center; justify-content:center; gap:8px; text-align:center;
+    min-height:64px; padding:10px 12px; border-radius:16px; cursor:pointer;
+    background:#fff; border:3px solid #eee; box-shadow:0 2px 8px rgba(0,0,0,0.07);
+    font-weight:800; transition:border-color 0.15s, background 0.15s, transform 0.1s;
+  }
+  .match-card.left { flex-direction:column; gap:2px; }
+  .match-card .mc-letter { font-size:1.5rem; font-weight:900; line-height:1; }
+  .match-card .mc-emoji { font-size:2.1rem; line-height:1; }
+  .match-card .mc-en { font-size:1.15rem; color:#333; word-break:break-word; }
+  .match-card .mc-zh { font-size:0.9rem; color:#e91e63; font-weight:800; margin-top:3px; }
+  .match-card.selected { border-color:#2193b0; background:#eafaff; transform:scale(1.04); }
+  .match-card.matched { border-color:#22b866; background:#e6f9ed; cursor:default; }
+  .match-card.matched.left { opacity:0.85; }
+  .match-card.wrong { animation:shake 0.4s; border-color:#e74c3c; background:#fdecea; }
+  @keyframes shake { 0%,100%{transform:translateX(0)} 20%,60%{transform:translateX(-6px)} 40%,80%{transform:translateX(6px)} }
+  .match-done { text-align:center; padding:26px 10px 8px; }
+  .match-done-emoji { font-size:3.4rem; animation:pop 0.5s ease; }
+  .match-done div { font-size:1.15rem; font-weight:800; color:#333; margin:8px 0 16px; }
+
   @media (max-width:600px) { header h1 { font-size:1.7rem; } .theme-grid { grid-template-columns: repeat(auto-fill, minmax(115px,1fr)); gap:9px; } .basics-grid { grid-template-columns: 1fr; } .tab-btn { font-size:0.8rem; padding:7px 11px; } }
   @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration:0.001ms !important; transition-duration:0.001ms !important; } .word-row:hover, .theme-card:hover, .letter-card:hover, .modal-extra-row:hover { transform:none; } }
 </style>
@@ -264,6 +302,22 @@
     <div class="flash-controls">
       <button class="flash-btn listen" id="flash-listen" type="button">🔊 再聽一次</button>
       <button class="flash-btn next" id="flash-next" type="button">🎲 下一個</button>
+    </div>
+  </div>
+</div>
+
+<button class="fab-match" id="fab-match" type="button" aria-label="配對遊戲" title="配對遊戲">🧩</button>
+
+<div class="match-overlay" id="match-overlay" role="dialog" aria-modal="true" aria-label="配對遊戲">
+  <button class="match-close" id="match-close" type="button" aria-label="關閉配對遊戲">&#x2715;</button>
+  <div class="match-panel">
+    <div class="match-title">🧩 聽音配對</div>
+    <div class="match-sub" id="match-sub">點左邊聽發音，再點右邊正確的英文單字</div>
+    <div class="match-board" id="match-board"></div>
+    <div class="match-done" id="match-done" style="display:none">
+      <div class="match-done-emoji">🎉</div>
+      <div>全部配對完成！</div>
+      <button class="flash-btn next" id="match-again" type="button">🔄 再玩一批</button>
     </div>
   </div>
 </div>
@@ -5152,21 +5206,39 @@ document.getElementById('reset-progress').addEventListener('click', () => {
   updateProgressUI();
 });
 
-// ── Random word → Flashcard ──────────────────────
-// flat pool of every learnable word (featured + extras) with its theme emoji
-const FLASH_POOL = (() => {
+// ── Word pools (shared by flashcard + matching) ──
+// per-theme flat pool of every learnable word (featured + extras)
+const THEME_POOLS = {};
+THEMES.forEach(t => {
   const pool = [];
-  THEMES.forEach(t => {
-    ALPHABET.forEach(l => {
-      const item = t.data[l];
-      if (!item || !item.available) return;
-      wordPool(item).forEach(w => {
-        if (w && w.word) pool.push({ word: w.word, zh: w.zh, emoji: w.emoji, theme: t.emoji, name: t.name });
-      });
+  ALPHABET.forEach(l => {
+    const item = t.data[l];
+    if (!item || !item.available) return;
+    wordPool(item).forEach(w => {
+      if (w && w.word) pool.push({ word: w.word, zh: w.zh, emoji: w.emoji, letter: l, theme: t.emoji, name: t.name });
     });
   });
-  return pool;
-})();
+  THEME_POOLS[t.key] = pool;
+});
+// combined pool across every theme (used on the basics/overview page)
+const FLASH_POOL = Object.values(THEME_POOLS).flat();
+
+// which tab is active right now → returns the right word pool
+function currentPool() {
+  const activeTab = document.querySelector('.tab-btn.active');
+  const key = activeTab ? activeTab.dataset.tab : 'basics';
+  return (key !== 'basics' && THEME_POOLS[key]) ? THEME_POOLS[key] : FLASH_POOL;
+}
+
+// Fisher–Yates shuffle (returns a new array)
+function shuffled(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
 
 const FLASH = {
   overlay: document.getElementById('flash-overlay'),
@@ -5175,17 +5247,19 @@ const FLASH = {
   back: document.getElementById('flash-back'),
 };
 let _flashCurrent = null;
-let _flashPrevIdx = -1;
+let _flashPrevWord = null;
 let _flashLastFocused = null;
 
-// pick a random index, avoiding an immediate repeat
-function pickRandomIndex() {
-  if (FLASH_POOL.length <= 1) return 0;
-  let i, guard = 0;
-  do { i = Math.floor(Math.random() * FLASH_POOL.length); }
-  while (i === _flashPrevIdx && ++guard < 8);
-  _flashPrevIdx = i;
-  return i;
+// pick a random word from the active pool, avoiding an immediate repeat
+function pickRandomWord() {
+  const pool = currentPool();
+  if (pool.length === 0) return null;
+  if (pool.length === 1) return pool[0];
+  let w, guard = 0;
+  do { w = pool[Math.floor(Math.random() * pool.length)]; }
+  while (w.word === _flashPrevWord && ++guard < 8);
+  _flashPrevWord = w.word;
+  return w;
 }
 
 function renderFlash(w) {
@@ -5205,7 +5279,8 @@ function renderFlash(w) {
 }
 
 function nextFlash() {
-  const w = FLASH_POOL[pickRandomIndex()];
+  const w = pickRandomWord();
+  if (!w) return;
   renderFlash(w);
   speak(w.word);
   markLearned(w.word);   // hearing a random word counts as practice
@@ -5239,6 +5314,155 @@ document.addEventListener('keydown', e => {
     // avoid double-trigger when a button inside has focus
     if (!e.target.closest('.flash-btn, .flash-close')) { e.preventDefault(); FLASH.card.classList.toggle('flipped'); }
   }
+});
+
+// ── Matching game (聽音配對) ──────────────────────
+const MATCH = {
+  overlay: document.getElementById('match-overlay'),
+  board: document.getElementById('match-board'),
+  done: document.getElementById('match-done'),
+  sub: document.getElementById('match-sub'),
+};
+const MATCH_ROUND = 5;              // pairs per round
+let _matchSelLeft = null;           // currently selected left card element
+let _matchRemaining = 0;
+let _matchLastFocused = null;
+let _matchLock = false;             // block clicks during wrong-answer feedback
+
+function startMatch() {
+  MATCH.done.style.display = 'none';
+  MATCH.board.style.display = 'grid';
+  _matchSelLeft = null;
+  _matchLock = false;
+
+  // pick N distinct words (by normalized word) from the active pool
+  const pool = currentPool();
+  const seen = new Set();
+  const picks = [];
+  for (const w of shuffled(pool)) {
+    const k = normWord(w.word);
+    if (seen.has(k)) continue;
+    seen.add(k);
+    picks.push(w);
+    if (picks.length >= MATCH_ROUND) break;
+  }
+  _matchRemaining = picks.length;
+  if (picks.length < 2) { MATCH.board.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:#999">此主題單字不足</p>'; return; }
+
+  const leftOrder = shuffled(picks);   // emoji/letter cards
+  const rightOrder = shuffled(picks);  // english word cards
+
+  const leftCol = document.createElement('div');
+  leftCol.className = 'match-col';
+  leftOrder.forEach(w => {
+    const c = document.createElement('div');
+    c.className = 'match-card left';
+    c.dataset.key = normWord(w.word);
+    c.dataset.mword = w.word;
+    c.dataset.zh = w.zh;
+    c.setAttribute('role', 'button');
+    c.setAttribute('tabindex', '0');
+    c.setAttribute('aria-label', '聽發音 ' + w.letter);
+    c.innerHTML = '<span class="mc-letter lc-' + w.letter + '">' + w.letter + '</span><span class="mc-emoji" aria-hidden="true">' + w.emoji + '</span>';
+    leftCol.appendChild(c);
+  });
+
+  const rightCol = document.createElement('div');
+  rightCol.className = 'match-col';
+  rightOrder.forEach(w => {
+    const c = document.createElement('div');
+    c.className = 'match-card right';
+    c.dataset.key = normWord(w.word);
+    c.setAttribute('role', 'button');
+    c.setAttribute('tabindex', '0');
+    c.setAttribute('aria-label', w.word);
+    c.innerHTML = '<span class="mc-en">' + w.word + '</span>';
+    rightCol.appendChild(c);
+  });
+
+  MATCH.board.textContent = '';
+  MATCH.board.appendChild(leftCol);
+  MATCH.board.appendChild(rightCol);
+}
+
+function selectLeft(card) {
+  if (card.classList.contains('matched')) return;
+  if (_matchSelLeft) _matchSelLeft.classList.remove('selected');
+  _matchSelLeft = card;
+  card.classList.add('selected');
+  speak(card.dataset.mword);   // hear the word (letter + pronunciation)
+}
+
+function selectRight(card) {
+  if (card.classList.contains('matched') || !_matchSelLeft) return;
+  const left = _matchSelLeft;
+  if (card.dataset.key === left.dataset.key) {
+    // correct
+    left.classList.remove('selected');
+    left.classList.add('matched');
+    card.classList.add('matched');
+    // reveal Chinese on both for bilingual reinforcement
+    left.innerHTML += '<span class="mc-zh">' + left.dataset.zh + '</span>';
+    card.innerHTML += '<span class="mc-zh">' + left.dataset.zh + '</span>';
+    speak(left.dataset.mword);
+    markLearned(left.dataset.mword);
+    _matchSelLeft = null;
+    if (--_matchRemaining <= 0) finishMatch();
+  } else {
+    // wrong
+    _matchLock = true;
+    card.classList.add('wrong');
+    setTimeout(() => {
+      card.classList.remove('wrong');
+      _matchLock = false;
+    }, 450);
+  }
+}
+
+function finishMatch() {
+  MATCH.board.style.display = 'none';
+  MATCH.done.style.display = 'block';
+}
+
+function openMatch() {
+  _matchLastFocused = document.activeElement;
+  const activeTab = document.querySelector('.tab-btn.active');
+  const key = activeTab ? activeTab.dataset.tab : 'basics';
+  MATCH.sub.textContent = (key !== 'basics')
+    ? '主題：' + activeTab.textContent.trim() + '｜點左邊聽發音，再點右邊英文'
+    : '全主題混合｜點左邊聽發音，再點右邊英文';
+  MATCH.overlay.classList.add('open');
+  startMatch();
+}
+
+function closeMatch() {
+  MATCH.overlay.classList.remove('open');
+  if (SPEECH_OK) speechSynthesis.cancel();
+  if (_matchLastFocused && _matchLastFocused.focus) _matchLastFocused.focus();
+}
+
+// delegated clicks on the board
+MATCH.board.addEventListener('click', e => {
+  if (_matchLock) return;
+  const card = e.target.closest('.match-card');
+  if (!card) return;
+  if (card.classList.contains('left')) selectLeft(card);
+  else if (card.classList.contains('right')) selectRight(card);
+});
+MATCH.board.addEventListener('keydown', e => {
+  if (e.key !== 'Enter' && e.key !== ' ') return;
+  const card = e.target.closest('.match-card');
+  if (!card || _matchLock) return;
+  e.preventDefault();
+  if (card.classList.contains('left')) selectLeft(card);
+  else if (card.classList.contains('right')) selectRight(card);
+});
+document.getElementById('fab-match').addEventListener('click', openMatch);
+document.getElementById('match-close').addEventListener('click', closeMatch);
+document.getElementById('match-again').addEventListener('click', startMatch);
+MATCH.overlay.addEventListener('click', e => { if (e.target === e.currentTarget) closeMatch(); });
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && MATCH.overlay.classList.contains('open')) closeMatch();
 });
 
 // ── Init ─────────────────────────────────────────
