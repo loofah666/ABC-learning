@@ -1,0 +1,5103 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="A-Z 英文學習 — 點擊單字聽發音，適合兒童的互動英語學習。Interactive ABC learning with pronunciation.">
+<meta name="theme-color" content="#ff6b9d">
+<title>A-Z 英文學習 ABC Learning</title>
+<style>
+  :root {
+    --bg: #fff9f0;
+    --card-shadow: 0 4px 16px rgba(0,0,0,0.10);
+    --radius: 18px;
+    --font: 'Segoe UI', 'PingFang TC', 'Noto Sans TC', sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font); background: var(--bg); min-height: 100vh; padding-bottom: 60px; }
+  header { background: linear-gradient(135deg, #ff6b9d 0%, #ffa94d 50%, #ffd43b 100%); padding: 28px 20px 24px; text-align: center; color: white; box-shadow: 0 4px 12px rgba(255,107,157,0.3); }
+  header h1 { font-size: 2.4rem; font-weight: 900; letter-spacing: 2px; text-shadow: 2px 2px 4px rgba(0,0,0,0.15); }
+  header p { font-size: 1.05rem; margin-top: 6px; opacity: 0.95; }
+  nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; padding: 16px 12px 10px; background: white; box-shadow: 0 2px 8px rgba(0,0,0,0.08); position: sticky; top: 0; z-index: 100; }
+  .tab-btn { padding: 8px 15px; border-radius: 50px; border: 2.5px solid transparent; font-size: 0.88rem; font-weight: 700; cursor: pointer; transition: all 0.2s; background: #f0f0f0; color: #555; }
+  .tab-btn:hover { transform: translateY(-2px); }
+  .tab-btn.active { color: white; box-shadow: 0 4px 12px rgba(0,0,0,0.18); transform: translateY(-2px); }
+  .tab-btn[data-tab="basics"].active { background: linear-gradient(135deg,#4ecdc4,#44cf6c); }
+  .tab-btn[data-tab="animals"].active { background: linear-gradient(135deg,#f7971e,#ffd200); }
+  .tab-btn[data-tab="food"].active { background: linear-gradient(135deg,#ff416c,#ff4b2b); }
+  .tab-btn[data-tab="colors"].active { background: linear-gradient(135deg,#a18cd1,#fbc2eb); }
+  .tab-btn[data-tab="nature"].active { background: linear-gradient(135deg,#56ab2f,#a8e063); }
+  .tab-btn[data-tab="sports"].active { background: linear-gradient(135deg,#2193b0,#6dd5ed); }
+  .tab-btn[data-tab="transport"].active { background: linear-gradient(135deg,#f953c6,#b91d73); }
+  .tab-btn[data-tab="daily"].active { background: linear-gradient(135deg,#f7971e,#f44336); }
+  .section { display: none; padding: 24px 16px; max-width: 1120px; margin: 0 auto; }
+  .section.active { display: block; }
+  .section-title { text-align: center; font-size: 1.6rem; font-weight: 900; margin-bottom: 24px; color: #333; }
+  .basics-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; }
+  .letter-card { background: white; border-radius: var(--radius); box-shadow: var(--card-shadow); overflow: hidden; transition: transform 0.2s; }
+  .letter-card:hover { transform: translateY(-4px); }
+  .letter-header { display: flex; align-items: center; gap: 14px; padding: 16px 18px 12px; border-bottom: 2px solid #f5f5f5; }
+  .big-letter { font-size: 3rem; font-weight: 900; line-height: 1; min-width: 50px; text-align: center; }
+  .letter-label { font-size: 1rem; color: #999; font-weight: 600; }
+  .words-list { padding: 12px 16px 14px; display: flex; flex-direction: column; gap: 7px; }
+  .word-row { display: flex; align-items: center; gap: 10px; padding: 6px 10px; border-radius: 10px; background: #fafafa; cursor: pointer; transition: background 0.15s, transform 0.15s; user-select: none; }
+  .word-row:hover { background: #f0f0f0; transform: translateX(4px); }
+  .word-emoji { font-size: 1.35rem; }
+  .word-en { font-size: 1rem; font-weight: 700; color: #333; }
+  .word-zh { font-size: 0.82rem; color: #888; margin-left: auto; }
+  .theme-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(145px, 1fr)); gap: 13px; }
+  .theme-card { background: white; border-radius: var(--radius); box-shadow: var(--card-shadow); padding: 15px 10px; text-align: center; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; position: relative; overflow: hidden; }
+  .theme-card:hover { transform: translateY(-5px); box-shadow: 0 8px 24px rgba(0,0,0,0.13); }
+  .theme-card.unavailable { opacity: 0.4; cursor: default; }
+  .theme-card.unavailable:hover { transform: none; box-shadow: var(--card-shadow); }
+  .tc-letter { font-size: 2.2rem; font-weight: 900; line-height: 1.1; }
+  .tc-emoji { font-size: 1.9rem; margin: 4px 0; }
+  .tc-word { font-size: 0.92rem; font-weight: 700; color: #333; word-break: break-word; }
+  .tc-zh { font-size: 0.76rem; color: #888; margin-top: 2px; }
+  .tc-na { font-size: 0.76rem; color: #bbb; font-style: italic; margin-top: 4px; }
+  .tc-type-badge { display:inline-block; font-size:0.62rem; padding:2px 7px; border-radius:20px; margin-top:4px; font-weight:700; text-transform:uppercase; }
+  .badge-color { background:#fdefc3; color:#b7791f; }
+  .badge-shape { background:#d1fae5; color:#065f46; }
+  .more-badge { position: absolute; top: 7px; right: 8px; background: #ff6b9d; color: white; font-size: 0.6rem; font-weight: 800; padding: 2px 6px; border-radius: 20px; opacity: 0.9; }
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 500; align-items: center; justify-content: center; padding: 20px; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: white; border-radius: 24px; width: 100%; max-width: 480px; max-height: 80vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.3); animation: slideUp 0.25s ease; }
+  @keyframes slideUp { from { transform: translateY(30px); opacity:0; } to { transform: translateY(0); opacity:1; } }
+  .modal-header { padding: 20px 22px 14px; border-bottom: 2px solid #f5f5f5; display: flex; align-items: center; gap: 12px; position: sticky; top: 0; background: white; border-radius: 24px 24px 0 0; z-index: 1; }
+  .modal-letter { font-size: 3rem; font-weight: 900; line-height: 1; }
+  .modal-theme-name { font-size: 0.85rem; color: #aaa; font-weight: 600; }
+  .modal-close { margin-left: auto; background: #f5f5f5; border: none; border-radius: 50%; width: 34px; height: 34px; font-size: 1.2rem; cursor: pointer; color: #666; transition: background 0.15s; }
+  .modal-close:hover { background: #e0e0e0; }
+  .modal-body { padding: 16px 22px 22px; }
+  .modal-main-word { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-radius: 14px; margin-bottom: 14px; cursor: pointer; transition: transform 0.15s; }
+  .modal-main-word:hover { transform: scale(1.02); }
+  .modal-main-emoji { font-size: 2.4rem; }
+  .modal-main-en { font-size: 1.3rem; font-weight: 900; color: #222; }
+  .modal-main-zh { font-size: 0.9rem; color: #777; margin-top: 2px; }
+  .modal-divider { font-size: 0.78rem; color: #bbb; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+  .modal-extra-list { display: flex; flex-direction: column; gap: 8px; }
+  .modal-extra-row { display: flex; align-items: center; gap: 12px; padding: 9px 14px; border-radius: 12px; background: #fafafa; cursor: pointer; transition: background 0.15s, transform 0.15s; }
+  .modal-extra-row:hover { background: #f0f0f0; transform: translateX(5px); }
+  .modal-extra-emoji { font-size: 1.5rem; }
+  .modal-extra-en { font-size: 1rem; font-weight: 700; color: #333; }
+  .modal-extra-zh { font-size: 0.78rem; color: #888; margin-left: auto; }
+  .alpha-bar { display:flex; flex-wrap:wrap; justify-content:center; gap:6px; padding:14px 16px; background:rgba(255,255,255,0.8); border-radius:var(--radius); margin-bottom:20px; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
+  .alpha-btn { width:34px; height:34px; border-radius:50%; border:none; font-size:1rem; font-weight:800; cursor:pointer; transition:all 0.15s; background:#f5f5f5; }
+  .alpha-btn:hover { transform: scale(1.2); }
+  .lc-A{color:#e74c3c}.lc-B{color:#e67e22}.lc-C{color:#f1c40f}.lc-D{color:#2ecc71}.lc-E{color:#1abc9c}.lc-F{color:#3498db}.lc-G{color:#9b59b6}.lc-H{color:#e91e63}.lc-I{color:#00bcd4}.lc-J{color:#ff9800}.lc-K{color:#8bc34a}.lc-L{color:#f44336}.lc-M{color:#673ab7}.lc-N{color:#2196f3}.lc-O{color:#ff5722}.lc-P{color:#e91e63}.lc-Q{color:#607d8b}.lc-R{color:#f44336}.lc-S{color:#4caf50}.lc-T{color:#ff9800}.lc-U{color:#9c27b0}.lc-V{color:#3f51b5}.lc-W{color:#00bcd4}.lc-X{color:#795548}.lc-Y{color:#fbc02d}.lc-Z{color:#009688}
+  @keyframes pop { 0%{transform:scale(1)} 50%{transform:scale(1.16)} 100%{transform:scale(1)} }
+  .pop { animation: pop 0.28s ease; }
+
+  /* ── Voice Settings ── */
+  .voice-bar {
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+    justify-content: center; padding: 8px 14px;
+    background: #fff3f8; border-bottom: 1px solid #ffe0ed;
+    font-size: 0.82rem; color: #888;
+  }
+  .voice-bar label { font-weight: 700; color: #e91e63; white-space: nowrap; }
+  .voice-bar select, .voice-bar input[type=range] {
+    border: 1.5px solid #f8c0d8; border-radius: 8px;
+    padding: 3px 8px; font-size: 0.8rem; background: white; cursor: pointer;
+  }
+  .voice-bar select { max-width: 220px; }
+  .voice-bar .speed-val { font-weight: 800; color: #e91e63; min-width: 28px; text-align:center; }
+  .test-btn {
+    padding: 4px 12px; border-radius: 20px; border: none;
+    background: linear-gradient(135deg,#ff6b9d,#ffa94d);
+    color: white; font-size: 0.78rem; font-weight: 700; cursor: pointer;
+  }
+  footer { text-align:center; padding:30px 16px 10px; color:#bbb; font-size:0.85rem; }
+
+  /* ── Progress tracking ── */
+  .word-row.learned, .modal-extra-row.learned { background:#e6f9ed; }
+  .word-row.learned .word-en::after, .modal-extra-row.learned .modal-extra-en::after,
+  .modal-main-word.learned .modal-main-en::after { content:' ✓'; color:#22b866; font-weight:900; }
+  .theme-card.learned { box-shadow: 0 0 0 2.5px #22b866, var(--card-shadow); }
+  .theme-card.learned::after { content:'✓'; position:absolute; top:6px; left:6px; background:#22b866; color:#fff; font-size:0.82rem; font-weight:900; width:22px; height:22px; line-height:22px; border-radius:50%; text-align:center; z-index:2; box-shadow:0 1px 4px rgba(0,0,0,0.25); }
+
+  /* ── Featured-word star ── */
+  .star-btn { background:none; border:none; cursor:pointer; font-size:1.15rem; padding:0 2px; line-height:1; color:#e0c060; transition:transform 0.15s; }
+  .star-btn:hover, .star-btn:focus-visible { transform:scale(1.25); color:#f5b301; }
+  .modal-main-star { margin-left:auto; display:inline-flex; align-items:center; gap:4px; font-size:1.25rem; color:#f5b301; font-weight:700; }
+  .modal-main-star small { font-size:0.62rem; color:#c99; font-weight:700; white-space:nowrap; }
+  .progress-wrap { max-width:1120px; margin:0 auto; padding:10px 16px 0; }
+  .progress-track { height:10px; background:#f0e6dd; border-radius:20px; overflow:hidden; }
+  .progress-fill { height:100%; width:0; background:linear-gradient(90deg,#4ecdc4,#44cf6c); border-radius:20px; transition:width 0.4s ease; }
+  .progress-label { text-align:center; font-size:0.78rem; color:#999; margin-top:5px; font-weight:600; }
+  .progress-label button { background:none; border:none; color:#e57; font-size:0.72rem; cursor:pointer; text-decoration:underline; padding:0 0 0 8px; }
+
+  .tab-btn:focus-visible, .alpha-btn:focus-visible, .word-row:focus-visible, .theme-card:focus-visible,
+  .modal-extra-row:focus-visible, .modal-main-word:focus-visible, .test-btn:focus-visible, .modal-close:focus-visible {
+    outline:3px solid #2196f3; outline-offset:2px;
+  }
+  .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0; }
+
+  @media (max-width:600px) { header h1 { font-size:1.7rem; } .theme-grid { grid-template-columns: repeat(auto-fill, minmax(115px,1fr)); gap:9px; } .basics-grid { grid-template-columns: 1fr; } .tab-btn { font-size:0.8rem; padding:7px 11px; } }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration:0.001ms !important; transition-duration:0.001ms !important; } .word-row:hover, .theme-card:hover, .letter-card:hover, .modal-extra-row:hover { transform:none; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>&#x1F524; A-Z 英文學習</h1>
+  <p>點擊單字聽發音 ✨ Click words to hear pronunciation</p>
+</header>
+
+<div class="voice-bar" id="voice-bar">
+  <label>🔊 聲音</label>
+  <select id="voice-select"><option>載入中...</option></select>
+  <label>⚡ 速度</label>
+  <input type="range" id="speed-range" min="0.5" max="1.5" step="0.05" value="0.85" style="width:90px">
+  <span class="speed-val" id="speed-val">0.85</span>
+  <button class="test-btn" id="test-btn" type="button">試聽</button>
+</div>
+<nav>
+  <button class="tab-btn active" data-tab="basics">📖 基礎字母</button>
+  <button class="tab-btn" data-tab="animals">&#x1F43E; 動物</button>
+  <button class="tab-btn" data-tab="food">&#x1F34E; 食物</button>
+  <button class="tab-btn" data-tab="colors">🎨 顏色&形狀</button>
+  <button class="tab-btn" data-tab="nature">🌿 自然&植物</button>
+  <button class="tab-btn" data-tab="sports">⚽ 運動</button>
+  <button class="tab-btn" data-tab="transport">🚗 交通&職業</button>
+  <button class="tab-btn" data-tab="daily">🏠 日常用品</button>
+</nav>
+
+<div class="progress-wrap">
+  <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+  <div class="progress-label"><span id="progress-text">已學 0 個單字</span><button id="reset-progress" type="button">清除紀錄</button></div>
+</div>
+
+<div id="basics" class="section active">
+  <div class="section-title">📖 基礎字母 A-Z 單字</div>
+  <div class="alpha-bar" id="basics-alpha"></div>
+  <div class="basics-grid" id="basics-grid"></div>
+</div>
+
+<div id="animals" class="section">
+  <div class="section-title">&#x1F43E; 動物 Animals</div>
+  <div class="theme-grid" id="animals-grid"></div>
+</div>
+
+<div id="food" class="section">
+  <div class="section-title">&#x1F34E; 食物 Food</div>
+  <div class="theme-grid" id="food-grid"></div>
+</div>
+
+<div id="colors" class="section">
+  <div class="section-title">🎨 顏色&形狀 Colors &amp; Shapes</div>
+  <div class="theme-grid" id="colors-grid"></div>
+</div>
+
+<div id="nature" class="section">
+  <div class="section-title">🌿 自然&植物 Nature &amp; Plants</div>
+  <div class="theme-grid" id="nature-grid"></div>
+</div>
+
+<div id="sports" class="section">
+  <div class="section-title">⚽ 運動 &amp; 活動 Sports</div>
+  <div class="theme-grid" id="sports-grid"></div>
+</div>
+
+<div id="transport" class="section">
+  <div class="section-title">🚗 交通&職業 Transport &amp; Careers</div>
+  <div class="theme-grid" id="transport-grid"></div>
+</div>
+
+<div id="daily" class="section">
+  <div class="section-title">🏠 日常用品 Daily Life Items</div>
+  <div class="theme-grid" id="daily-grid"></div>
+</div>
+
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-letter" id="modal-letter"></span>
+      <div>
+        <div style="font-size:1.1rem;font-weight:800" id="modal-title"></div>
+        <div class="modal-theme-name" id="modal-theme"></div>
+      </div>
+      <button class="modal-close" id="modal-close">&#x2715;</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-main-word" id="modal-main"></div>
+      <div class="modal-divider" id="modal-divider-text" style="display:none"></div>
+      <div class="modal-extra-list" id="modal-extra"></div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>&#x1F31F; A-Z 英文學習 &mdash; 讓學習變得有趣！ Learning made fun!</p>
+</footer>
+
+<script>
+const BASICS = {
+  "A": [
+    {
+      "word": "Apple",
+      "zh": "蘋果",
+      "emoji": "🍎"
+    },
+    {
+      "word": "Ant",
+      "zh": "螞蟻",
+      "emoji": "🐜"
+    },
+    {
+      "word": "Airplane",
+      "zh": "飛機",
+      "emoji": "✈️"
+    },
+    {
+      "word": "Avocado",
+      "zh": "酪梨",
+      "emoji": "🥑"
+    },
+    {
+      "word": "Alligator",
+      "zh": "鱷魚",
+      "emoji": "🐊"
+    }
+  ],
+  "B": [
+    {
+      "word": "Ball",
+      "zh": "球",
+      "emoji": "⚽"
+    },
+    {
+      "word": "Bear",
+      "zh": "熊",
+      "emoji": "🐻"
+    },
+    {
+      "word": "Banana",
+      "zh": "香蕉",
+      "emoji": "🍌"
+    },
+    {
+      "word": "Butterfly",
+      "zh": "蝴蝶",
+      "emoji": "🦋"
+    },
+    {
+      "word": "Book",
+      "zh": "書",
+      "emoji": "📚"
+    }
+  ],
+  "C": [
+    {
+      "word": "Cat",
+      "zh": "貓",
+      "emoji": "🐱"
+    },
+    {
+      "word": "Cake",
+      "zh": "蛋糕",
+      "emoji": "🎂"
+    },
+    {
+      "word": "Car",
+      "zh": "汽車",
+      "emoji": "🚗"
+    },
+    {
+      "word": "Cow",
+      "zh": "牛",
+      "emoji": "🐄"
+    },
+    {
+      "word": "Cherry",
+      "zh": "櫻桃",
+      "emoji": "🍒"
+    }
+  ],
+  "D": [
+    {
+      "word": "Dog",
+      "zh": "狗",
+      "emoji": "🐶"
+    },
+    {
+      "word": "Duck",
+      "zh": "鴨子",
+      "emoji": "🦆"
+    },
+    {
+      "word": "Drum",
+      "zh": "鼓",
+      "emoji": "🥁"
+    },
+    {
+      "word": "Doughnut",
+      "zh": "甜甜圈",
+      "emoji": "🍩"
+    },
+    {
+      "word": "Dinosaur",
+      "zh": "恐龍",
+      "emoji": "🦕"
+    }
+  ],
+  "E": [
+    {
+      "word": "Elephant",
+      "zh": "大象",
+      "emoji": "🐘"
+    },
+    {
+      "word": "Egg",
+      "zh": "蛋",
+      "emoji": "🥚"
+    },
+    {
+      "word": "Earth",
+      "zh": "地球",
+      "emoji": "🌍"
+    },
+    {
+      "word": "Eagle",
+      "zh": "老鷹",
+      "emoji": "🦅"
+    },
+    {
+      "word": "Eggplant",
+      "zh": "茄子",
+      "emoji": "🍆"
+    }
+  ],
+  "F": [
+    {
+      "word": "Fish",
+      "zh": "魚",
+      "emoji": "🐟"
+    },
+    {
+      "word": "Frog",
+      "zh": "青蛙",
+      "emoji": "🐸"
+    },
+    {
+      "word": "Flower",
+      "zh": "花",
+      "emoji": "🌸"
+    },
+    {
+      "word": "Fire",
+      "zh": "火",
+      "emoji": "🔥"
+    },
+    {
+      "word": "Fries",
+      "zh": "薯條",
+      "emoji": "🍟"
+    }
+  ],
+  "G": [
+    {
+      "word": "Giraffe",
+      "zh": "長頸鹿",
+      "emoji": "🦒"
+    },
+    {
+      "word": "Grapes",
+      "zh": "葡萄",
+      "emoji": "🍇"
+    },
+    {
+      "word": "Ghost",
+      "zh": "鬼",
+      "emoji": "👻"
+    },
+    {
+      "word": "Guitar",
+      "zh": "吉他",
+      "emoji": "🎸"
+    },
+    {
+      "word": "Goat",
+      "zh": "山羊",
+      "emoji": "🐐"
+    }
+  ],
+  "H": [
+    {
+      "word": "Horse",
+      "zh": "馬",
+      "emoji": "🐴"
+    },
+    {
+      "word": "Hat",
+      "zh": "帽子",
+      "emoji": "🎩"
+    },
+    {
+      "word": "Heart",
+      "zh": "心",
+      "emoji": "❤️"
+    },
+    {
+      "word": "Hamster",
+      "zh": "倉鼠",
+      "emoji": "🐹"
+    },
+    {
+      "word": "House",
+      "zh": "房子",
+      "emoji": "🏠"
+    }
+  ],
+  "I": [
+    {
+      "word": "Ice cream",
+      "zh": "冰淇淋",
+      "emoji": "🍦"
+    },
+    {
+      "word": "Island",
+      "zh": "島嶼",
+      "emoji": "🏝️"
+    },
+    {
+      "word": "Igloo",
+      "zh": "冰屋",
+      "emoji": "🧊"
+    },
+    {
+      "word": "Insect",
+      "zh": "昆蟲",
+      "emoji": "🐛"
+    },
+    {
+      "word": "Ivy",
+      "zh": "常春藤",
+      "emoji": "🌿"
+    }
+  ],
+  "J": [
+    {
+      "word": "Jellyfish",
+      "zh": "水母",
+      "emoji": "🪼"
+    },
+    {
+      "word": "Juice",
+      "zh": "果汁",
+      "emoji": "🧃"
+    },
+    {
+      "word": "Jar",
+      "zh": "罐子",
+      "emoji": "🫙"
+    },
+    {
+      "word": "Jaguar",
+      "zh": "美洲豹",
+      "emoji": "🐆"
+    },
+    {
+      "word": "Jelly",
+      "zh": "果凍",
+      "emoji": "🍮"
+    }
+  ],
+  "K": [
+    {
+      "word": "Kangaroo",
+      "zh": "袋鼠",
+      "emoji": "🦘"
+    },
+    {
+      "word": "Key",
+      "zh": "鑰匙",
+      "emoji": "🔑"
+    },
+    {
+      "word": "Kite",
+      "zh": "風箏",
+      "emoji": "🪁"
+    },
+    {
+      "word": "Kitten",
+      "zh": "小貓",
+      "emoji": "🐱"
+    },
+    {
+      "word": "Kiwi",
+      "zh": "奇異果",
+      "emoji": "🥝"
+    }
+  ],
+  "L": [
+    {
+      "word": "Lion",
+      "zh": "獅子",
+      "emoji": "🦁"
+    },
+    {
+      "word": "Lemon",
+      "zh": "檸檬",
+      "emoji": "🍋"
+    },
+    {
+      "word": "Leaf",
+      "zh": "葉子",
+      "emoji": "🍃"
+    },
+    {
+      "word": "Ladybug",
+      "zh": "瓢蟲",
+      "emoji": "🐞"
+    },
+    {
+      "word": "Lamp",
+      "zh": "燈",
+      "emoji": "💡"
+    }
+  ],
+  "M": [
+    {
+      "word": "Monkey",
+      "zh": "猴子",
+      "emoji": "🐒"
+    },
+    {
+      "word": "Moon",
+      "zh": "月亮",
+      "emoji": "🌙"
+    },
+    {
+      "word": "Mushroom",
+      "zh": "蘑菇",
+      "emoji": "🍄"
+    },
+    {
+      "word": "Milk",
+      "zh": "牛奶",
+      "emoji": "🥛"
+    },
+    {
+      "word": "Mouse",
+      "zh": "老鼠",
+      "emoji": "🐭"
+    }
+  ],
+  "N": [
+    {
+      "word": "Nest",
+      "zh": "鳥巢",
+      "emoji": "🪹"
+    },
+    {
+      "word": "Night",
+      "zh": "夜晚",
+      "emoji": "🌃"
+    },
+    {
+      "word": "Nose",
+      "zh": "鼻子",
+      "emoji": "👃"
+    },
+    {
+      "word": "Nut",
+      "zh": "堅果",
+      "emoji": "🥜"
+    },
+    {
+      "word": "Narwhal",
+      "zh": "獨角鯨",
+      "emoji": "🐋"
+    }
+  ],
+  "O": [
+    {
+      "word": "Octopus",
+      "zh": "章魚",
+      "emoji": "🐙"
+    },
+    {
+      "word": "Orange",
+      "zh": "橙子",
+      "emoji": "🍊"
+    },
+    {
+      "word": "Owl",
+      "zh": "貓頭鷹",
+      "emoji": "🦉"
+    },
+    {
+      "word": "Ocean",
+      "zh": "海洋",
+      "emoji": "🌊"
+    },
+    {
+      "word": "Onion",
+      "zh": "洋蔥",
+      "emoji": "🧅"
+    }
+  ],
+  "P": [
+    {
+      "word": "Pig",
+      "zh": "豬",
+      "emoji": "🐷"
+    },
+    {
+      "word": "Pizza",
+      "zh": "披薩",
+      "emoji": "🍕"
+    },
+    {
+      "word": "Penguin",
+      "zh": "企鵝",
+      "emoji": "🐧"
+    },
+    {
+      "word": "Pineapple",
+      "zh": "鳳梨",
+      "emoji": "🍍"
+    },
+    {
+      "word": "Panda",
+      "zh": "熊貓",
+      "emoji": "🐼"
+    }
+  ],
+  "Q": [
+    {
+      "word": "Queen",
+      "zh": "女王",
+      "emoji": "👸"
+    },
+    {
+      "word": "Quail",
+      "zh": "鵪鶉",
+      "emoji": "🐦"
+    },
+    {
+      "word": "Quilt",
+      "zh": "棉被",
+      "emoji": "🛏️"
+    },
+    {
+      "word": "Quarter",
+      "zh": "硬幣",
+      "emoji": "🪙"
+    },
+    {
+      "word": "Question",
+      "zh": "問題",
+      "emoji": "❓"
+    }
+  ],
+  "R": [
+    {
+      "word": "Rabbit",
+      "zh": "兔子",
+      "emoji": "🐰"
+    },
+    {
+      "word": "Rainbow",
+      "zh": "彩虹",
+      "emoji": "🌈"
+    },
+    {
+      "word": "Robot",
+      "zh": "機器人",
+      "emoji": "🤖"
+    },
+    {
+      "word": "Rose",
+      "zh": "玫瑰",
+      "emoji": "🌹"
+    },
+    {
+      "word": "Rocket",
+      "zh": "火箭",
+      "emoji": "🚀"
+    }
+  ],
+  "S": [
+    {
+      "word": "Sun",
+      "zh": "太陽",
+      "emoji": "☀️"
+    },
+    {
+      "word": "Star",
+      "zh": "星星",
+      "emoji": "⭐"
+    },
+    {
+      "word": "Snake",
+      "zh": "蛇",
+      "emoji": "🐍"
+    },
+    {
+      "word": "Strawberry",
+      "zh": "草莓",
+      "emoji": "🍓"
+    },
+    {
+      "word": "Sheep",
+      "zh": "羊",
+      "emoji": "🐑"
+    }
+  ],
+  "T": [
+    {
+      "word": "Tiger",
+      "zh": "老虎",
+      "emoji": "🐯"
+    },
+    {
+      "word": "Tree",
+      "zh": "樹",
+      "emoji": "🌳"
+    },
+    {
+      "word": "Train",
+      "zh": "火車",
+      "emoji": "🚂"
+    },
+    {
+      "word": "Turtle",
+      "zh": "烏龜",
+      "emoji": "🐢"
+    },
+    {
+      "word": "Tomato",
+      "zh": "番茄",
+      "emoji": "🍅"
+    }
+  ],
+  "U": [
+    {
+      "word": "Umbrella",
+      "zh": "雨傘",
+      "emoji": "☂️"
+    },
+    {
+      "word": "Unicorn",
+      "zh": "獨角獸",
+      "emoji": "🦄"
+    },
+    {
+      "word": "UFO",
+      "zh": "飛碟",
+      "emoji": "🛸"
+    },
+    {
+      "word": "Urchin",
+      "zh": "海膽",
+      "emoji": "🦔"
+    },
+    {
+      "word": "Uncle",
+      "zh": "叔叔",
+      "emoji": "👨"
+    }
+  ],
+  "V": [
+    {
+      "word": "Volcano",
+      "zh": "火山",
+      "emoji": "🌋"
+    },
+    {
+      "word": "Violin",
+      "zh": "小提琴",
+      "emoji": "🎻"
+    },
+    {
+      "word": "Van",
+      "zh": "廂型車",
+      "emoji": "🚐"
+    },
+    {
+      "word": "Vest",
+      "zh": "背心",
+      "emoji": "🦺"
+    },
+    {
+      "word": "Vegetables",
+      "zh": "蔬菜",
+      "emoji": "🥦"
+    }
+  ],
+  "W": [
+    {
+      "word": "Whale",
+      "zh": "鯨魚",
+      "emoji": "🐳"
+    },
+    {
+      "word": "Watermelon",
+      "zh": "西瓜",
+      "emoji": "🍉"
+    },
+    {
+      "word": "Wolf",
+      "zh": "狼",
+      "emoji": "🐺"
+    },
+    {
+      "word": "Wind",
+      "zh": "風",
+      "emoji": "💨"
+    },
+    {
+      "word": "Worm",
+      "zh": "蚯蚓",
+      "emoji": "🪱"
+    }
+  ],
+  "X": [
+    {
+      "word": "Xylophone",
+      "zh": "木琴",
+      "emoji": "🎹"
+    },
+    {
+      "word": "X-ray",
+      "zh": "X光",
+      "emoji": "🩻"
+    },
+    {
+      "word": "Xbox",
+      "zh": "遊戲機",
+      "emoji": "🎮"
+    },
+    {
+      "word": "Xerus",
+      "zh": "非洲松鼠",
+      "emoji": "🐿️"
+    },
+    {
+      "word": "Xenops",
+      "zh": "異嘴雀",
+      "emoji": "🐦"
+    }
+  ],
+  "Y": [
+    {
+      "word": "Yak",
+      "zh": "犛牛",
+      "emoji": "🐂"
+    },
+    {
+      "word": "Yarn",
+      "zh": "毛線",
+      "emoji": "🧶"
+    },
+    {
+      "word": "Yacht",
+      "zh": "遊艇",
+      "emoji": "⛵"
+    },
+    {
+      "word": "Yam",
+      "zh": "山藥",
+      "emoji": "🍠"
+    },
+    {
+      "word": "Yellow",
+      "zh": "黃色",
+      "emoji": "💛"
+    }
+  ],
+  "Z": [
+    {
+      "word": "Zebra",
+      "zh": "斑馬",
+      "emoji": "🦓"
+    },
+    {
+      "word": "Zoo",
+      "zh": "動物園",
+      "emoji": "🦁"
+    },
+    {
+      "word": "Zipper",
+      "zh": "拉鍊",
+      "emoji": "🤐"
+    },
+    {
+      "word": "Zucchini",
+      "zh": "櫛瓜",
+      "emoji": "🥒"
+    },
+    {
+      "word": "Zero",
+      "zh": "零",
+      "emoji": "0️⃣"
+    }
+  ]
+};
+const ANIMALS = {
+  "A": {
+    "word": "Alligator",
+    "zh": "鱷魚",
+    "emoji": "🐊",
+    "available": true,
+    "extra": [
+      {
+        "word": "Ape",
+        "zh": "猿",
+        "emoji": "🦧"
+      },
+      {
+        "word": "Ant",
+        "zh": "螞蟻",
+        "emoji": "🐜"
+      },
+      {
+        "word": "Armadillo",
+        "zh": "犰狳",
+        "emoji": "🐾"
+      },
+      {
+        "word": "Antelope",
+        "zh": "羚羊",
+        "emoji": "🦌"
+      }
+    ]
+  },
+  "B": {
+    "word": "Bear",
+    "zh": "熊",
+    "emoji": "🐻",
+    "available": true,
+    "extra": [
+      {
+        "word": "Buffalo",
+        "zh": "水牛",
+        "emoji": "🐃"
+      },
+      {
+        "word": "Bat",
+        "zh": "蝙蝠",
+        "emoji": "🦇"
+      },
+      {
+        "word": "Bee",
+        "zh": "蜜蜂",
+        "emoji": "🐝"
+      },
+      {
+        "word": "Butterfly",
+        "zh": "蝴蝶",
+        "emoji": "🦋"
+      }
+    ]
+  },
+  "C": {
+    "word": "Cat",
+    "zh": "貓",
+    "emoji": "🐱",
+    "available": true,
+    "extra": [
+      {
+        "word": "Crab",
+        "zh": "螃蟹",
+        "emoji": "🦀"
+      },
+      {
+        "word": "Cow",
+        "zh": "乳牛",
+        "emoji": "🐄"
+      },
+      {
+        "word": "Cheetah",
+        "zh": "獵豹",
+        "emoji": "🐆"
+      },
+      {
+        "word": "Camel",
+        "zh": "駱駝",
+        "emoji": "🐪"
+      },
+      {
+        "word": "Chicken",
+        "zh": "雞",
+        "emoji": "🐔"
+      }
+    ]
+  },
+  "D": {
+    "word": "Dog",
+    "zh": "狗",
+    "emoji": "🐶",
+    "available": true,
+    "extra": [
+      {
+        "word": "Duck",
+        "zh": "鴨子",
+        "emoji": "🦆"
+      },
+      {
+        "word": "Deer",
+        "zh": "鹿",
+        "emoji": "🦌"
+      },
+      {
+        "word": "Dolphin",
+        "zh": "海豚",
+        "emoji": "🐬"
+      },
+      {
+        "word": "Dinosaur",
+        "zh": "恐龍",
+        "emoji": "🦕"
+      }
+    ]
+  },
+  "E": {
+    "word": "Elephant",
+    "zh": "大象",
+    "emoji": "🐘",
+    "available": true,
+    "extra": [
+      {
+        "word": "Eel",
+        "zh": "鰻魚",
+        "emoji": "🐍"
+      },
+      {
+        "word": "Elk",
+        "zh": "麋鹿",
+        "emoji": "🦌"
+      },
+      {
+        "word": "Eagle",
+        "zh": "老鷹",
+        "emoji": "🦅"
+      }
+    ]
+  },
+  "F": {
+    "word": "Fox",
+    "zh": "狐狸",
+    "emoji": "🦊",
+    "available": true,
+    "extra": [
+      {
+        "word": "Flamingo",
+        "zh": "紅鶴",
+        "emoji": "🦩"
+      },
+      {
+        "word": "Frog",
+        "zh": "青蛙",
+        "emoji": "🐸"
+      },
+      {
+        "word": "Fish",
+        "zh": "魚",
+        "emoji": "🐟"
+      }
+    ]
+  },
+  "G": {
+    "word": "Giraffe",
+    "zh": "長頸鹿",
+    "emoji": "🦒",
+    "available": true,
+    "extra": [
+      {
+        "word": "Gorilla",
+        "zh": "大猩猩",
+        "emoji": "🦍"
+      },
+      {
+        "word": "Goat",
+        "zh": "山羊",
+        "emoji": "🐐"
+      },
+      {
+        "word": "Goose",
+        "zh": "鵝",
+        "emoji": "🪿"
+      }
+    ]
+  },
+  "H": {
+    "word": "Horse",
+    "zh": "馬",
+    "emoji": "🐴",
+    "available": true,
+    "extra": [
+      {
+        "word": "Hamster",
+        "zh": "倉鼠",
+        "emoji": "🐹"
+      },
+      {
+        "word": "Hedgehog",
+        "zh": "刺蝟",
+        "emoji": "🦔"
+      },
+      {
+        "word": "Hippo",
+        "zh": "河馬",
+        "emoji": "🦛"
+      },
+      {
+        "word": "Hen",
+        "zh": "母雞",
+        "emoji": "🐓"
+      }
+    ]
+  },
+  "I": {
+    "word": "Iguana",
+    "zh": "鬣蜥",
+    "emoji": "🦎",
+    "available": true,
+    "extra": [
+      {
+        "word": "Impala",
+        "zh": "黑斑羚",
+        "emoji": "🦌"
+      },
+      {
+        "word": "Ibis",
+        "zh": "朱鷺",
+        "emoji": "🐦"
+      },
+      {
+        "word": "Insect",
+        "zh": "昆蟲",
+        "emoji": "🐛"
+      }
+    ]
+  },
+  "J": {
+    "word": "Jaguar",
+    "zh": "美洲豹",
+    "emoji": "🐆",
+    "available": true,
+    "extra": [
+      {
+        "word": "Jellyfish",
+        "zh": "水母",
+        "emoji": "🪼"
+      },
+      {
+        "word": "Jay",
+        "zh": "松鴉",
+        "emoji": "🐦"
+      }
+    ]
+  },
+  "K": {
+    "word": "Kangaroo",
+    "zh": "袋鼠",
+    "emoji": "🦘",
+    "available": true,
+    "extra": [
+      {
+        "word": "Koala",
+        "zh": "無尾熊",
+        "emoji": "🐨"
+      },
+      {
+        "word": "Koi",
+        "zh": "錦鯉",
+        "emoji": "🐟"
+      },
+      {
+        "word": "Kitten",
+        "zh": "小貓咪",
+        "emoji": "🐱"
+      }
+    ]
+  },
+  "L": {
+    "word": "Lion",
+    "zh": "獅子",
+    "emoji": "🦁",
+    "available": true,
+    "extra": [
+      {
+        "word": "Llama",
+        "zh": "駱馬",
+        "emoji": "🦙"
+      },
+      {
+        "word": "Lobster",
+        "zh": "龍蝦",
+        "emoji": "🦞"
+      },
+      {
+        "word": "Lynx",
+        "zh": "山貓",
+        "emoji": "🐱"
+      },
+      {
+        "word": "Ladybug",
+        "zh": "瓢蟲",
+        "emoji": "🐞"
+      }
+    ]
+  },
+  "M": {
+    "word": "Monkey",
+    "zh": "猴子",
+    "emoji": "🐒",
+    "available": true,
+    "extra": [
+      {
+        "word": "Moose",
+        "zh": "駝鹿",
+        "emoji": "🫎"
+      },
+      {
+        "word": "Mole",
+        "zh": "鼴鼠",
+        "emoji": "🐾"
+      },
+      {
+        "word": "Mouse",
+        "zh": "老鼠",
+        "emoji": "🐭"
+      }
+    ]
+  },
+  "N": {
+    "word": "Narwhal",
+    "zh": "獨角鯨",
+    "emoji": "🐋",
+    "available": true,
+    "extra": [
+      {
+        "word": "Newt",
+        "zh": "蠑螈",
+        "emoji": "🦎"
+      },
+      {
+        "word": "Nightingale",
+        "zh": "夜鶯",
+        "emoji": "🐦"
+      }
+    ]
+  },
+  "O": {
+    "word": "Octopus",
+    "zh": "章魚",
+    "emoji": "🐙",
+    "available": true,
+    "extra": [
+      {
+        "word": "Orca",
+        "zh": "虎鯨",
+        "emoji": "🐋"
+      },
+      {
+        "word": "Otter",
+        "zh": "水獺",
+        "emoji": "🦦"
+      },
+      {
+        "word": "Ostrich",
+        "zh": "鴕鳥",
+        "emoji": "🦤"
+      },
+      {
+        "word": "Owl",
+        "zh": "貓頭鷹",
+        "emoji": "🦉"
+      }
+    ]
+  },
+  "P": {
+    "word": "Penguin",
+    "zh": "企鵝",
+    "emoji": "🐧",
+    "available": true,
+    "extra": [
+      {
+        "word": "Pig",
+        "zh": "豬",
+        "emoji": "🐷"
+      },
+      {
+        "word": "Panda",
+        "zh": "熊貓",
+        "emoji": "🐼"
+      },
+      {
+        "word": "Parrot",
+        "zh": "鸚鵡",
+        "emoji": "🦜"
+      },
+      {
+        "word": "Peacock",
+        "zh": "孔雀",
+        "emoji": "🦚"
+      }
+    ]
+  },
+  "Q": {
+    "word": "Quail",
+    "zh": "鵪鶉",
+    "emoji": "🐦",
+    "available": true,
+    "extra": [
+      {
+        "word": "Quokka",
+        "zh": "短尾矮袋鼠",
+        "emoji": "🐾"
+      }
+    ]
+  },
+  "R": {
+    "word": "Rabbit",
+    "zh": "兔子",
+    "emoji": "🐰",
+    "available": true,
+    "extra": [
+      {
+        "word": "Raccoon",
+        "zh": "浣熊",
+        "emoji": "🦝"
+      },
+      {
+        "word": "Reindeer",
+        "zh": "馴鹿",
+        "emoji": "🦌"
+      },
+      {
+        "word": "Rhinoceros",
+        "zh": "犀牛",
+        "emoji": "🦏"
+      },
+      {
+        "word": "Rooster",
+        "zh": "公雞",
+        "emoji": "🐓"
+      }
+    ]
+  },
+  "S": {
+    "word": "Snake",
+    "zh": "蛇",
+    "emoji": "🐍",
+    "available": true,
+    "extra": [
+      {
+        "word": "Shark",
+        "zh": "鯊魚",
+        "emoji": "🦈"
+      },
+      {
+        "word": "Squirrel",
+        "zh": "松鼠",
+        "emoji": "🐿️"
+      },
+      {
+        "word": "Swan",
+        "zh": "天鵝",
+        "emoji": "🦢"
+      },
+      {
+        "word": "Seal",
+        "zh": "海豹",
+        "emoji": "🦭"
+      },
+      {
+        "word": "Sheep",
+        "zh": "羊",
+        "emoji": "🐑"
+      }
+    ]
+  },
+  "T": {
+    "word": "Tiger",
+    "zh": "老虎",
+    "emoji": "🐯",
+    "available": true,
+    "extra": [
+      {
+        "word": "Turkey",
+        "zh": "火雞",
+        "emoji": "🦃"
+      },
+      {
+        "word": "Toucan",
+        "zh": "巨嘴鳥",
+        "emoji": "🦜"
+      },
+      {
+        "word": "Turtle",
+        "zh": "烏龜",
+        "emoji": "🐢"
+      }
+    ]
+  },
+  "U": {
+    "word": "Uakari",
+    "zh": "赤禿猴",
+    "emoji": "🐒",
+    "available": true,
+    "extra": [
+      {
+        "word": "Umbrellabird",
+        "zh": "傘鳥",
+        "emoji": "🐦"
+      },
+      {
+        "word": "Unicorn",
+        "zh": "獨角獸",
+        "emoji": "🦄"
+      },
+      {
+        "word": "Urchin",
+        "zh": "海膽",
+        "emoji": "🦔"
+      }
+    ]
+  },
+  "V": {
+    "word": "Vulture",
+    "zh": "禿鷹",
+    "emoji": "🦅",
+    "available": true,
+    "extra": [
+      {
+        "word": "Viper",
+        "zh": "蝮蛇",
+        "emoji": "🐍"
+      },
+      {
+        "word": "Vicuna",
+        "zh": "小羊駝",
+        "emoji": "🦙"
+      }
+    ]
+  },
+  "W": {
+    "word": "Wolf",
+    "zh": "狼",
+    "emoji": "🐺",
+    "available": true,
+    "extra": [
+      {
+        "word": "Walrus",
+        "zh": "海象",
+        "emoji": "🦭"
+      },
+      {
+        "word": "Wombat",
+        "zh": "袋熊",
+        "emoji": "🐾"
+      },
+      {
+        "word": "Woodpecker",
+        "zh": "啄木鳥",
+        "emoji": "🐦"
+      },
+      {
+        "word": "Whale",
+        "zh": "鯨魚",
+        "emoji": "🐳"
+      },
+      {
+        "word": "Worm",
+        "zh": "蚯蚓",
+        "emoji": "🪱"
+      }
+    ]
+  },
+  "X": {
+    "word": "Xerus",
+    "zh": "非洲地松鼠",
+    "emoji": "🐿️",
+    "available": true,
+    "extra": [
+      {
+        "word": "Xenops",
+        "zh": "異嘴雀",
+        "emoji": "🐦"
+      }
+    ]
+  },
+  "Y": {
+    "word": "Yak",
+    "zh": "犛牛",
+    "emoji": "🐂",
+    "available": true,
+    "extra": [
+      {
+        "word": "Yellowfin Tuna",
+        "zh": "黃鰭鮪魚",
+        "emoji": "🐟"
+      }
+    ]
+  },
+  "Z": {
+    "word": "Zebra",
+    "zh": "斑馬",
+    "emoji": "🦓",
+    "available": true,
+    "extra": [
+      {
+        "word": "Zebu",
+        "zh": "瘤牛",
+        "emoji": "🐄"
+      },
+      {
+        "word": "Zorilla",
+        "zh": "條紋鼬",
+        "emoji": "🦡"
+      },
+      {
+        "word": "Zoo",
+        "zh": "動物園",
+        "emoji": "🦁"
+      }
+    ]
+  }
+};
+
+
+const FOOD = {
+  "A": {
+    "word": "Apple",
+    "zh": "蘋果",
+    "emoji": "🍎",
+    "available": true,
+    "extra": [
+      {
+        "word": "Avocado",
+        "zh": "酪梨",
+        "emoji": "🥑"
+      },
+      {
+        "word": "Apricot",
+        "zh": "杏桃",
+        "emoji": "🍑"
+      },
+      {
+        "word": "Asparagus",
+        "zh": "蘆筍",
+        "emoji": "🌿"
+      }
+    ]
+  },
+  "B": {
+    "word": "Banana",
+    "zh": "香蕉",
+    "emoji": "🍌",
+    "available": true,
+    "extra": [
+      {
+        "word": "Bread",
+        "zh": "麵包",
+        "emoji": "🍞"
+      },
+      {
+        "word": "Burger",
+        "zh": "漢堡",
+        "emoji": "🍔"
+      },
+      {
+        "word": "Broccoli",
+        "zh": "花椰菜",
+        "emoji": "🥦"
+      },
+      {
+        "word": "Blueberry",
+        "zh": "藍莓",
+        "emoji": "🫐"
+      },
+      {
+        "word": "Beef",
+        "zh": "牛肉",
+        "emoji": "🥩"
+      },
+      {
+        "word": "Butter",
+        "zh": "奶油",
+        "emoji": "🧈"
+      },
+      {
+        "word": "Bell Pepper",
+        "zh": "甜椒",
+        "emoji": "🫑"
+      }
+    ]
+  },
+  "C": {
+    "word": "Carrot",
+    "zh": "胡蘿蔔",
+    "emoji": "🥕",
+    "available": true,
+    "extra": [
+      {
+        "word": "Cake",
+        "zh": "蛋糕",
+        "emoji": "🎂"
+      },
+      {
+        "word": "Cherry",
+        "zh": "櫻桃",
+        "emoji": "🍒"
+      },
+      {
+        "word": "Cookie",
+        "zh": "餅乾",
+        "emoji": "🍪"
+      },
+      {
+        "word": "Cheese",
+        "zh": "起司",
+        "emoji": "🧀"
+      },
+      {
+        "word": "Corn",
+        "zh": "玉米",
+        "emoji": "🌽"
+      },
+      {
+        "word": "Chocolate",
+        "zh": "巧克力",
+        "emoji": "🍫"
+      },
+      {
+        "word": "Coffee",
+        "zh": "咖啡",
+        "emoji": "☕"
+      },
+      {
+        "word": "Chicken",
+        "zh": "雞肉",
+        "emoji": "🍗"
+      },
+      {
+        "word": "Cabbage",
+        "zh": "高麗菜",
+        "emoji": "🥬"
+      }
+    ]
+  },
+  "D": {
+    "word": "Donut",
+    "zh": "甜甜圈",
+    "emoji": "🍩",
+    "available": true,
+    "extra": [
+      {
+        "word": "Dumpling",
+        "zh": "水餃",
+        "emoji": "🥟"
+      },
+      {
+        "word": "Date",
+        "zh": "椰棗",
+        "emoji": "🌴"
+      },
+      {
+        "word": "Dragon Fruit",
+        "zh": "火龍果",
+        "emoji": "🍈"
+      }
+    ]
+  },
+  "E": {
+    "word": "Egg",
+    "zh": "雞蛋",
+    "emoji": "🥚",
+    "available": true,
+    "extra": [
+      {
+        "word": "Eggplant",
+        "zh": "茄子",
+        "emoji": "🍆"
+      },
+      {
+        "word": "Edamame",
+        "zh": "毛豆",
+        "emoji": "🫘"
+      }
+    ]
+  },
+  "F": {
+    "word": "French Fries",
+    "zh": "薯條",
+    "emoji": "🍟",
+    "available": true,
+    "extra": [
+      {
+        "word": "Fig",
+        "zh": "無花果",
+        "emoji": "🍈"
+      },
+      {
+        "word": "Flatbread",
+        "zh": "薄餅",
+        "emoji": "🫓"
+      },
+      {
+        "word": "Fish",
+        "zh": "魚",
+        "emoji": "🐟"
+      },
+      {
+        "word": "Fried Rice",
+        "zh": "炒飯",
+        "emoji": "🍚"
+      }
+    ]
+  },
+  "G": {
+    "word": "Grapes",
+    "zh": "葡萄",
+    "emoji": "🍇",
+    "available": true,
+    "extra": [
+      {
+        "word": "Granola",
+        "zh": "燕麥脆片",
+        "emoji": "🥣"
+      },
+      {
+        "word": "Guava",
+        "zh": "芭樂",
+        "emoji": "🍏"
+      },
+      {
+        "word": "Garlic",
+        "zh": "大蒜",
+        "emoji": "🧄"
+      },
+      {
+        "word": "Green Pepper",
+        "zh": "青椒",
+        "emoji": "🫑"
+      }
+    ]
+  },
+  "H": {
+    "word": "Hamburger",
+    "zh": "漢堡",
+    "emoji": "🍔",
+    "available": true,
+    "extra": [
+      {
+        "word": "Honey",
+        "zh": "蜂蜜",
+        "emoji": "🍯"
+      },
+      {
+        "word": "Hot Dog",
+        "zh": "熱狗",
+        "emoji": "🌭"
+      },
+      {
+        "word": "Hummus",
+        "zh": "鷹嘴豆泥",
+        "emoji": "🫘"
+      },
+      {
+        "word": "Ham",
+        "zh": "火腿",
+        "emoji": "🍖"
+      }
+    ]
+  },
+  "I": {
+    "word": "Ice Cream",
+    "zh": "冰淇淋",
+    "emoji": "🍦",
+    "available": true,
+    "extra": [
+      {
+        "word": "Ice Pop",
+        "zh": "冰棒",
+        "emoji": "🧊"
+      },
+      {
+        "word": "Icing",
+        "zh": "糖霜",
+        "emoji": "🎂"
+      }
+    ]
+  },
+  "J": {
+    "word": "Juice",
+    "zh": "果汁",
+    "emoji": "🧃",
+    "available": true,
+    "extra": [
+      {
+        "word": "Jam",
+        "zh": "果醬",
+        "emoji": "🍓"
+      },
+      {
+        "word": "Jelly",
+        "zh": "果凍",
+        "emoji": "🍮"
+      }
+    ]
+  },
+  "K": {
+    "word": "Kiwi",
+    "zh": "奇異果",
+    "emoji": "🥝",
+    "available": true,
+    "extra": [
+      {
+        "word": "Ketchup",
+        "zh": "番茄醬",
+        "emoji": "🍅"
+      },
+      {
+        "word": "Kebab",
+        "zh": "烤肉串",
+        "emoji": "🍢"
+      }
+    ]
+  },
+  "L": {
+    "word": "Lemon",
+    "zh": "檸檬",
+    "emoji": "🍋",
+    "available": true,
+    "extra": [
+      {
+        "word": "Lychee",
+        "zh": "荔枝",
+        "emoji": "🍈"
+      },
+      {
+        "word": "Lasagna",
+        "zh": "千層麵",
+        "emoji": "🍝"
+      },
+      {
+        "word": "Lettuce",
+        "zh": "萵苣",
+        "emoji": "🥬"
+      },
+      {
+        "word": "Lamb",
+        "zh": "羊肉",
+        "emoji": "🍖"
+      },
+      {
+        "word": "Loofah",
+        "zh": "絲瓜",
+        "emoji": "🥒"
+      },
+      {
+        "word": "Lime",
+        "zh": "萊姆",
+        "emoji": "🍋"
+      }
+    ]
+  },
+  "M": {
+    "word": "Mango",
+    "zh": "芒果",
+    "emoji": "🥭",
+    "available": true,
+    "extra": [
+      {
+        "word": "Melon",
+        "zh": "哈密瓜",
+        "emoji": "🍈"
+      },
+      {
+        "word": "Muffin",
+        "zh": "馬芬",
+        "emoji": "🧁"
+      },
+      {
+        "word": "Mushroom",
+        "zh": "蘑菇",
+        "emoji": "🍄"
+      },
+      {
+        "word": "Milk",
+        "zh": "牛奶",
+        "emoji": "🥛"
+      },
+      {
+        "word": "Mayonnaise",
+        "zh": "美乃滋",
+        "emoji": "🥣"
+      },
+      {
+        "word": "Mustard",
+        "zh": "芥末醬",
+        "emoji": "🌭"
+      }
+    ]
+  },
+  "N": {
+    "word": "Noodles",
+    "zh": "麵條",
+    "emoji": "🍜",
+    "available": true,
+    "extra": [
+      {
+        "word": "Nectarine",
+        "zh": "油桃",
+        "emoji": "🍑"
+      },
+      {
+        "word": "Nuts",
+        "zh": "堅果",
+        "emoji": "🥜"
+      }
+    ]
+  },
+  "O": {
+    "word": "Orange",
+    "zh": "柳橙",
+    "emoji": "🍊",
+    "available": true,
+    "extra": [
+      {
+        "word": "Oatmeal",
+        "zh": "燕麥粥",
+        "emoji": "🥣"
+      },
+      {
+        "word": "Olive",
+        "zh": "橄欖",
+        "emoji": "🫒"
+      },
+      {
+        "word": "Onion",
+        "zh": "洋蔥",
+        "emoji": "🧅"
+      },
+      {
+        "word": "Omelette",
+        "zh": "歐姆蛋",
+        "emoji": "🍳"
+      }
+    ]
+  },
+  "P": {
+    "word": "Pizza",
+    "zh": "披薩",
+    "emoji": "🍕",
+    "available": true,
+    "extra": [
+      {
+        "word": "Peanuts",
+        "zh": "花生",
+        "emoji": "🥜"
+      },
+      {
+        "word": "Pie",
+        "zh": "派",
+        "emoji": "🥧"
+      },
+      {
+        "word": "Pineapple",
+        "zh": "鳳梨",
+        "emoji": "🍍"
+      },
+      {
+        "word": "Pork",
+        "zh": "豬肉",
+        "emoji": "🥩"
+      },
+      {
+        "word": "Pancake",
+        "zh": "鬆餅",
+        "emoji": "🥞"
+      },
+      {
+        "word": "Peach",
+        "zh": "水蜜桃",
+        "emoji": "🍑"
+      },
+      {
+        "word": "Pumpkin",
+        "zh": "南瓜",
+        "emoji": "🎃"
+      },
+      {
+        "word": "Pitaya",
+        "zh": "火龍果",
+        "emoji": "🐉"
+      },
+      {
+        "word": "Potato",
+        "zh": "馬鈴薯",
+        "emoji": "🥔"
+      }
+    ]
+  },
+  "Q": {
+    "word": "Quesadilla",
+    "zh": "墨西哥夾餅",
+    "emoji": "🫓",
+    "available": true,
+    "extra": [
+      {
+        "word": "Quiche",
+        "zh": "鹹派",
+        "emoji": "🥧"
+      },
+      {
+        "word": "Quinoa",
+        "zh": "藜麥",
+        "emoji": "🌾"
+      }
+    ]
+  },
+  "R": {
+    "word": "Rice",
+    "zh": "米飯",
+    "emoji": "🍚",
+    "available": true,
+    "extra": [
+      {
+        "word": "Raspberry",
+        "zh": "覆盆子",
+        "emoji": "🍇"
+      },
+      {
+        "word": "Raisin",
+        "zh": "葡萄乾",
+        "emoji": "🍇"
+      },
+      {
+        "word": "Ramen",
+        "zh": "拉麵",
+        "emoji": "🍜"
+      }
+    ]
+  },
+  "S": {
+    "word": "Strawberry",
+    "zh": "草莓",
+    "emoji": "🍓",
+    "available": true,
+    "extra": [
+      {
+        "word": "Sandwich",
+        "zh": "三明治",
+        "emoji": "🥪"
+      },
+      {
+        "word": "Sushi",
+        "zh": "壽司",
+        "emoji": "🍣"
+      },
+      {
+        "word": "Soup",
+        "zh": "湯",
+        "emoji": "🍲"
+      },
+      {
+        "word": "Salad",
+        "zh": "沙拉",
+        "emoji": "🥗"
+      }
+    ]
+  },
+  "T": {
+    "word": "Tomato",
+    "zh": "番茄",
+    "emoji": "🍅",
+    "available": true,
+    "extra": [
+      {
+        "word": "Taco",
+        "zh": "墨西哥捲餅",
+        "emoji": "🌮"
+      },
+      {
+        "word": "Toast",
+        "zh": "吐司",
+        "emoji": "🍞"
+      },
+      {
+        "word": "Tea",
+        "zh": "茶",
+        "emoji": "☕"
+      },
+      {
+        "word": "Tangerine",
+        "zh": "橘子",
+        "emoji": "🍊"
+      }
+    ]
+  },
+  "U": {
+    "word": "Udon",
+    "zh": "烏龍麵",
+    "emoji": "🍜",
+    "available": true,
+    "extra": [
+      {
+        "word": "Upside-down Cake",
+        "zh": "翻轉蛋糕",
+        "emoji": "🎂"
+      }
+    ]
+  },
+  "V": {
+    "word": "Vegetables",
+    "zh": "蔬菜",
+    "emoji": "🥦",
+    "available": true,
+    "extra": [
+      {
+        "word": "Vanilla",
+        "zh": "香草",
+        "emoji": "🍦"
+      },
+      {
+        "word": "Vinegar",
+        "zh": "醋",
+        "emoji": "🫙"
+      }
+    ]
+  },
+  "W": {
+    "word": "Watermelon",
+    "zh": "西瓜",
+    "emoji": "🍉",
+    "available": true,
+    "extra": [
+      {
+        "word": "Waffle",
+        "zh": "格子鬆餅",
+        "emoji": "🧇"
+      },
+      {
+        "word": "Walnut",
+        "zh": "核桃",
+        "emoji": "🥜"
+      },
+      {
+        "word": "Wax Apple",
+        "zh": "蓮霧",
+        "emoji": "🍎"
+      }
+    ]
+  },
+  "X": {
+    "word": "XO Sauce",
+    "zh": "XO醬",
+    "emoji": "🌶️",
+    "available": true,
+    "extra": [
+      {
+        "word": "Xigua",
+        "zh": "西瓜(中文借字)",
+        "emoji": "🍉"
+      }
+    ]
+  },
+  "Y": {
+    "word": "Yogurt",
+    "zh": "優格",
+    "emoji": "🥛",
+    "available": true,
+    "extra": [
+      {
+        "word": "Yam",
+        "zh": "山藥",
+        "emoji": "🍠"
+      },
+      {
+        "word": "Yellow Squash",
+        "zh": "黃南瓜",
+        "emoji": "🍋"
+      }
+    ]
+  },
+  "Z": {
+    "word": "Zucchini",
+    "zh": "櫛瓜",
+    "emoji": "🥒",
+    "available": true,
+    "extra": [
+      {
+        "word": "Ziti",
+        "zh": "管狀麵",
+        "emoji": "🍝"
+      }
+    ]
+  }
+};
+
+const COLORS = {
+  "A": {
+    "word": "Aqua",
+    "zh": "水藍色",
+    "emoji": "🩵",
+    "type": "color",
+    "available": true,
+    "extra": [
+      {
+        "word": "Azure",
+        "zh": "天藍色",
+        "emoji": "🔵"
+      },
+      {
+        "word": "Amber",
+        "zh": "琥珀色",
+        "emoji": "🟡"
+      }
+    ]
+  },
+  "B": {
+    "word": "Blue",
+    "zh": "藍色",
+    "emoji": "🔵",
+    "type": "color",
+    "available": true,
+    "extra": [
+      {
+        "word": "Beige",
+        "zh": "米色",
+        "emoji": "🟤"
+      },
+      {
+        "word": "Bronze",
+        "zh": "古銅色",
+        "emoji": "🟫"
+      },
+      {
+        "word": "Black",
+        "zh": "黑色",
+        "emoji": "⬛"
+      }
+    ]
+  },
+  "C": {
+    "word": "Circle",
+    "zh": "圓形",
+    "emoji": "⭕",
+    "type": "shape",
+    "available": true,
+    "extra": [
+      {
+        "word": "Coral",
+        "zh": "珊瑚色",
+        "emoji": "🪸"
+      },
+      {
+        "word": "Cyan",
+        "zh": "青色",
+        "emoji": "🩵"
+      },
+      {
+        "word": "Cream",
+        "zh": "奶油色",
+        "emoji": "🟡"
+      }
+    ]
+  },
+  "D": {
+    "word": "Diamond",
+    "zh": "菱形",
+    "emoji": "💠",
+    "type": "shape",
+    "available": true,
+    "extra": [
+      {
+        "word": "Dark Blue",
+        "zh": "深藍色",
+        "emoji": "🔵"
+      },
+      {
+        "word": "Dark Green",
+        "zh": "深綠色",
+        "emoji": "🟢"
+      }
+    ]
+  },
+  "E": {
+    "word": "Emerald",
+    "zh": "翠綠色",
+    "emoji": "💚",
+    "type": "color",
+    "available": true,
+    "extra": [
+      {
+        "word": "Electric Blue",
+        "zh": "電藍色",
+        "emoji": "⚡"
+      },
+      {
+        "word": "Eggshell",
+        "zh": "蛋殼白",
+        "emoji": "🟡"
+      }
+    ]
+  },
+  "F": {
+    "word": "Fuchsia",
+    "zh": "桃紅色",
+    "emoji": "🩷",
+    "type": "color",
+    "available": true,
+    "extra": [
+      {
+        "word": "Forest Green",
+        "zh": "森林綠",
+        "emoji": "🌲"
+      },
+      {
+        "word": "Flame",
+        "zh": "火焰橙",
+        "emoji": "🔥"
+      }
+    ]
+  },
+  "G": {
+    "word": "Green",
+    "zh": "綠色",
+    "emoji": "🟢",
+    "type": "color",
+    "available": true,
+    "extra": [
+      {
+        "word": "Gold",
+        "zh": "金色",
+        "emoji": "🌟"
+      },
+      {
+        "word": "Gray",
+        "zh": "灰色",
+        "emoji": "⬜"
+      }
+    ]
+  },
+  "H": {
+    "word": "Hexagon",
+    "zh": "六邊形",
+    "emoji": "⬡",
+    "type": "shape",
+    "available": true,
+    "extra": [
+      {
+        "word": "Hot Pink",
+        "zh": "亮粉紅",
+        "emoji": "🩷"
+      },
+      {
+        "word": "Honey",
+        "zh": "蜂蜜黃",
+        "emoji": "🍯"
+      },
+      {
+        "word": "Heart",
+        "zh": "愛心形",
+        "emoji": "❤️"
+      }
+    ]
+  },
+  "I": {
+    "word": "Indigo",
+    "zh": "靛藍色",
+    "emoji": "🟣",
+    "type": "color",
+    "available": true,
+    "extra": [
+      {
+        "word": "Ivory",
+        "zh": "象牙白",
+        "emoji": "🦷"
+      },
+      {
+        "word": "Ice Blue",
+        "zh": "冰藍色",
+        "emoji": "🧊"
+      }
+    ]
+  },
+  "J": {
+    "word": "Jade",
+    "zh": "玉綠色",
+    "emoji": "🟩",
+    "type": "color",
+    "available": true,
+    "extra": [
+      {
+        "word": "Jasmine",
+        "zh": "茉莉黃",
+        "emoji": "🌼"
+      }
+    ]
+  },
+  "K": {
+    "word": "Khaki",
+    "zh": "卡其色",
+    "emoji": "🟨",
+    "type": "color",
+    "available": true,
+    "extra": [
+      {
+        "word": "Kelly Green",
+        "zh": "鮮綠色",
+        "emoji": "💚"
+      }
+    ]
+  },
+  "L": {
+    "word": "Lavender",
+    "zh": "薰衣草紫",
+    "emoji": "💜",
+    "type": "color",
+    "available": true,
+    "extra": [
+      {
+        "word": "Lime",
+        "zh": "萊姆綠",
+        "emoji": "🍋"
+      },
+      {
+        "word": "Lemon Yellow",
+        "zh": "檸檬黃",
+        "emoji": "🍋"
+      }
+    ]
+  },
+  "M": {
+    "word": "Magenta",
+    "zh": "洋紅色",
+    "emoji": "🩷",
+    "type": "color",
+    "available": true,
+    "extra": [
+      {
+        "word": "Maroon",
+        "zh": "栗色",
+        "emoji": "🟤"
+      },
+      {
+        "word": "Mint",
+        "zh": "薄荷綠",
+        "emoji": "🌱"
+      }
+    ]
+  },
+  "N": {
+    "word": "Navy",
+    "zh": "海軍藍",
+    "emoji": "🔷",
+    "type": "color",
+    "available": true,
+    "extra": [
+      {
+        "word": "Neon Green",
+        "zh": "螢光綠",
+        "emoji": "💚"
+      },
+      {
+        "word": "Neon Pink",
+        "zh": "螢光粉",
+        "emoji": "🩷"
+      }
+    ]
+  },
+  "O": {
+    "word": "Oval",
+    "zh": "橢圓形",
+    "emoji": "🥚",
+    "type": "shape",
+    "available": true,
+    "extra": [
+      {
+        "word": "Olive",
+        "zh": "橄欖綠",
+        "emoji": "🫒"
+      },
+      {
+        "word": "Orchid",
+        "zh": "蘭花紫",
+        "emoji": "🌸"
+      },
+      {
+        "word": "Orange",
+        "zh": "橙色",
+        "emoji": "🍊"
+      }
+    ]
+  },
+  "P": {
+    "word": "Purple",
+    "zh": "紫色",
+    "emoji": "🟣",
+    "type": "color",
+    "available": true,
+    "extra": [
+      {
+        "word": "Peach",
+        "zh": "蜜桃色",
+        "emoji": "🍑"
+      },
+      {
+        "word": "Plum",
+        "zh": "梅子紫",
+        "emoji": "🍇"
+      },
+      {
+        "word": "Pink",
+        "zh": "粉紅色",
+        "emoji": "🩷"
+      }
+    ]
+  },
+  "Q": {
+    "word": "Quadrilateral",
+    "zh": "四邊形",
+    "emoji": "🔷",
+    "type": "shape",
+    "available": true,
+    "extra": [
+      {
+        "word": "Quartz",
+        "zh": "石英粉",
+        "emoji": "💎"
+      }
+    ]
+  },
+  "R": {
+    "word": "Red",
+    "zh": "紅色",
+    "emoji": "❤️",
+    "type": "color",
+    "available": true,
+    "extra": [
+      {
+        "word": "Rectangle",
+        "zh": "長方形",
+        "emoji": "🟦"
+      },
+      {
+        "word": "Rose",
+        "zh": "玫瑰粉",
+        "emoji": "🌹"
+      },
+      {
+        "word": "Ruby",
+        "zh": "紅寶石色",
+        "emoji": "💎"
+      }
+    ]
+  },
+  "S": {
+    "word": "Square",
+    "zh": "正方形",
+    "emoji": "🟥",
+    "type": "shape",
+    "available": true,
+    "extra": [
+      {
+        "word": "Sky Blue",
+        "zh": "天空藍",
+        "emoji": "🌤️"
+      },
+      {
+        "word": "Scarlet",
+        "zh": "鮮紅色",
+        "emoji": "❤️"
+      },
+      {
+        "word": "Silver",
+        "zh": "銀色",
+        "emoji": "⚪"
+      },
+      {
+        "word": "Star",
+        "zh": "星形",
+        "emoji": "⭐"
+      }
+    ]
+  },
+  "T": {
+    "word": "Triangle",
+    "zh": "三角形",
+    "emoji": "🔺",
+    "type": "shape",
+    "available": true,
+    "extra": [
+      {
+        "word": "Turquoise",
+        "zh": "土耳其藍",
+        "emoji": "🩵"
+      },
+      {
+        "word": "Teal",
+        "zh": "藍綠色",
+        "emoji": "🌊"
+      },
+      {
+        "word": "Tan",
+        "zh": "棕褐色",
+        "emoji": "🟡"
+      }
+    ]
+  },
+  "U": {
+    "word": "Ultramarine",
+    "zh": "群青藍",
+    "emoji": "🔵",
+    "type": "color",
+    "available": true,
+    "extra": []
+  },
+  "V": {
+    "word": "Violet",
+    "zh": "紫羅蘭色",
+    "emoji": "🟣",
+    "type": "color",
+    "available": true,
+    "extra": [
+      {
+        "word": "Vermillion",
+        "zh": "朱紅色",
+        "emoji": "🔴"
+      }
+    ]
+  },
+  "W": {
+    "word": "White",
+    "zh": "白色",
+    "emoji": "⬜",
+    "type": "color",
+    "available": true,
+    "extra": [
+      {
+        "word": "Wine Red",
+        "zh": "酒紅色",
+        "emoji": "🍷"
+      }
+    ]
+  },
+  "X": {
+    "word": "Xanthic",
+    "zh": "黃色系",
+    "emoji": "🟡",
+    "type": "color",
+    "available": true,
+    "extra": []
+  },
+  "Y": {
+    "word": "Yellow",
+    "zh": "黃色",
+    "emoji": "💛",
+    "type": "color",
+    "available": true,
+    "extra": [
+      {
+        "word": "Yellow-Green",
+        "zh": "黃綠色",
+        "emoji": "🟡"
+      }
+    ]
+  },
+  "Z": {
+    "word": "Zaffre",
+    "zh": "深藍色",
+    "emoji": "🔵",
+    "type": "color",
+    "available": true,
+    "extra": []
+  }
+};
+
+
+
+const NATURE = {
+  "A": {
+    "word": "Apple Blossom",
+    "zh": "蘋果花",
+    "emoji": "🌸",
+    "available": true,
+    "extra": [
+      {
+        "word": "Acorn",
+        "zh": "橡實",
+        "emoji": "🌰"
+      },
+      {
+        "word": "Algae",
+        "zh": "藻類",
+        "emoji": "🌿"
+      },
+      {
+        "word": "Aloe",
+        "zh": "蘆薈",
+        "emoji": "🪴"
+      }
+    ]
+  },
+  "B": {
+    "word": "Bamboo",
+    "zh": "竹子",
+    "emoji": "🎋",
+    "available": true,
+    "extra": [
+      {
+        "word": "Beach",
+        "zh": "海灘",
+        "emoji": "🏖️"
+      },
+      {
+        "word": "Berry",
+        "zh": "漿果",
+        "emoji": "🍇"
+      },
+      {
+        "word": "Bush",
+        "zh": "灌木",
+        "emoji": "🌿"
+      }
+    ]
+  },
+  "C": {
+    "word": "Cactus",
+    "zh": "仙人掌",
+    "emoji": "🌵",
+    "available": true,
+    "extra": [
+      {
+        "word": "Cloud",
+        "zh": "雲",
+        "emoji": "☁️"
+      },
+      {
+        "word": "Creek",
+        "zh": "小溪",
+        "emoji": "🌊"
+      },
+      {
+        "word": "Cave",
+        "zh": "山洞",
+        "emoji": "🕳️"
+      }
+    ]
+  },
+  "D": {
+    "word": "Desert",
+    "zh": "沙漠",
+    "emoji": "🏜️",
+    "available": true,
+    "extra": [
+      {
+        "word": "Daisy",
+        "zh": "雛菊",
+        "emoji": "🌼"
+      },
+      {
+        "word": "Dew",
+        "zh": "露珠",
+        "emoji": "💧"
+      },
+      {
+        "word": "Dirt",
+        "zh": "泥土",
+        "emoji": "🤎"
+      }
+    ]
+  },
+  "E": {
+    "word": "Evergreen",
+    "zh": "常青樹",
+    "emoji": "🌲",
+    "available": true,
+    "extra": [
+      {
+        "word": "Earth",
+        "zh": "土地",
+        "emoji": "🌍"
+      },
+      {
+        "word": "Erosion",
+        "zh": "侵蝕",
+        "emoji": "🪨"
+      }
+    ]
+  },
+  "F": {
+    "word": "Forest",
+    "zh": "森林",
+    "emoji": "🌲",
+    "available": true,
+    "extra": [
+      {
+        "word": "Fern",
+        "zh": "蕨類",
+        "emoji": "🌿"
+      },
+      {
+        "word": "Flower",
+        "zh": "花朵",
+        "emoji": "🌸"
+      },
+      {
+        "word": "Falls",
+        "zh": "瀑布",
+        "emoji": "💧"
+      },
+      {
+        "word": "Fire",
+        "zh": "火焰",
+        "emoji": "🔥"
+      }
+    ]
+  },
+  "G": {
+    "word": "Grass",
+    "zh": "草",
+    "emoji": "🌿",
+    "available": true,
+    "extra": [
+      {
+        "word": "Garden",
+        "zh": "花園",
+        "emoji": "🌻"
+      },
+      {
+        "word": "Glacier",
+        "zh": "冰河",
+        "emoji": "❄️"
+      },
+      {
+        "word": "Ginkgo",
+        "zh": "銀杏",
+        "emoji": "🍃"
+      }
+    ]
+  },
+  "H": {
+    "word": "Hill",
+    "zh": "小山丘",
+    "emoji": "⛰️",
+    "available": true,
+    "extra": [
+      {
+        "word": "Hurricane",
+        "zh": "颶風",
+        "emoji": "🌀"
+      },
+      {
+        "word": "Hail",
+        "zh": "冰雹",
+        "emoji": "🌨️"
+      },
+      {
+        "word": "Herb",
+        "zh": "香草植物",
+        "emoji": "🌿"
+      }
+    ]
+  },
+  "I": {
+    "word": "Island",
+    "zh": "島嶼",
+    "emoji": "🏝️",
+    "available": true,
+    "extra": [
+      {
+        "word": "Ice",
+        "zh": "冰",
+        "emoji": "❄️"
+      },
+      {
+        "word": "Iceberg",
+        "zh": "冰山",
+        "emoji": "🧊"
+      },
+      {
+        "word": "Iris",
+        "zh": "鳶尾花",
+        "emoji": "🌸"
+      },
+      {
+        "word": "Igloo",
+        "zh": "冰屋",
+        "emoji": "🧊"
+      },
+      {
+        "word": "Ivy",
+        "zh": "常春藤",
+        "emoji": "🌿"
+      }
+    ]
+  },
+  "J": {
+    "word": "Jungle",
+    "zh": "叢林",
+    "emoji": "🌴",
+    "available": true,
+    "extra": [
+      {
+        "word": "Jasmine",
+        "zh": "茉莉花",
+        "emoji": "🌸"
+      }
+    ]
+  },
+  "K": {
+    "word": "Kelp",
+    "zh": "海帶",
+    "emoji": "🌿",
+    "available": true,
+    "extra": [
+      {
+        "word": "Kudzu",
+        "zh": "葛藤",
+        "emoji": "🌿"
+      }
+    ]
+  },
+  "L": {
+    "word": "Lake",
+    "zh": "湖泊",
+    "emoji": "🌊",
+    "available": true,
+    "extra": [
+      {
+        "word": "Leaf",
+        "zh": "葉子",
+        "emoji": "🍃"
+      },
+      {
+        "word": "Lightning",
+        "zh": "閃電",
+        "emoji": "⚡"
+      },
+      {
+        "word": "Lotus",
+        "zh": "蓮花",
+        "emoji": "🪷"
+      }
+    ]
+  },
+  "M": {
+    "word": "Mountain",
+    "zh": "山脈",
+    "emoji": "⛰️",
+    "available": true,
+    "extra": [
+      {
+        "word": "Meadow",
+        "zh": "草地",
+        "emoji": "🌿"
+      },
+      {
+        "word": "Mud",
+        "zh": "泥巴",
+        "emoji": "🤎"
+      },
+      {
+        "word": "Mushroom",
+        "zh": "蘑菇",
+        "emoji": "🍄"
+      },
+      {
+        "word": "Moon",
+        "zh": "月亮",
+        "emoji": "🌙"
+      }
+    ]
+  },
+  "N": {
+    "word": "Nature",
+    "zh": "大自然",
+    "emoji": "🌍",
+    "available": true,
+    "extra": [
+      {
+        "word": "Nest",
+        "zh": "鳥巢",
+        "emoji": "🪹"
+      },
+      {
+        "word": "Night",
+        "zh": "夜晚",
+        "emoji": "🌃"
+      }
+    ]
+  },
+  "O": {
+    "word": "Oak",
+    "zh": "橡樹",
+    "emoji": "🌳",
+    "available": true,
+    "extra": [
+      {
+        "word": "Ocean",
+        "zh": "海洋",
+        "emoji": "🌊"
+      },
+      {
+        "word": "Orchid",
+        "zh": "蘭花",
+        "emoji": "🌸"
+      }
+    ]
+  },
+  "P": {
+    "word": "Plant",
+    "zh": "植物",
+    "emoji": "🌱",
+    "available": true,
+    "extra": [
+      {
+        "word": "Pine",
+        "zh": "松樹",
+        "emoji": "🌲"
+      },
+      {
+        "word": "Pond",
+        "zh": "池塘",
+        "emoji": "💧"
+      },
+      {
+        "word": "Prairie",
+        "zh": "草原",
+        "emoji": "🌾"
+      },
+      {
+        "word": "Petal",
+        "zh": "花瓣",
+        "emoji": "🌸"
+      }
+    ]
+  },
+  "Q": {
+    "word": "Quicksand",
+    "zh": "流沙",
+    "emoji": "🏜️",
+    "available": true,
+    "extra": []
+  },
+  "R": {
+    "word": "Rain",
+    "zh": "雨",
+    "emoji": "🌧️",
+    "available": true,
+    "extra": [
+      {
+        "word": "River",
+        "zh": "河流",
+        "emoji": "🌊"
+      },
+      {
+        "word": "Rock",
+        "zh": "岩石",
+        "emoji": "🪨"
+      },
+      {
+        "word": "Rainbow",
+        "zh": "彩虹",
+        "emoji": "🌈"
+      },
+      {
+        "word": "Rose",
+        "zh": "玫瑰",
+        "emoji": "🌹"
+      }
+    ]
+  },
+  "S": {
+    "word": "Sun",
+    "zh": "太陽",
+    "emoji": "☀️",
+    "available": true,
+    "extra": [
+      {
+        "word": "Sea",
+        "zh": "大海",
+        "emoji": "🌊"
+      },
+      {
+        "word": "Stone",
+        "zh": "石頭",
+        "emoji": "🪨"
+      },
+      {
+        "word": "Sand",
+        "zh": "沙子",
+        "emoji": "🏖️"
+      },
+      {
+        "word": "Seed",
+        "zh": "種子",
+        "emoji": "🌱"
+      },
+      {
+        "word": "Star",
+        "zh": "星星",
+        "emoji": "⭐"
+      }
+    ]
+  },
+  "T": {
+    "word": "Tree",
+    "zh": "樹木",
+    "emoji": "🌳",
+    "available": true,
+    "extra": [
+      {
+        "word": "Thorn",
+        "zh": "刺",
+        "emoji": "🌵"
+      },
+      {
+        "word": "Tide",
+        "zh": "潮汐",
+        "emoji": "🌊"
+      },
+      {
+        "word": "Tulip",
+        "zh": "鬱金香",
+        "emoji": "🌷"
+      }
+    ]
+  },
+  "U": {
+    "word": "Underwater",
+    "zh": "水下",
+    "emoji": "🌊",
+    "available": true,
+    "extra": [
+      {
+        "word": "Upland",
+        "zh": "高地",
+        "emoji": "⛰️"
+      }
+    ]
+  },
+  "V": {
+    "word": "Vine",
+    "zh": "藤蔓",
+    "emoji": "🌿",
+    "available": true,
+    "extra": [
+      {
+        "word": "Valley",
+        "zh": "山谷",
+        "emoji": "🏔️"
+      },
+      {
+        "word": "Volcano",
+        "zh": "火山",
+        "emoji": "🌋"
+      }
+    ]
+  },
+  "W": {
+    "word": "Wind",
+    "zh": "風",
+    "emoji": "💨",
+    "available": true,
+    "extra": [
+      {
+        "word": "Wave",
+        "zh": "海浪",
+        "emoji": "🌊"
+      },
+      {
+        "word": "Waterfall",
+        "zh": "瀑布",
+        "emoji": "💧"
+      },
+      {
+        "word": "Willow",
+        "zh": "柳樹",
+        "emoji": "🌿"
+      }
+    ]
+  },
+  "X": {
+    "word": "Xerophyte",
+    "zh": "旱生植物",
+    "emoji": "🌵",
+    "available": true,
+    "extra": [
+      {
+        "word": "Xeric",
+        "zh": "乾旱環境的",
+        "emoji": "🏜️"
+      }
+    ]
+  },
+  "Y": {
+    "word": "Yellow Flower",
+    "zh": "黃色花",
+    "emoji": "🌼",
+    "available": true,
+    "extra": [
+      {
+        "word": "Yew Tree",
+        "zh": "紫杉樹",
+        "emoji": "🌲"
+      }
+    ]
+  },
+  "Z": {
+    "word": "Zephyr",
+    "zh": "微風",
+    "emoji": "💨",
+    "available": true,
+    "extra": []
+  }
+};
+
+
+
+const SPORTS = {
+  "A": {
+    "word": "Archery",
+    "zh": "射箭",
+    "emoji": "🏹",
+    "available": true,
+    "extra": [
+      {
+        "word": "Athletics",
+        "zh": "田徑",
+        "emoji": "🏃"
+      },
+      {
+        "word": "Aerobics",
+        "zh": "有氧運動",
+        "emoji": "🤸"
+      }
+    ]
+  },
+  "B": {
+    "word": "Basketball",
+    "zh": "籃球",
+    "emoji": "🏀",
+    "available": true,
+    "extra": [
+      {
+        "word": "Baseball",
+        "zh": "棒球",
+        "emoji": "⚾"
+      },
+      {
+        "word": "Boxing",
+        "zh": "拳擊",
+        "emoji": "🥊"
+      },
+      {
+        "word": "Bowling",
+        "zh": "保齡球",
+        "emoji": "🎳"
+      },
+      {
+        "word": "Badminton",
+        "zh": "羽毛球",
+        "emoji": "🏸"
+      },
+      {
+        "word": "Ball",
+        "zh": "球",
+        "emoji": "⚽"
+      }
+    ]
+  },
+  "C": {
+    "word": "Cricket",
+    "zh": "板球",
+    "emoji": "🏏",
+    "available": true,
+    "extra": [
+      {
+        "word": "Cycling",
+        "zh": "騎自行車",
+        "emoji": "🚴"
+      },
+      {
+        "word": "Climbing",
+        "zh": "攀岩",
+        "emoji": "🧗"
+      }
+    ]
+  },
+  "D": {
+    "word": "Dancing",
+    "zh": "舞蹈",
+    "emoji": "💃",
+    "available": true,
+    "extra": [
+      {
+        "word": "Diving",
+        "zh": "跳水",
+        "emoji": "🤿"
+      },
+      {
+        "word": "Dodgeball",
+        "zh": "躲避球",
+        "emoji": "⚽"
+      }
+    ]
+  },
+  "E": {
+    "word": "Exercise",
+    "zh": "運動健身",
+    "emoji": "🏋️",
+    "available": true,
+    "extra": [
+      {
+        "word": "Equestrian",
+        "zh": "馬術",
+        "emoji": "🏇"
+      }
+    ]
+  },
+  "F": {
+    "word": "Football",
+    "zh": "美式橄欖球",
+    "emoji": "🏈",
+    "available": true,
+    "extra": [
+      {
+        "word": "Frisbee",
+        "zh": "飛盤",
+        "emoji": "🥏"
+      },
+      {
+        "word": "Fencing",
+        "zh": "擊劍",
+        "emoji": "🤺"
+      }
+    ]
+  },
+  "G": {
+    "word": "Golf",
+    "zh": "高爾夫球",
+    "emoji": "⛳",
+    "available": true,
+    "extra": [
+      {
+        "word": "Gymnastics",
+        "zh": "體操",
+        "emoji": "🤸"
+      }
+    ]
+  },
+  "H": {
+    "word": "Hockey",
+    "zh": "曲棍球",
+    "emoji": "🏒",
+    "available": true,
+    "extra": [
+      {
+        "word": "Hiking",
+        "zh": "健行",
+        "emoji": "🥾"
+      },
+      {
+        "word": "Handball",
+        "zh": "手球",
+        "emoji": "🤾"
+      }
+    ]
+  },
+  "I": {
+    "word": "Ice Skating",
+    "zh": "溜冰",
+    "emoji": "⛸️",
+    "available": true,
+    "extra": [
+      {
+        "word": "Ice Hockey",
+        "zh": "冰球",
+        "emoji": "🏒"
+      }
+    ]
+  },
+  "J": {
+    "word": "Judo",
+    "zh": "柔道",
+    "emoji": "🥋",
+    "available": true,
+    "extra": [
+      {
+        "word": "Jogging",
+        "zh": "慢跑",
+        "emoji": "🏃"
+      },
+      {
+        "word": "Javelin",
+        "zh": "標槍",
+        "emoji": "🏹"
+      }
+    ]
+  },
+  "K": {
+    "word": "Karate",
+    "zh": "空手道",
+    "emoji": "🥋",
+    "available": true,
+    "extra": [
+      {
+        "word": "Kayaking",
+        "zh": "划獨木舟",
+        "emoji": "🛶"
+      },
+      {
+        "word": "Kite",
+        "zh": "風箏",
+        "emoji": "🪁"
+      }
+    ]
+  },
+  "L": {
+    "word": "Lacrosse",
+    "zh": "曲棍網球",
+    "emoji": "🥍",
+    "available": true,
+    "extra": [
+      {
+        "word": "Luge",
+        "zh": "無舵雪橇",
+        "emoji": "🛷"
+      }
+    ]
+  },
+  "M": {
+    "word": "Marathon",
+    "zh": "馬拉松",
+    "emoji": "🏃",
+    "available": true,
+    "extra": [
+      {
+        "word": "Martial Arts",
+        "zh": "武術",
+        "emoji": "🥋"
+      }
+    ]
+  },
+  "N": {
+    "word": "Netball",
+    "zh": "無板籃球",
+    "emoji": "🏐",
+    "available": true,
+    "extra": [
+      {
+        "word": "Nordic Skiing",
+        "zh": "北歐式滑雪",
+        "emoji": "⛷️"
+      }
+    ]
+  },
+  "O": {
+    "word": "Olympics",
+    "zh": "奧運",
+    "emoji": "🏅",
+    "available": true,
+    "extra": [
+      {
+        "word": "Orienteering",
+        "zh": "定向越野",
+        "emoji": "🧭"
+      }
+    ]
+  },
+  "P": {
+    "word": "Ping Pong",
+    "zh": "乒乓球",
+    "emoji": "🏓",
+    "available": true,
+    "extra": [
+      {
+        "word": "Polo",
+        "zh": "馬球",
+        "emoji": "🏇"
+      },
+      {
+        "word": "Parkour",
+        "zh": "跑酷",
+        "emoji": "🏃"
+      },
+      {
+        "word": "Paragliding",
+        "zh": "滑翔傘",
+        "emoji": "🪂"
+      }
+    ]
+  },
+  "Q": {
+    "word": "Quarterback",
+    "zh": "四分衛",
+    "emoji": "🏈",
+    "available": true,
+    "extra": [
+      {
+        "word": "Quidditch",
+        "zh": "魁地奇（哈利波特）",
+        "emoji": "🧹"
+      }
+    ]
+  },
+  "R": {
+    "word": "Running",
+    "zh": "跑步",
+    "emoji": "🏃",
+    "available": true,
+    "extra": [
+      {
+        "word": "Rugby",
+        "zh": "橄欖球",
+        "emoji": "🏉"
+      },
+      {
+        "word": "Rowing",
+        "zh": "划船",
+        "emoji": "🚣"
+      }
+    ]
+  },
+  "S": {
+    "word": "Soccer",
+    "zh": "足球",
+    "emoji": "⚽",
+    "available": true,
+    "extra": [
+      {
+        "word": "Swimming",
+        "zh": "游泳",
+        "emoji": "🏊"
+      },
+      {
+        "word": "Surfing",
+        "zh": "衝浪",
+        "emoji": "🏄"
+      },
+      {
+        "word": "Skiing",
+        "zh": "滑雪",
+        "emoji": "⛷️"
+      },
+      {
+        "word": "Skateboarding",
+        "zh": "滑板",
+        "emoji": "🛹"
+      }
+    ]
+  },
+  "T": {
+    "word": "Tennis",
+    "zh": "網球",
+    "emoji": "🎾",
+    "available": true,
+    "extra": [
+      {
+        "word": "Track and Field",
+        "zh": "田徑",
+        "emoji": "🏟️"
+      },
+      {
+        "word": "Taekwondo",
+        "zh": "跆拳道",
+        "emoji": "🥋"
+      },
+      {
+        "word": "Table Tennis",
+        "zh": "桌球",
+        "emoji": "🏓"
+      }
+    ]
+  },
+  "U": {
+    "word": "Ultimate Frisbee",
+    "zh": "極限飛盤",
+    "emoji": "🥏",
+    "available": true,
+    "extra": []
+  },
+  "V": {
+    "word": "Volleyball",
+    "zh": "排球",
+    "emoji": "🏐",
+    "available": true,
+    "extra": [
+      {
+        "word": "Vault",
+        "zh": "體操跳馬",
+        "emoji": "🤸"
+      }
+    ]
+  },
+  "W": {
+    "word": "Wrestling",
+    "zh": "摔跤",
+    "emoji": "🤼",
+    "available": true,
+    "extra": [
+      {
+        "word": "Weightlifting",
+        "zh": "舉重",
+        "emoji": "🏋️"
+      },
+      {
+        "word": "Walking",
+        "zh": "健走",
+        "emoji": "🚶"
+      }
+    ]
+  },
+  "X": {
+    "word": "X Games",
+    "zh": "極限運動大賽",
+    "emoji": "🛹",
+    "available": true,
+    "extra": [
+      {
+        "word": "X-country",
+        "zh": "越野跑／越野滑雪",
+        "emoji": "🏃"
+      }
+    ]
+  },
+  "Y": {
+    "word": "Yoga",
+    "zh": "瑜珈",
+    "emoji": "🧘",
+    "available": true,
+    "extra": [
+      {
+        "word": "Yachting",
+        "zh": "帆船競賽",
+        "emoji": "⛵"
+      }
+    ]
+  },
+  "Z": {
+    "word": "Zumba",
+    "zh": "尊巴舞",
+    "emoji": "💃",
+    "available": true,
+    "extra": []
+  }
+};
+
+
+
+const TRANSPORT = {
+  "A": {
+    "word": "Airplane",
+    "zh": "飛機",
+    "emoji": "✈️",
+    "available": true,
+    "extra": [
+      {
+        "word": "Ambulance",
+        "zh": "救護車",
+        "emoji": "🚑"
+      },
+      {
+        "word": "Astronaut",
+        "zh": "太空人",
+        "emoji": "👨‍🚀"
+      },
+      {
+        "word": "Artist",
+        "zh": "藝術家",
+        "emoji": "🎨"
+      }
+    ]
+  },
+  "B": {
+    "word": "Bus",
+    "zh": "公車",
+    "emoji": "🚌",
+    "available": true,
+    "extra": [
+      {
+        "word": "Bicycle",
+        "zh": "腳踏車",
+        "emoji": "🚲"
+      },
+      {
+        "word": "Boat",
+        "zh": "船",
+        "emoji": "⛵"
+      },
+      {
+        "word": "Baker",
+        "zh": "麵包師",
+        "emoji": "👨‍🍳"
+      }
+    ]
+  },
+  "C": {
+    "word": "Car",
+    "zh": "汽車",
+    "emoji": "🚗",
+    "available": true,
+    "extra": [
+      {
+        "word": "Canoe",
+        "zh": "獨木舟",
+        "emoji": "🛶"
+      },
+      {
+        "word": "Captain",
+        "zh": "船長/機長",
+        "emoji": "👨‍✈️"
+      },
+      {
+        "word": "Chef",
+        "zh": "廚師",
+        "emoji": "👨‍🍳"
+      }
+    ]
+  },
+  "D": {
+    "word": "Doctor",
+    "zh": "醫生",
+    "emoji": "👨‍⚕️",
+    "available": true,
+    "extra": [
+      {
+        "word": "Drone",
+        "zh": "無人機",
+        "emoji": "🚁"
+      },
+      {
+        "word": "Driver",
+        "zh": "司機",
+        "emoji": "🚗"
+      }
+    ]
+  },
+  "E": {
+    "word": "Engineer",
+    "zh": "工程師",
+    "emoji": "👷",
+    "available": true,
+    "extra": [
+      {
+        "word": "Electric Car",
+        "zh": "電動車",
+        "emoji": "🔋"
+      }
+    ]
+  },
+  "F": {
+    "word": "Fire Truck",
+    "zh": "消防車",
+    "emoji": "🚒",
+    "available": true,
+    "extra": [
+      {
+        "word": "Ferry",
+        "zh": "渡輪",
+        "emoji": "🛳️"
+      },
+      {
+        "word": "Farmer",
+        "zh": "農夫",
+        "emoji": "👨‍🌾"
+      }
+    ]
+  },
+  "G": {
+    "word": "Garbage Truck",
+    "zh": "垃圾車",
+    "emoji": "🚛",
+    "available": true,
+    "extra": [
+      {
+        "word": "Gardener",
+        "zh": "園丁",
+        "emoji": "👨‍🌾"
+      }
+    ]
+  },
+  "H": {
+    "word": "Helicopter",
+    "zh": "直升機",
+    "emoji": "🚁",
+    "available": true,
+    "extra": [
+      {
+        "word": "Horse Carriage",
+        "zh": "馬車",
+        "emoji": "🐴"
+      },
+      {
+        "word": "Hunter",
+        "zh": "獵人",
+        "emoji": "🏹"
+      }
+    ]
+  },
+  "I": {
+    "word": "Icebreaker",
+    "zh": "破冰船",
+    "emoji": "🚢",
+    "available": true,
+    "extra": [
+      {
+        "word": "Illustrator",
+        "zh": "插畫家",
+        "emoji": "🎨"
+      },
+      {
+        "word": "Inspector",
+        "zh": "督察員",
+        "emoji": "🔍"
+      }
+    ]
+  },
+  "J": {
+    "word": "Jet",
+    "zh": "噴射機",
+    "emoji": "✈️",
+    "available": true,
+    "extra": [
+      {
+        "word": "Jeep",
+        "zh": "吉普車",
+        "emoji": "🚙"
+      },
+      {
+        "word": "Judge",
+        "zh": "法官",
+        "emoji": "⚖️"
+      }
+    ]
+  },
+  "K": {
+    "word": "Kayak",
+    "zh": "皮艇",
+    "emoji": "🛶",
+    "available": true,
+    "extra": [
+      {
+        "word": "Knight",
+        "zh": "騎士",
+        "emoji": "⚔️"
+      }
+    ]
+  },
+  "L": {
+    "word": "Locomotive",
+    "zh": "火車頭",
+    "emoji": "🚂",
+    "available": true,
+    "extra": [
+      {
+        "word": "Librarian",
+        "zh": "圖書管理員",
+        "emoji": "📚"
+      },
+      {
+        "word": "Lifeguard",
+        "zh": "救生員",
+        "emoji": "🏊"
+      }
+    ]
+  },
+  "M": {
+    "word": "Motorcycle",
+    "zh": "機車",
+    "emoji": "🏍️",
+    "available": true,
+    "extra": [
+      {
+        "word": "Metro",
+        "zh": "捷運",
+        "emoji": "🚇"
+      },
+      {
+        "word": "Mechanic",
+        "zh": "技工",
+        "emoji": "🔧"
+      }
+    ]
+  },
+  "N": {
+    "word": "Nurse",
+    "zh": "護士",
+    "emoji": "👩‍⚕️",
+    "available": true,
+    "extra": [
+      {
+        "word": "Navigator",
+        "zh": "導航員",
+        "emoji": "🧭"
+      }
+    ]
+  },
+  "O": {
+    "word": "Officer",
+    "zh": "警察",
+    "emoji": "👮",
+    "available": true,
+    "extra": [
+      {
+        "word": "Operator",
+        "zh": "操作員",
+        "emoji": "🎛️"
+      }
+    ]
+  },
+  "P": {
+    "word": "Police Car",
+    "zh": "警車",
+    "emoji": "🚔",
+    "available": true,
+    "extra": [
+      {
+        "word": "Pilot",
+        "zh": "飛行員",
+        "emoji": "✈️"
+      },
+      {
+        "word": "Pickup Truck",
+        "zh": "皮卡車",
+        "emoji": "🛻"
+      },
+      {
+        "word": "Painter",
+        "zh": "畫家",
+        "emoji": "🎨"
+      }
+    ]
+  },
+  "Q": {
+    "word": "Quad Bike",
+    "zh": "四輪越野車",
+    "emoji": "🏍️",
+    "available": true,
+    "extra": [
+      {
+        "word": "Queen",
+        "zh": "女王（角色扮演）",
+        "emoji": "👸"
+      },
+      {
+        "word": "Quilter",
+        "zh": "被子製作師",
+        "emoji": "🧵"
+      }
+    ]
+  },
+  "R": {
+    "word": "Rocket",
+    "zh": "火箭",
+    "emoji": "🚀",
+    "available": true,
+    "extra": [
+      {
+        "word": "Racing Car",
+        "zh": "賽車",
+        "emoji": "🏎️"
+      },
+      {
+        "word": "Rowing Boat",
+        "zh": "划槳船",
+        "emoji": "🚣"
+      }
+    ]
+  },
+  "S": {
+    "word": "Ship",
+    "zh": "輪船",
+    "emoji": "🛳️",
+    "available": true,
+    "extra": [
+      {
+        "word": "Submarine",
+        "zh": "潛水艇",
+        "emoji": "🤿"
+      },
+      {
+        "word": "Scooter",
+        "zh": "滑板車",
+        "emoji": "🛵"
+      },
+      {
+        "word": "Sailor",
+        "zh": "水手",
+        "emoji": "⚓"
+      },
+      {
+        "word": "Scientist",
+        "zh": "科學家",
+        "emoji": "🔬"
+      }
+    ]
+  },
+  "T": {
+    "word": "Train",
+    "zh": "火車",
+    "emoji": "🚂",
+    "available": true,
+    "extra": [
+      {
+        "word": "Truck",
+        "zh": "卡車",
+        "emoji": "🚚"
+      },
+      {
+        "word": "Taxi",
+        "zh": "計程車",
+        "emoji": "🚕"
+      },
+      {
+        "word": "Teacher",
+        "zh": "老師",
+        "emoji": "👨‍🏫"
+      }
+    ]
+  },
+  "U": {
+    "word": "Unicycle",
+    "zh": "獨輪車",
+    "emoji": "🚲",
+    "available": true,
+    "extra": [
+      {
+        "word": "Uber",
+        "zh": "網約車",
+        "emoji": "🚗"
+      },
+      {
+        "word": "Umpire",
+        "zh": "裁判",
+        "emoji": "⚾"
+      },
+      {
+        "word": "Undertaker",
+        "zh": "殯儀業者",
+        "emoji": "🪦"
+      }
+    ]
+  },
+  "V": {
+    "word": "Van",
+    "zh": "廂型車",
+    "emoji": "🚐",
+    "available": true,
+    "extra": [
+      {
+        "word": "Veterinarian",
+        "zh": "獸醫",
+        "emoji": "👨‍⚕️"
+      },
+      {
+        "word": "Vehicle",
+        "zh": "車輛",
+        "emoji": "🚘"
+      }
+    ]
+  },
+  "W": {
+    "word": "Wheelchair",
+    "zh": "輪椅",
+    "emoji": "♿",
+    "available": true,
+    "extra": [
+      {
+        "word": "Waiter",
+        "zh": "服務生",
+        "emoji": "👨‍🍳"
+      }
+    ]
+  },
+  "X": {
+    "word": "X-ray Technician",
+    "zh": "X光技師",
+    "emoji": "🩻",
+    "available": true,
+    "extra": [
+      {
+        "word": "X-wing",
+        "zh": "X翼飛行器（太空）",
+        "emoji": "🚀"
+      }
+    ]
+  },
+  "Y": {
+    "word": "Yacht",
+    "zh": "遊艇",
+    "emoji": "⛵",
+    "available": true,
+    "extra": [
+      {
+        "word": "Yardmaster",
+        "zh": "調車場長",
+        "emoji": "🚂"
+      }
+    ]
+  },
+  "Z": {
+    "word": "Zeppelin",
+    "zh": "飛船",
+    "emoji": "🎈",
+    "available": true,
+    "extra": [
+      {
+        "word": "Zodiac Boat",
+        "zh": "橡皮艇",
+        "emoji": "🚣"
+      },
+      {
+        "word": "Zookeeper",
+        "zh": "動物園管理員",
+        "emoji": "🦁"
+      },
+      {
+        "word": "Zoologist",
+        "zh": "動物學家",
+        "emoji": "🔬"
+      }
+    ]
+  }
+};
+
+const DAILY = {
+  "A": {
+    "word": "Alarm Clock",
+    "zh": "鬧鐘",
+    "emoji": "⏰",
+    "available": true,
+    "extra": [
+      {
+        "word": "Apron",
+        "zh": "圍裙",
+        "emoji": "👔"
+      },
+      {
+        "word": "Axe",
+        "zh": "斧頭",
+        "emoji": "🪓"
+      },
+      {
+        "word": "Adhesive Tape",
+        "zh": "膠帶",
+        "emoji": "🩹"
+      }
+    ]
+  },
+  "B": {
+    "word": "Book",
+    "zh": "書",
+    "emoji": "📚",
+    "available": true,
+    "extra": [
+      {
+        "word": "Backpack",
+        "zh": "背包",
+        "emoji": "🎒"
+      },
+      {
+        "word": "Brush",
+        "zh": "刷子",
+        "emoji": "🪥"
+      },
+      {
+        "word": "Bed",
+        "zh": "床",
+        "emoji": "🛏️"
+      },
+      {
+        "word": "Bowl",
+        "zh": "碗",
+        "emoji": "🍜"
+      }
+    ]
+  },
+  "C": {
+    "word": "Chair",
+    "zh": "椅子",
+    "emoji": "🪑",
+    "available": true,
+    "extra": [
+      {
+        "word": "Cup",
+        "zh": "杯子",
+        "emoji": "🍵"
+      },
+      {
+        "word": "Comb",
+        "zh": "梳子",
+        "emoji": "💇"
+      },
+      {
+        "word": "Clock",
+        "zh": "時鐘",
+        "emoji": "🕐"
+      },
+      {
+        "word": "Calendar",
+        "zh": "日曆",
+        "emoji": "📅"
+      }
+    ]
+  },
+  "D": {
+    "word": "Desk",
+    "zh": "書桌",
+    "emoji": "🖥️",
+    "available": true,
+    "extra": [
+      {
+        "word": "Door",
+        "zh": "門",
+        "emoji": "🚪"
+      },
+      {
+        "word": "Drawer",
+        "zh": "抽屜",
+        "emoji": "🗄️"
+      },
+      {
+        "word": "Dustpan",
+        "zh": "畚箕",
+        "emoji": "🧹"
+      },
+      {
+        "word": "Drum",
+        "zh": "鼓",
+        "emoji": "🥁"
+      }
+    ]
+  },
+  "E": {
+    "word": "Eraser",
+    "zh": "橡皮擦",
+    "emoji": "📝",
+    "available": true,
+    "extra": [
+      {
+        "word": "Envelope",
+        "zh": "信封",
+        "emoji": "✉️"
+      },
+      {
+        "word": "Eyeglasses",
+        "zh": "眼鏡",
+        "emoji": "👓"
+      }
+    ]
+  },
+  "F": {
+    "word": "Fork",
+    "zh": "叉子",
+    "emoji": "🍴",
+    "available": true,
+    "extra": [
+      {
+        "word": "Fan",
+        "zh": "扇子",
+        "emoji": "🪭"
+      },
+      {
+        "word": "Fridge",
+        "zh": "冰箱",
+        "emoji": "❄️"
+      },
+      {
+        "word": "Flashlight",
+        "zh": "手電筒",
+        "emoji": "🔦"
+      }
+    ]
+  },
+  "G": {
+    "word": "Glasses",
+    "zh": "眼鏡",
+    "emoji": "👓",
+    "available": true,
+    "extra": [
+      {
+        "word": "Glue",
+        "zh": "膠水",
+        "emoji": "🫙"
+      },
+      {
+        "word": "Garden Hose",
+        "zh": "澆水管",
+        "emoji": "💧"
+      },
+      {
+        "word": "Guitar",
+        "zh": "吉他",
+        "emoji": "🎸"
+      }
+    ]
+  },
+  "H": {
+    "word": "Headphones",
+    "zh": "耳機",
+    "emoji": "🎧",
+    "available": true,
+    "extra": [
+      {
+        "word": "Hammer",
+        "zh": "鐵鎚",
+        "emoji": "🔨"
+      },
+      {
+        "word": "Hat",
+        "zh": "帽子",
+        "emoji": "🎩"
+      },
+      {
+        "word": "Hanger",
+        "zh": "衣架",
+        "emoji": "👔"
+      },
+      {
+        "word": "House",
+        "zh": "房子",
+        "emoji": "🏠"
+      }
+    ]
+  },
+  "I": {
+    "word": "Iron",
+    "zh": "熨斗",
+    "emoji": "🧺",
+    "available": true,
+    "extra": [
+      {
+        "word": "Ink",
+        "zh": "墨水",
+        "emoji": "✒️"
+      }
+    ]
+  },
+  "J": {
+    "word": "Jar",
+    "zh": "罐子",
+    "emoji": "🫙",
+    "available": true,
+    "extra": [
+      {
+        "word": "Jacket",
+        "zh": "外套",
+        "emoji": "🧥"
+      }
+    ]
+  },
+  "K": {
+    "word": "Knife",
+    "zh": "刀子",
+    "emoji": "🔪",
+    "available": true,
+    "extra": [
+      {
+        "word": "Kettle",
+        "zh": "茶壺",
+        "emoji": "🫖"
+      },
+      {
+        "word": "Key",
+        "zh": "鑰匙",
+        "emoji": "🔑"
+      }
+    ]
+  },
+  "L": {
+    "word": "Lamp",
+    "zh": "檯燈",
+    "emoji": "💡",
+    "available": true,
+    "extra": [
+      {
+        "word": "Laundry",
+        "zh": "洗衣",
+        "emoji": "🧺"
+      },
+      {
+        "word": "Ladder",
+        "zh": "梯子",
+        "emoji": "🪜"
+      }
+    ]
+  },
+  "M": {
+    "word": "Mirror",
+    "zh": "鏡子",
+    "emoji": "🪞",
+    "available": true,
+    "extra": [
+      {
+        "word": "Microwave",
+        "zh": "微波爐",
+        "emoji": "📦"
+      },
+      {
+        "word": "Mop",
+        "zh": "拖把",
+        "emoji": "🧹"
+      },
+      {
+        "word": "Mat",
+        "zh": "地墊",
+        "emoji": "🟫"
+      }
+    ]
+  },
+  "N": {
+    "word": "Notebook",
+    "zh": "筆記本",
+    "emoji": "📓",
+    "available": true,
+    "extra": [
+      {
+        "word": "Nail",
+        "zh": "釘子",
+        "emoji": "🔩"
+      },
+      {
+        "word": "Needle",
+        "zh": "針",
+        "emoji": "🧵"
+      }
+    ]
+  },
+  "O": {
+    "word": "Oven",
+    "zh": "烤箱",
+    "emoji": "🔥",
+    "available": true,
+    "extra": [
+      {
+        "word": "Outlet",
+        "zh": "插座",
+        "emoji": "🔌"
+      }
+    ]
+  },
+  "P": {
+    "word": "Pillow",
+    "zh": "枕頭",
+    "emoji": "😴",
+    "available": true,
+    "extra": [
+      {
+        "word": "Phone",
+        "zh": "手機",
+        "emoji": "📱"
+      },
+      {
+        "word": "Pan",
+        "zh": "平底鍋",
+        "emoji": "🍳"
+      },
+      {
+        "word": "Pencil",
+        "zh": "鉛筆",
+        "emoji": "✏️"
+      }
+    ]
+  },
+  "Q": {
+    "word": "Quilt",
+    "zh": "棉被",
+    "emoji": "🛏️",
+    "available": true,
+    "extra": [
+      {
+        "word": "Quarter",
+        "zh": "硬幣",
+        "emoji": "🪙"
+      }
+    ]
+  },
+  "R": {
+    "word": "Remote Control",
+    "zh": "遙控器",
+    "emoji": "📺",
+    "available": true,
+    "extra": [
+      {
+        "word": "Rug",
+        "zh": "地毯",
+        "emoji": "🟫"
+      },
+      {
+        "word": "Rope",
+        "zh": "繩子",
+        "emoji": "🧶"
+      },
+      {
+        "word": "Robot",
+        "zh": "機器人",
+        "emoji": "🤖"
+      }
+    ]
+  },
+  "S": {
+    "word": "Scissors",
+    "zh": "剪刀",
+    "emoji": "✂️",
+    "available": true,
+    "extra": [
+      {
+        "word": "Soap",
+        "zh": "肥皂",
+        "emoji": "🧼"
+      },
+      {
+        "word": "Spoon",
+        "zh": "湯匙",
+        "emoji": "🥄"
+      },
+      {
+        "word": "Shelf",
+        "zh": "書架",
+        "emoji": "📚"
+      },
+      {
+        "word": "Sponge",
+        "zh": "海綿",
+        "emoji": "🧽"
+      }
+    ]
+  },
+  "T": {
+    "word": "Towel",
+    "zh": "毛巾",
+    "emoji": "🛁",
+    "available": true,
+    "extra": [
+      {
+        "word": "Toothbrush",
+        "zh": "牙刷",
+        "emoji": "🪥"
+      },
+      {
+        "word": "Table",
+        "zh": "桌子",
+        "emoji": "🪑"
+      },
+      {
+        "word": "Tissue",
+        "zh": "衛生紙",
+        "emoji": "🤧"
+      }
+    ]
+  },
+  "U": {
+    "word": "Umbrella",
+    "zh": "雨傘",
+    "emoji": "☂️",
+    "available": true,
+    "extra": [
+      {
+        "word": "USB",
+        "zh": "隨身碟",
+        "emoji": "💾"
+      }
+    ]
+  },
+  "V": {
+    "word": "Vase",
+    "zh": "花瓶",
+    "emoji": "🏺",
+    "available": true,
+    "extra": [
+      {
+        "word": "Vacuum Cleaner",
+        "zh": "吸塵器",
+        "emoji": "🧹"
+      },
+      {
+        "word": "Violin",
+        "zh": "小提琴",
+        "emoji": "🎻"
+      },
+      {
+        "word": "Vest",
+        "zh": "背心",
+        "emoji": "🦺"
+      }
+    ]
+  },
+  "W": {
+    "word": "Watch",
+    "zh": "手錶",
+    "emoji": "⌚",
+    "available": true,
+    "extra": [
+      {
+        "word": "Window",
+        "zh": "窗戶",
+        "emoji": "🪟"
+      },
+      {
+        "word": "Washing Machine",
+        "zh": "洗衣機",
+        "emoji": "🌀"
+      }
+    ]
+  },
+  "X": {
+    "word": "Xylophone",
+    "zh": "木琴",
+    "emoji": "🎹",
+    "available": true,
+    "extra": [
+      {
+        "word": "X-ray",
+        "zh": "X光",
+        "emoji": "🩻"
+      },
+      {
+        "word": "Xbox",
+        "zh": "遊戲機",
+        "emoji": "🎮"
+      }
+    ]
+  },
+  "Y": {
+    "word": "Yarn",
+    "zh": "毛線",
+    "emoji": "🧶",
+    "available": true,
+    "extra": [
+      {
+        "word": "Yardstick",
+        "zh": "量尺",
+        "emoji": "📏"
+      }
+    ]
+  },
+  "Z": {
+    "word": "Zipper",
+    "zh": "拉鍊",
+    "emoji": "🤐",
+    "available": true,
+    "extra": [
+      {
+        "word": "Ziplock Bag",
+        "zh": "夾鏈袋",
+        "emoji": "🛍️"
+      }
+    ]
+  }
+};
+
+
+
+'use strict';
+
+// ── Theme registry (single source of truth) ─────
+const THEMES = [
+  { key:'animals',   grid:'animals-grid',   emoji:'🐾', data:ANIMALS,   name:'🐾 動物 Animals',      color:'#f7971e' },
+  { key:'food',      grid:'food-grid',      emoji:'🍎', data:FOOD,      name:'🍎 食物 Food',          color:'#ff416c' },
+  { key:'colors',    grid:'colors-grid',    emoji:'🎨', data:COLORS,    name:'🎨 顏色&形狀',          color:'#a18cd1' },
+  { key:'nature',    grid:'nature-grid',    emoji:'🌿', data:NATURE,    name:'🌿 自然&植物',          color:'#56ab2f' },
+  { key:'sports',    grid:'sports-grid',    emoji:'⚽', data:SPORTS,    name:'⚽ 運動&活動',          color:'#2193b0' },
+  { key:'transport', grid:'transport-grid', emoji:'🚗', data:TRANSPORT, name:'🚗 交通&職業',          color:'#f953c6' },
+  { key:'daily',     grid:'daily-grid',     emoji:'🏠', data:DAILY,     name:'🏠 日常用品',           color:'#f7971e' },
+];
+const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+
+// escape a string for safe use inside an HTML attribute
+function escAttr(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// ── Progress tracking (data recording) ──────────
+const STORE_KEY = 'abc-learning-progress-v1';
+const FEATURED_KEY = 'abc-learning-featured-v1';
+const normWord = w => w.trim().toLowerCase();
+
+let learned = new Set();
+try {
+  const raw = localStorage.getItem(STORE_KEY);
+  if (raw) learned = new Set(JSON.parse(raw));
+} catch (e) { /* storage unavailable / disabled */ }
+
+// featured-word overrides: { "themeKey:A": "chosen word", ... }
+let featuredOverrides = {};
+try {
+  const raw = localStorage.getItem(FEATURED_KEY);
+  if (raw) featuredOverrides = JSON.parse(raw) || {};
+} catch (e) {}
+
+function saveFeatured() {
+  try { localStorage.setItem(FEATURED_KEY, JSON.stringify(featuredOverrides)); } catch (e) {}
+}
+
+// full word pool for a theme+letter: original featured first, then extras
+function wordPool(item) {
+  if (!item || !item.word) return [];
+  return [{ word: item.word, zh: item.zh, emoji: item.emoji }, ...(item.extra || [])];
+}
+
+// effective {featured, extras} honoring any user override
+function resolveEntry(themeKey, letter, item) {
+  const pool = wordPool(item);
+  if (pool.length === 0) return { featured: null, extras: [] };
+  const chosen = featuredOverrides[themeKey + ':' + letter];
+  let idx = chosen ? pool.findIndex(w => normWord(w.word) === normWord(chosen)) : -1;
+  if (idx < 0) idx = 0;
+  return { featured: pool[idx], extras: pool.filter((_, i) => i !== idx) };
+}
+
+function setFeatured(themeKey, letter, word) {
+  const item = THEMES.find(t => t.key === themeKey).data[letter];
+  // if choosing the original default, drop the override entirely (keeps storage clean)
+  if (item && normWord(item.word) === normWord(word)) delete featuredOverrides[themeKey + ':' + letter];
+  else featuredOverrides[themeKey + ':' + letter] = word;
+  saveFeatured();
+  const theme = THEMES.find(t => t.key === themeKey);
+  rebuildThemeCard(theme, letter);   // update the theme grid card
+  rebuildBasics();                   // sync to the overview page
+  openModalFor(theme, letter);       // re-render the open modal
+}
+
+let _saveTimer = null;
+function saveProgress() {
+  if (_saveTimer) return;                       // debounce bursty clicks
+  _saveTimer = setTimeout(() => {
+    _saveTimer = null;
+    try { localStorage.setItem(STORE_KEY, JSON.stringify([...learned])); } catch (e) {}
+  }, 400);
+}
+
+// total unique learnable words across every dataset
+const ALL_WORDS = (() => {
+  const s = new Set();
+  const add = it => { if (it && it.available !== false && it.word) s.add(normWord(it.word)); };
+  Object.values(BASICS).forEach(list => list.forEach(add));
+  THEMES.forEach(t => Object.values(t.data).forEach(it => {
+    add(it);
+    (it.extra || []).forEach(e => e && e.word && s.add(normWord(e.word)));
+  }));
+  return s;
+})();
+const TOTAL_WORDS = ALL_WORDS.size;
+
+function markLearned(word) {
+  const k = normWord(word);
+  if (learned.has(k)) return false;
+  learned.add(k);
+  saveProgress();
+  updateProgressUI();
+  document.querySelectorAll('[data-word]').forEach(el => {
+    if (normWord(el.dataset.word) === k) el.classList.add('learned');
+  });
+  refreshThemeCardStatus();
+  return true;
+}
+
+function updateProgressUI() {
+  const n = [...learned].filter(k => ALL_WORDS.has(k)).length;
+  const pct = TOTAL_WORDS ? Math.round((n / TOTAL_WORDS) * 100) : 0;
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-text').textContent = `已學 ${n} / ${TOTAL_WORDS} 個單字 (${pct}%)`;
+}
+
+function refreshThemeCardStatus() {
+  THEMES.forEach(t => {
+    ALPHABET.forEach(l => {
+      const item = t.data[l];
+      if (!item || !item.available || !item.word) return;
+      const card = document.getElementById('tc-' + t.key + '-' + l);
+      if (!card) return;
+      const { featured } = resolveEntry(t.key, l, item);
+      if (learned.has(normWord(featured.word))) card.classList.add('learned');
+    });
+  });
+}
+
+// ── Voice settings ──────────────────────────────
+const SPEECH_OK = 'speechSynthesis' in window && 'SpeechSynthesisUtterance' in window;
+let _voices = [];
+let _selVoice = null;
+let _speed = 0.85;
+
+function _loadVoices() {
+  if (!SPEECH_OK) return;
+  const all = speechSynthesis.getVoices().filter(v => v.lang && v.lang.startsWith('en'));
+  const sel = document.getElementById('voice-select');
+  if (!sel || all.length === 0) return;
+  // prefer Google / high-quality voices first
+  const score = v => (v.name.includes('Google') ? 2 : /Samantha|Daniel|Karen/.test(v.name) ? 1 : 0);
+  const sorted = [...all].sort((a, b) => score(b) - score(a));
+  const frag = document.createDocumentFragment();
+  sorted.forEach((v, i) => {
+    const opt = document.createElement('option');
+    opt.value = i;
+    opt.textContent = v.name + (v.localService ? '' : ' ☁️');
+    frag.appendChild(opt);
+  });
+  sel.textContent = '';
+  sel.appendChild(frag);
+  _voices = sorted;
+  _selVoice = _voices[0];
+}
+
+if (SPEECH_OK) {
+  speechSynthesis.onvoiceschanged = _loadVoices;
+  _loadVoices();
+  document.getElementById('voice-select').addEventListener('change', function () {
+    _selVoice = _voices[this.value] || null;
+  });
+  document.getElementById('speed-range').addEventListener('input', function () {
+    _speed = parseFloat(this.value);
+    document.getElementById('speed-val').textContent = _speed.toFixed(2);
+  });
+  document.getElementById('test-btn').addEventListener('click', () => speak('Hello! Apple, Banana, Cherry.'));
+} else {
+  // no speech support: hide the voice controls, keep progress tracking working
+  const vb = document.getElementById('voice-bar');
+  if (vb) vb.style.display = 'none';
+}
+
+function speak(text) {
+  if (!SPEECH_OK) return;
+  const u = new SpeechSynthesisUtterance(text);
+  if (_selVoice) u.voice = _selVoice;
+  u.lang = 'en-US';
+  u.rate = _speed;
+  speechSynthesis.cancel();
+  speechSynthesis.speak(u);
+}
+
+function buildAlphaBar() {
+  const alphaBar = document.getElementById('basics-alpha');
+  const alphaFrag = document.createDocumentFragment();
+  ALPHABET.forEach(l => {
+    const btn = document.createElement('button');
+    btn.className = 'alpha-btn lc-' + l;
+    btn.type = 'button';
+    btn.textContent = l;
+    btn.setAttribute('aria-label', '跳到字母 ' + l);
+    btn.addEventListener('click', () => {
+      const el = document.getElementById('card-' + l);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+    alphaFrag.appendChild(btn);
+  });
+  alphaBar.appendChild(alphaFrag);
+}
+
+// (re)build the overview page — reflects current featured overrides
+function rebuildBasics() {
+  const grid = document.getElementById('basics-grid');
+  const gridFrag = document.createDocumentFragment();
+  ALPHABET.forEach(l => {
+    const words = [];
+    THEMES.forEach(t => {
+      const item = t.data[l];
+      if (item && item.available && item.word) {
+        const w = resolveEntry(t.key, l, item).featured;
+        words.push({ word: w.word, zh: w.zh, emoji: w.emoji, theme: t.emoji });
+      }
+    });
+    if (words.length === 0) return;
+    const card = document.createElement('div');
+    card.className = 'letter-card';
+    card.id = 'card-' + l;
+    let h = '<div class="letter-header"><div class="big-letter lc-' + l + '">' + l + '</div><div class="letter-label">' + l.toLowerCase() + '</div></div><div class="words-list">';
+    words.forEach(w => {
+      const cls = learned.has(normWord(w.word)) ? 'word-row learned' : 'word-row';
+      h += '<div class="' + cls + '" role="button" tabindex="0" data-word="' + escAttr(w.word) + '" aria-label="' + escAttr(w.word + ' ' + w.zh) + '"><span class="word-emoji" aria-hidden="true">' + w.emoji + '</span><span class="word-en">' + w.word + '</span><span style="font-size:0.78rem;margin-left:auto;opacity:0.45" aria-hidden="true">' + w.theme + '</span><span class="word-zh" style="margin-left:4px">' + w.zh + '</span></div>';
+    });
+    h += '</div>';
+    card.innerHTML = h;
+    gridFrag.appendChild(card);
+  });
+  grid.textContent = '';
+  grid.appendChild(gridFrag);
+}
+
+// cache modal element references once
+const MODAL = {
+  overlay: document.getElementById('modal-overlay'),
+  letter: document.getElementById('modal-letter'),
+  title: document.getElementById('modal-title'),
+  theme: document.getElementById('modal-theme'),
+  main: document.getElementById('modal-main'),
+  divider: document.getElementById('modal-divider-text'),
+  extra: document.getElementById('modal-extra'),
+};
+let _lastFocused = null;
+let _modalCtx = null;   // { themeKey, letter } of the currently open modal
+
+// entry point from cards
+function openModal(theme, letter) {
+  _lastFocused = document.activeElement;
+  renderModal(theme, letter);
+  MODAL.overlay.classList.add('open');
+  document.getElementById('modal-close').focus();
+}
+
+// re-render the modal in place (after a featured change) without touching focus/open state
+function openModalFor(theme, letter) {
+  if (_modalCtx && _modalCtx.themeKey === theme.key && _modalCtx.letter === letter
+      && MODAL.overlay.classList.contains('open')) {
+    renderModal(theme, letter);
+  }
+}
+
+function renderModal(theme, letter) {
+  _modalCtx = { themeKey: theme.key, letter };
+  const item = theme.data[letter];
+  const { featured, extras } = resolveEntry(theme.key, letter, item);
+
+  MODAL.letter.textContent = letter;
+  MODAL.letter.className = 'modal-letter lc-' + letter;
+  MODAL.title.textContent = featured.word;
+  MODAL.theme.textContent = theme.name;
+  MODAL.main.style.background = theme.color + '22';
+  MODAL.main.className = 'modal-main-word' + (learned.has(normWord(featured.word)) ? ' learned' : '');
+  MODAL.main.setAttribute('role', 'button');
+  MODAL.main.setAttribute('tabindex', '0');
+  MODAL.main.dataset.word = featured.word;
+  MODAL.main.innerHTML =
+    '<span class="modal-main-emoji" aria-hidden="true">' + featured.emoji + '</span>' +
+    '<div><div class="modal-main-en">' + featured.word + '</div><div class="modal-main-zh">' + featured.zh + '</div></div>' +
+    '<span class="modal-main-star" title="目前的代表字">⭐<small>代表字</small></span>';
+
+  if (extras.length > 0) {
+    MODAL.divider.style.display = 'block';
+    MODAL.divider.textContent = '更多「' + letter + '」開頭的單字（點 ☆ 設為代表字）↓';
+    MODAL.extra.innerHTML = extras.map(e => {
+      const cls = learned.has(normWord(e.word)) ? 'modal-extra-row learned' : 'modal-extra-row';
+      return '<div class="' + cls + '" role="button" tabindex="0" data-word="' + escAttr(e.word) + '" aria-label="' + escAttr(e.word + ' ' + e.zh) + '">' +
+        '<span class="modal-extra-emoji" aria-hidden="true">' + e.emoji + '</span>' +
+        '<span class="modal-extra-en">' + e.word + '</span>' +
+        '<span class="modal-extra-zh">' + e.zh + '</span>' +
+        '<button class="star-btn" type="button" data-feature="' + escAttr(e.word) + '" title="設為代表字" aria-label="將 ' + escAttr(e.word) + ' 設為代表字">☆</button>' +
+        '</div>';
+    }).join('');
+  } else {
+    MODAL.divider.style.display = 'none';
+    MODAL.extra.innerHTML = '';
+  }
+}
+
+function closeModal() {
+  MODAL.overlay.classList.remove('open');
+  if (_lastFocused && _lastFocused.focus) _lastFocused.focus();
+}
+
+// build one theme card (returns the element); reflects featured overrides + learned state
+function makeThemeCard(theme, l) {
+  const item = theme.data[l];
+  if (!item) return null;
+  const card = document.createElement('div');
+  card.id = 'tc-' + theme.key + '-' + l;
+  const extraCount = (item.extra || []).length;
+  if (item.available) {
+    const { featured } = resolveEntry(theme.key, l, item);
+    card.className = 'theme-card' + (learned.has(normWord(featured.word)) ? ' learned' : '');
+    card.style.borderTop = '4px solid ' + theme.color;
+    card.setAttribute('role', 'button');
+    card.setAttribute('tabindex', '0');
+    card.setAttribute('aria-label', featured.word + ' ' + featured.zh);
+    const typeBadge = item.type ? '<span class="tc-type-badge badge-' + item.type + '">' + item.type + '</span>' : '';
+    const moreBadge = extraCount > 0 ? '<span class="more-badge">+' + extraCount + '</span>' : '';
+    card.innerHTML = moreBadge + '<div class="tc-letter lc-' + l + '">' + l + '</div><div class="tc-emoji" aria-hidden="true">' + featured.emoji + '</div><div class="tc-word">' + featured.word + '</div>' + typeBadge + '<div class="tc-zh">' + featured.zh + '</div>';
+    card.addEventListener('click', () => openModal(theme, l));
+    card.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openModal(theme, l); }
+    });
+  } else {
+    card.className = 'theme-card unavailable';
+    const hint = extraCount > 0 ? '<div class="tc-na">' + item.extra[0].word + '?</div>' : '<div class="tc-na">N/A</div>';
+    card.innerHTML = '<div class="tc-letter lc-' + l + '">' + l + '</div><div class="tc-emoji" aria-hidden="true">&#x2753;</div>' + hint;
+  }
+  return card;
+}
+
+function buildTheme(theme) {
+  const grid = document.getElementById(theme.grid);
+  const frag = document.createDocumentFragment();
+  ALPHABET.forEach(l => {
+    const card = makeThemeCard(theme, l);
+    if (card) frag.appendChild(card);
+  });
+  grid.appendChild(frag);
+}
+
+// replace a single theme card in place (after a featured change)
+function rebuildThemeCard(theme, l) {
+  const old = document.getElementById('tc-' + theme.key + '-' + l);
+  const fresh = makeThemeCard(theme, l);
+  if (old && fresh) old.replaceWith(fresh);
+}
+
+// ── Event delegation for click-to-speak + star ───
+function handleSpeakEvent(e) {
+  // star button: set featured word, do not speak/record
+  const star = e.target.closest('[data-feature]');
+  if (star) {
+    e.stopPropagation();
+    if (_modalCtx) setFeatured(_modalCtx.themeKey, _modalCtx.letter, star.dataset.feature);
+    return;
+  }
+  const el = e.target.closest('[data-word]');
+  if (!el) return;
+  speak(el.dataset.word);
+  markLearned(el.dataset.word);
+  el.classList.add('pop');
+  setTimeout(() => el.classList.remove('pop'), 300);
+}
+document.body.addEventListener('click', handleSpeakEvent);
+document.body.addEventListener('keydown', e => {
+  if (e.key !== 'Enter' && e.key !== ' ') return;
+  if (e.target.matches('[data-feature]')) {
+    e.preventDefault();
+    e.stopPropagation();
+    if (_modalCtx) setFeatured(_modalCtx.themeKey, _modalCtx.letter, e.target.dataset.feature);
+  } else if (e.target.matches('[data-word]')) {
+    e.preventDefault();
+    handleSpeakEvent(e);
+  }
+});
+
+// ── Tabs ─────────────────────────────────────────
+const tabButtons = document.querySelectorAll('.tab-btn');
+tabButtons.forEach(btn => {
+  btn.setAttribute('role', 'tab');
+  btn.setAttribute('aria-selected', btn.classList.contains('active') ? 'true' : 'false');
+  btn.addEventListener('click', () => {
+    tabButtons.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); });
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    btn.classList.add('active');
+    btn.setAttribute('aria-selected', 'true');
+    document.getElementById(btn.dataset.tab).classList.add('active');
+  });
+});
+
+// ── Modal controls ───────────────────────────────
+document.getElementById('modal-close').addEventListener('click', closeModal);
+MODAL.overlay.addEventListener('click', e => { if (e.target === e.currentTarget) closeModal(); });
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && MODAL.overlay.classList.contains('open')) closeModal();
+});
+
+// ── Reset progress ───────────────────────────────
+document.getElementById('reset-progress').addEventListener('click', () => {
+  if (!confirm('確定要清除所有學習紀錄嗎？')) return;
+  learned.clear();
+  try { localStorage.removeItem(STORE_KEY); } catch (e) {}
+  document.querySelectorAll('.learned').forEach(el => el.classList.remove('learned'));
+  updateProgressUI();
+});
+
+// ── Init ─────────────────────────────────────────
+buildAlphaBar();
+rebuildBasics();
+THEMES.forEach(buildTheme);
+updateProgressUI();
+
+</script>
+</body>
+</html>
