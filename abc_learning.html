@@ -133,6 +133,48 @@
   }
   .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0; }
 
+  /* ── Random / Flashcard ── */
+  .fab-random {
+    position:fixed; right:18px; bottom:18px; z-index:400;
+    width:60px; height:60px; border-radius:50%; border:none; cursor:pointer;
+    background:linear-gradient(135deg,#ff6b9d,#ffa94d); color:#fff; font-size:1.7rem;
+    box-shadow:0 6px 18px rgba(255,107,157,0.45); transition:transform 0.18s;
+  }
+  .fab-random:hover, .fab-random:focus-visible { transform:scale(1.12) rotate(-8deg); }
+  .fab-random:active { transform:scale(0.95); }
+
+  .flash-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.55); z-index:600; align-items:center; justify-content:center; padding:20px; }
+  .flash-overlay.open { display:flex; }
+  .flash-close { position:absolute; top:18px; right:20px; background:rgba(255,255,255,0.9); border:none; border-radius:50%; width:40px; height:40px; font-size:1.3rem; cursor:pointer; color:#666; }
+  .flash-stage { width:100%; max-width:380px; }
+  .flash-card {
+    position:relative; width:100%; aspect-ratio:3/4; cursor:pointer;
+    perspective:1200px; user-select:none;
+  }
+  .flash-inner {
+    position:absolute; inset:0; transition:transform 0.5s; transform-style:preserve-3d;
+  }
+  .flash-card.flipped .flash-inner { transform:rotateY(180deg); }
+  .flash-face {
+    position:absolute; inset:0; backface-visibility:hidden; -webkit-backface-visibility:hidden;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px;
+    background:#fff; border-radius:26px; box-shadow:0 16px 46px rgba(0,0,0,0.28); padding:24px; text-align:center;
+  }
+  .flash-back { transform:rotateY(180deg); background:linear-gradient(135deg,#fff,#fff6fa); }
+  .flash-emoji { font-size:5.5rem; line-height:1; }
+  .flash-en { font-size:2.1rem; font-weight:900; color:#222; word-break:break-word; }
+  .flash-zh { font-size:1.9rem; font-weight:800; color:#e91e63; }
+  .flash-theme { font-size:0.9rem; color:#aaa; font-weight:700; }
+  .flash-flip-hint { font-size:0.82rem; color:#bbb; margin-top:6px; }
+  .flash-learned { position:absolute; top:14px; left:16px; background:#22b866; color:#fff; font-size:0.8rem; font-weight:900; width:26px; height:26px; line-height:26px; border-radius:50%; text-align:center; }
+  .flash-controls { display:flex; gap:12px; justify-content:center; margin-top:18px; }
+  .flash-btn {
+    padding:11px 20px; border-radius:50px; border:none; cursor:pointer;
+    font-size:1rem; font-weight:800; color:#fff; box-shadow:0 4px 12px rgba(0,0,0,0.18);
+  }
+  .flash-btn.listen { background:linear-gradient(135deg,#4ecdc4,#44cf6c); }
+  .flash-btn.next { background:linear-gradient(135deg,#ff6b9d,#ffa94d); }
+
   @media (max-width:600px) { header h1 { font-size:1.7rem; } .theme-grid { grid-template-columns: repeat(auto-fill, minmax(115px,1fr)); gap:9px; } .basics-grid { grid-template-columns: 1fr; } .tab-btn { font-size:0.8rem; padding:7px 11px; } }
   @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration:0.001ms !important; transition-duration:0.001ms !important; } .word-row:hover, .theme-card:hover, .letter-card:hover, .modal-extra-row:hover { transform:none; } }
 </style>
@@ -206,6 +248,24 @@
 <div id="daily" class="section">
   <div class="section-title">🏠 日常用品 Daily Life Items</div>
   <div class="theme-grid" id="daily-grid"></div>
+</div>
+
+<button class="fab-random" id="fab-random" type="button" aria-label="隨機一字（閃卡）" title="隨機一字">🎲</button>
+
+<div class="flash-overlay" id="flash-overlay" role="dialog" aria-modal="true" aria-label="閃卡">
+  <button class="flash-close" id="flash-close" type="button" aria-label="關閉閃卡">&#x2715;</button>
+  <div class="flash-stage">
+    <div class="flash-card" id="flash-card">
+      <div class="flash-inner">
+        <div class="flash-face flash-front" id="flash-front"></div>
+        <div class="flash-face flash-back" id="flash-back"></div>
+      </div>
+    </div>
+    <div class="flash-controls">
+      <button class="flash-btn listen" id="flash-listen" type="button">🔊 再聽一次</button>
+      <button class="flash-btn next" id="flash-next" type="button">🎲 下一個</button>
+    </div>
+  </div>
 </div>
 
 <div class="modal-overlay" id="modal-overlay">
@@ -5090,6 +5150,95 @@ document.getElementById('reset-progress').addEventListener('click', () => {
   try { localStorage.removeItem(STORE_KEY); } catch (e) {}
   document.querySelectorAll('.learned').forEach(el => el.classList.remove('learned'));
   updateProgressUI();
+});
+
+// ── Random word → Flashcard ──────────────────────
+// flat pool of every learnable word (featured + extras) with its theme emoji
+const FLASH_POOL = (() => {
+  const pool = [];
+  THEMES.forEach(t => {
+    ALPHABET.forEach(l => {
+      const item = t.data[l];
+      if (!item || !item.available) return;
+      wordPool(item).forEach(w => {
+        if (w && w.word) pool.push({ word: w.word, zh: w.zh, emoji: w.emoji, theme: t.emoji, name: t.name });
+      });
+    });
+  });
+  return pool;
+})();
+
+const FLASH = {
+  overlay: document.getElementById('flash-overlay'),
+  card: document.getElementById('flash-card'),
+  front: document.getElementById('flash-front'),
+  back: document.getElementById('flash-back'),
+};
+let _flashCurrent = null;
+let _flashPrevIdx = -1;
+let _flashLastFocused = null;
+
+// pick a random index, avoiding an immediate repeat
+function pickRandomIndex() {
+  if (FLASH_POOL.length <= 1) return 0;
+  let i, guard = 0;
+  do { i = Math.floor(Math.random() * FLASH_POOL.length); }
+  while (i === _flashPrevIdx && ++guard < 8);
+  _flashPrevIdx = i;
+  return i;
+}
+
+function renderFlash(w) {
+  _flashCurrent = w;
+  FLASH.card.classList.remove('flipped');
+  const learnedMark = learned.has(normWord(w.word)) ? '<div class="flash-learned" title="已學過">✓</div>' : '';
+  FLASH.front.innerHTML = learnedMark +
+    '<div class="flash-emoji" aria-hidden="true">' + w.emoji + '</div>' +
+    '<div class="flash-en">' + w.word + '</div>' +
+    '<div class="flash-theme">' + w.theme + '</div>' +
+    '<div class="flash-flip-hint">👆 點卡片看中文</div>';
+  FLASH.back.innerHTML =
+    '<div class="flash-emoji" aria-hidden="true">' + w.emoji + '</div>' +
+    '<div class="flash-zh">' + w.zh + '</div>' +
+    '<div class="flash-en" style="font-size:1.4rem;color:#888">' + w.word + '</div>' +
+    '<div class="flash-flip-hint">👆 點卡片翻回正面</div>';
+}
+
+function nextFlash() {
+  const w = FLASH_POOL[pickRandomIndex()];
+  renderFlash(w);
+  speak(w.word);
+  markLearned(w.word);   // hearing a random word counts as practice
+}
+
+function openFlash() {
+  if (FLASH_POOL.length === 0) return;
+  _flashLastFocused = document.activeElement;
+  FLASH.overlay.classList.add('open');
+  nextFlash();
+  document.getElementById('flash-next').focus();
+}
+
+function closeFlash() {
+  FLASH.overlay.classList.remove('open');
+  if (SPEECH_OK) speechSynthesis.cancel();
+  if (_flashLastFocused && _flashLastFocused.focus) _flashLastFocused.focus();
+}
+
+document.getElementById('fab-random').addEventListener('click', openFlash);
+document.getElementById('flash-close').addEventListener('click', closeFlash);
+document.getElementById('flash-next').addEventListener('click', nextFlash);
+document.getElementById('flash-listen').addEventListener('click', () => { if (_flashCurrent) speak(_flashCurrent.word); });
+FLASH.card.addEventListener('click', () => FLASH.card.classList.toggle('flipped'));
+FLASH.overlay.addEventListener('click', e => { if (e.target === e.currentTarget) closeFlash(); });
+document.addEventListener('keydown', e => {
+  if (!FLASH.overlay.classList.contains('open')) return;
+  if (e.key === 'Escape') closeFlash();
+  else if (e.key === 'ArrowRight') nextFlash();
+  else if (e.key === ' ' || e.key === 'Enter') {
+    // avoid double-trigger when a button inside has focus
+    if (!e.target.closest('.flash-btn, .flash-close')) { e.preventDefault(); FLASH.card.classList.toggle('flipped'); }
+  }
 });
 
 // ── Init ─────────────────────────────────────────
