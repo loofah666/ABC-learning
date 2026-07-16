@@ -42,7 +42,7 @@
   .words-list { padding: 12px 16px 14px; display: flex; flex-direction: column; gap: 7px; }
   .word-row { display: flex; align-items: center; gap: 10px; padding: 6px 10px; border-radius: 10px; background: #fafafa; cursor: pointer; transition: background 0.15s, transform 0.15s; user-select: none; }
   .word-row:hover { background: #f0f0f0; transform: translateX(4px); }
-  .word-emoji { font-size: 1.35rem; }
+  .word-emoji { font-size: 2rem; }
   .word-en { font-size: 1rem; font-weight: 700; color: #333; }
   .word-zh { font-size: 0.82rem; color: #888; margin-left: auto; }
   .theme-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(145px, 1fr)); gap: 13px; }
@@ -51,7 +51,7 @@
   .theme-card.unavailable { opacity: 0.4; cursor: default; }
   .theme-card.unavailable:hover { transform: none; box-shadow: var(--card-shadow); }
   .tc-letter { font-size: 2.2rem; font-weight: 900; line-height: 1.1; }
-  .tc-emoji { font-size: 1.9rem; margin: 4px 0; }
+  .tc-emoji { font-size: 3.6rem; margin: 6px 0; }
   .tc-word { font-size: 0.92rem; font-weight: 700; color: #333; word-break: break-word; }
   .tc-zh { font-size: 0.76rem; color: #888; margin-top: 2px; }
   .tc-na { font-size: 0.76rem; color: #bbb; font-style: italic; margin-top: 4px; }
@@ -71,14 +71,14 @@
   .modal-body { padding: 16px 22px 22px; }
   .modal-main-word { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-radius: 14px; margin-bottom: 14px; cursor: pointer; transition: transform 0.15s; }
   .modal-main-word:hover { transform: scale(1.02); }
-  .modal-main-emoji { font-size: 2.4rem; }
+  .modal-main-emoji { font-size: 4.2rem; }
   .modal-main-en { font-size: 1.3rem; font-weight: 900; color: #222; }
   .modal-main-zh { font-size: 0.9rem; color: #777; margin-top: 2px; }
   .modal-divider { font-size: 0.78rem; color: #bbb; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
   .modal-extra-list { display: flex; flex-direction: column; gap: 8px; }
   .modal-extra-row { display: flex; align-items: center; gap: 12px; padding: 9px 14px; border-radius: 12px; background: #fafafa; cursor: pointer; transition: background 0.15s, transform 0.15s; }
   .modal-extra-row:hover { background: #f0f0f0; transform: translateX(5px); }
-  .modal-extra-emoji { font-size: 1.5rem; }
+  .modal-extra-emoji { font-size: 2.2rem; }
   .modal-extra-en { font-size: 1rem; font-weight: 700; color: #333; }
   .modal-extra-zh { font-size: 0.78rem; color: #888; margin-left: auto; }
   .alpha-bar { display:flex; flex-wrap:wrap; justify-content:center; gap:6px; padding:14px 16px; background:rgba(255,255,255,0.8); border-radius:var(--radius); margin-bottom:20px; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
@@ -161,7 +161,7 @@
     background:#fff; border-radius:26px; box-shadow:0 16px 46px rgba(0,0,0,0.28); padding:24px; text-align:center;
   }
   .flash-back { transform:rotateY(180deg); background:linear-gradient(135deg,#fff,#fff6fa); }
-  .flash-emoji { font-size:5.5rem; line-height:1; }
+  .flash-emoji { font-size:8rem; line-height:1; }
   .flash-en { font-size:2.1rem; font-weight:900; color:#222; word-break:break-word; }
   .flash-zh { font-size:1.9rem; font-weight:800; color:#e91e63; }
   .flash-theme { font-size:0.9rem; color:#aaa; font-weight:700; }
@@ -202,10 +202,10 @@
   .match-card.left { flex-direction:row; gap:10px; }
   .match-card.matched { flex-direction:column; gap:1px; }
   .match-card .mc-letter { font-size:1.5rem; font-weight:900; line-height:1; }
-  .match-card .mc-emoji { font-size:2.1rem; line-height:1; }
+  .match-card .mc-emoji { font-size:3.4rem; line-height:1; }
   .match-card .mc-en { font-size:1.15rem; color:#333; word-break:break-word; }
   .match-card .mc-zh { font-size:0.88rem; color:#3a7d5c; font-weight:800; }
-  .match-card.matched .mc-emoji { font-size:1.6rem; }
+  .match-card.matched .mc-emoji { font-size:2.4rem; }
   .match-card.matched .mc-letter { font-size:1.15rem; }
   .match-card.matched .mc-en { font-size:1rem; }
   .match-card.selected { border-color:#2193b0; background:#eafaff; transform:scale(1.04); }
