@@ -33,7 +33,65 @@
   .section { display: none; padding: 24px 16px; max-width: 1120px; margin: 0 auto; }
   .section.active { display: block; }
   .section-title { text-align: center; font-size: 1.6rem; font-weight: 900; margin-bottom: 24px; color: #333; }
-  .basics-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 24px; }
+  .basics-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 20px 16px; padding: 6px 4px 20px; }
+  .letter-tile {
+    position: relative; background: white; border-radius: 22px; box-shadow: var(--card-shadow);
+    padding: 22px 10px 16px; cursor: pointer; border: 3px solid transparent;
+    display: flex; flex-direction: column; align-items: center; gap: 4px; text-align: center;
+    aspect-ratio: 1; transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .letter-tile:nth-child(6n+1) { transform: rotate(-2deg); }
+  .letter-tile:nth-child(6n+2) { transform: rotate(1.5deg); }
+  .letter-tile:nth-child(6n+3) { transform: rotate(-1deg); }
+  .letter-tile:nth-child(6n+4) { transform: rotate(2deg); }
+  .letter-tile:nth-child(6n+5) { transform: rotate(-1.5deg); }
+  .letter-tile:nth-child(6n+6) { transform: rotate(1deg); }
+  .letter-tile:hover, .letter-tile:focus-visible { transform: translateY(-5px) rotate(0deg) scale(1.05); box-shadow: 0 10px 28px rgba(0,0,0,0.16); outline: none; }
+  .lt-letter { font-size: 4rem; font-weight: 900; line-height: 1; }
+  .lt-progress { font-size: 0.82rem; color: #999; font-weight: 700; }
+  .letter-tile.partial { box-shadow: 0 0 0 2.5px #f5a623, var(--card-shadow); }
+  .letter-tile.partial::after { content:'…'; position:absolute; top:8px; left:8px; background:#f5a623; color:#fff; font-size:0.9rem; font-weight:900; width:22px; height:22px; line-height:18px; border-radius:50%; text-align:center; box-shadow:0 1px 4px rgba(0,0,0,0.25); }
+  .letter-tile.complete { box-shadow: 0 0 0 2.5px #22b866, var(--card-shadow); }
+  .letter-tile.complete::after { content:'✓'; position:absolute; top:8px; left:8px; background:#22b866; color:#fff; font-size:0.82rem; font-weight:900; width:22px; height:22px; line-height:22px; border-radius:50%; text-align:center; box-shadow:0 1px 4px rgba(0,0,0,0.25); }
+  .letter-tile.complete .lt-progress { color:#22b866; }
+
+  /* Letter fan modal — a hand of feature cards for the tapped letter */
+  .letterfan-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.55); z-index:600; align-items:center; justify-content:center; padding:16px; }
+  .letterfan-overlay.open { display:flex; }
+  .letterfan-close { position:absolute; top:16px; right:18px; background:#fff; border:none; border-radius:50%; width:40px; height:40px; font-size:1.3rem; cursor:pointer; color:#666; z-index:2; box-shadow:0 4px 12px rgba(0,0,0,0.2); }
+  .letterfan-panel { background:#fff9f0; border-radius:28px; width:100%; max-width:840px; max-height:92vh; overflow-y:auto; padding:26px 22px 22px; box-shadow:0 20px 60px rgba(0,0,0,0.35); position:relative; animation: slideUp 0.25s ease; }
+  .letterfan-header { display:flex; align-items:center; gap:16px; margin-bottom:22px; padding: 0 8px; flex-wrap:wrap; }
+  .letterfan-letter { font-size:3.6rem; font-weight:900; line-height:1; min-width:60px; text-align:center; }
+  .letterfan-title { font-size:1.35rem; font-weight:900; color:#333; }
+  .letterfan-progress { margin-left:auto; font-size:0.9rem; font-weight:800; color:#666; padding:8px 14px; border-radius:20px; background:#f5f5f5; }
+  .letterfan-progress.partial { background:#fff4d6; color:#a56e00; }
+  .letterfan-progress.complete { background:#e6f9ed; color:#1a8f4e; }
+  .letterfan-cards { display:grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap:18px 14px; padding: 4px; }
+  .fan-card {
+    position:relative; background:#fff; border-top: 4px solid var(--theme-color, #ccc); border-radius:18px;
+    padding:14px 10px 14px; text-align:center; cursor:pointer; box-shadow: var(--card-shadow);
+    display:flex; flex-direction:column; align-items:center; gap:3px;
+    opacity:0; transform: translateY(20px) rotate(0deg) scale(0.85);
+    animation: fanIn 0.42s cubic-bezier(0.2, 0.9, 0.35, 1.15) forwards;
+    animation-delay: calc(var(--i, 0) * 45ms);
+  }
+  .fan-card:hover, .fan-card:focus-visible { transform: rotate(0deg) translateY(-4px) scale(1.05) !important; box-shadow: 0 10px 26px rgba(0,0,0,0.16); outline:none; }
+  .fan-card.learned { background:#f6fff9; }
+  .fan-card.learned .fan-word::after { content:' ✓'; color:#22b866; }
+  .fan-theme { font-size:0.7rem; color:#888; font-weight:700; letter-spacing:0.5px; }
+  .fan-emoji { font-size:3.6rem; margin: 4px 0; }
+  .fan-word { font-size:1.05rem; font-weight:800; color:#333; word-break:break-word; }
+  .fan-zh { font-size:0.82rem; color:#888; }
+  .fan-more { position:absolute; top:6px; right:6px; background:transparent; border:none; color:#bbb; font-size:1.2rem; font-weight:900; cursor:pointer; padding:2px 6px; border-radius:8px; line-height:1; }
+  .fan-more:hover { background:#f0f0f0; color:#666; }
+  @keyframes fanIn {
+    0%   { opacity:0; transform: translateY(20px) rotate(0deg) scale(0.85); }
+    60%  { opacity:1; transform: translateY(-4px) rotate(calc(var(--rot) * 0.9)) scale(1.03); }
+    100% { opacity:1; transform: translateY(0) rotate(var(--rot)) scale(1); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .fan-card { animation: none; opacity: 1; transform: none; }
+  }
   .letter-card { background: white; border-radius: var(--radius); box-shadow: var(--card-shadow); overflow: hidden; transition: transform 0.2s; }
   .letter-card:hover { transform: translateY(-4px); }
   .letter-header { display: flex; align-items: center; gap: 16px; padding: 20px 20px 16px; border-bottom: 2px solid #f5f5f5; }
@@ -266,7 +324,7 @@
     box-shadow:0 0 0 3px #ffb300;
   }
 
-  @media (max-width:600px) { header h1 { font-size:1.7rem; } .theme-grid { grid-template-columns: repeat(auto-fill, minmax(115px,1fr)); gap:9px; } .basics-grid { grid-template-columns: 1fr; } .tab-btn { font-size:0.8rem; padding:7px 11px; } }
+  @media (max-width:600px) { header h1 { font-size:1.7rem; } .theme-grid { grid-template-columns: repeat(auto-fill, minmax(115px,1fr)); gap:9px; } .basics-grid { grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap:12px; } .lt-letter { font-size: 3rem; } .letterfan-cards { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); } .tab-btn { font-size:0.8rem; padding:7px 11px; } }
   @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration:0.001ms !important; transition-duration:0.001ms !important; } .word-row:hover, .theme-card:hover, .letter-card:hover, .modal-extra-row:hover { transform:none; } }
 </style>
 </head>
@@ -301,9 +359,21 @@
 </div>
 
 <div id="basics" class="section active">
-  <div class="section-title">📖 基礎字母 A-Z 單字</div>
+  <div class="section-title">📖 點字母看看各主題的代表字</div>
   <div class="alpha-bar" id="basics-alpha"></div>
   <div class="basics-grid" id="basics-grid"></div>
+</div>
+
+<div class="letterfan-overlay" id="letterfan-overlay" role="dialog" aria-modal="true" aria-label="字母卡片">
+  <button class="letterfan-close" id="letterfan-close" type="button" aria-label="關閉">&#x2715;</button>
+  <div class="letterfan-panel" id="letterfan-panel">
+    <div class="letterfan-header">
+      <span class="letterfan-letter" id="letterfan-letter"></span>
+      <div class="letterfan-title" id="letterfan-title"></div>
+      <div class="letterfan-progress" id="letterfan-progress"></div>
+    </div>
+    <div class="letterfan-cards" id="letterfan-cards"></div>
+  </div>
 </div>
 
 <div id="animals" class="section">
@@ -4996,6 +5066,8 @@ function markLearned(word) {
     if (normWord(el.dataset.word) === k) el.classList.add('learned');
   });
   refreshThemeCardStatus();
+  refreshLetterTiles();
+  if (_letterFanLetter) renderLetterFan(_letterFanLetter);
   return true;
 }
 
@@ -5155,7 +5227,7 @@ function buildAlphaBar() {
     btn.textContent = l;
     btn.setAttribute('aria-label', '跳到字母 ' + l);
     btn.addEventListener('click', () => {
-      const el = document.getElementById('card-' + l);
+      const el = document.getElementById('lt-' + l);
       if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
     });
     alphaFrag.appendChild(btn);
@@ -5163,34 +5235,120 @@ function buildAlphaBar() {
   alphaBar.appendChild(alphaFrag);
 }
 
-// (re)build the overview page — reflects current featured overrides
+// gather every theme's featured word for a given letter (used by tiles + fan modal)
+function collectLetterFeatures(l) {
+  const features = [];
+  THEMES.forEach(t => {
+    const item = t.data[l];
+    if (item && item.available && item.word) {
+      const w = resolveEntry(t.key, l, item).featured;
+      features.push({ word: w.word, zh: w.zh, emoji: w.emoji,
+        themeKey: t.key, themeName: t.name, themeColor: t.color, themeEmoji: t.emoji });
+    }
+  });
+  return features;
+}
+
+// (re)build the basics home page: 26 playful letter tiles with per-letter progress
 function rebuildBasics() {
   const grid = document.getElementById('basics-grid');
   const gridFrag = document.createDocumentFragment();
   ALPHABET.forEach(l => {
-    const words = [];
-    THEMES.forEach(t => {
-      const item = t.data[l];
-      if (item && item.available && item.word) {
-        const w = resolveEntry(t.key, l, item).featured;
-        words.push({ word: w.word, zh: w.zh, emoji: w.emoji, theme: t.emoji });
-      }
-    });
-    if (words.length === 0) return;
-    const card = document.createElement('div');
-    card.className = 'letter-card';
-    card.id = 'card-' + l;
-    let h = '<div class="letter-header"><div class="big-letter lc-' + l + '">' + l + '</div><div class="letter-label">' + l.toLowerCase() + '</div></div><div class="words-list">';
-    words.forEach(w => {
-      const cls = learned.has(normWord(w.word)) ? 'word-row learned' : 'word-row';
-      h += '<div class="' + cls + '" role="button" tabindex="0" data-word="' + escAttr(w.word) + '" aria-label="' + escAttr(w.word + ' ' + w.zh) + '">' + mediaHTML(w, 'word-emoji') + '<span class="word-en">' + w.word + '</span><span style="font-size:0.78rem;margin-left:auto;opacity:0.45" aria-hidden="true">' + w.theme + '</span><span class="word-zh" style="margin-left:4px">' + w.zh + '</span></div>';
-    });
-    h += '</div>';
-    card.innerHTML = h;
-    gridFrag.appendChild(card);
+    const features = collectLetterFeatures(l);
+    if (features.length === 0) return;
+    const done = features.filter(f => learned.has(normWord(f.word))).length;
+    const total = features.length;
+    const stateClass = done === 0 ? '' : (done >= total ? ' complete' : ' partial');
+
+    const tile = document.createElement('button');
+    tile.type = 'button';
+    tile.className = 'letter-tile' + stateClass;
+    tile.id = 'lt-' + l;
+    tile.dataset.letter = l;
+    tile.setAttribute('aria-label', l + ' 開頭的字,' + done + '/' + total + ' 學過');
+    tile.innerHTML =
+      '<div class="lt-letter lc-' + l + '">' + l + '</div>' +
+      '<div class="lt-progress">' + done + '/' + total + '</div>';
+    tile.addEventListener('click', () => openLetterFan(l));
+    gridFrag.appendChild(tile);
   });
   grid.textContent = '';
   grid.appendChild(gridFrag);
+}
+
+// keep tile progress + state in sync when learned/featured change (no full rebuild needed)
+function refreshLetterTiles() {
+  ALPHABET.forEach(l => {
+    const tile = document.getElementById('lt-' + l);
+    if (!tile) return;
+    const features = collectLetterFeatures(l);
+    if (features.length === 0) return;
+    const done = features.filter(f => learned.has(normWord(f.word))).length;
+    const total = features.length;
+    const progressEl = tile.querySelector('.lt-progress');
+    if (progressEl) progressEl.textContent = done + '/' + total;
+    tile.classList.toggle('complete', done > 0 && done >= total);
+    tile.classList.toggle('partial', done > 0 && done < total);
+    tile.setAttribute('aria-label', l + ' 開頭的字,' + done + '/' + total + ' 學過');
+  });
+}
+
+// ── Letter fan modal (playful poker-fan of feature cards for a letter) ──
+const LETTERFAN = {
+  overlay: document.getElementById('letterfan-overlay'),
+  panel:   document.getElementById('letterfan-panel'),
+  letter:  document.getElementById('letterfan-letter'),
+  title:   document.getElementById('letterfan-title'),
+  progress:document.getElementById('letterfan-progress'),
+  cards:   document.getElementById('letterfan-cards'),
+};
+let _letterFanLastFocused = null;
+let _letterFanLetter = null;
+
+function openLetterFan(letter) {
+  _letterFanLastFocused = document.activeElement;
+  _letterFanLetter = letter;
+  renderLetterFan(letter);
+  LETTERFAN.overlay.classList.add('open');
+  document.getElementById('letterfan-close').focus();
+}
+
+function renderLetterFan(letter) {
+  const features = collectLetterFeatures(letter);
+  const done = features.filter(f => learned.has(normWord(f.word))).length;
+  const total = features.length;
+  LETTERFAN.letter.textContent = letter;
+  LETTERFAN.letter.className = 'letterfan-letter lc-' + letter;
+  LETTERFAN.title.textContent = '「' + letter + '」開頭的字';
+  const progClass = done >= total ? 'letterfan-progress complete'
+    : (done > 0 ? 'letterfan-progress partial' : 'letterfan-progress');
+  LETTERFAN.progress.className = progClass;
+  LETTERFAN.progress.textContent = done + '/' + total + ' 學過';
+
+  LETTERFAN.cards.innerHTML = features.map((f, i) => {
+    const learn = learned.has(normWord(f.word)) ? ' learned' : '';
+    // deterministic gentle rotation, alternates sign — feels like a hand of cards
+    const rot = ((i % 2 === 0 ? -1 : 1) * (1 + (i * 0.4) % 1.6)).toFixed(2);
+    return '<div class="fan-card' + learn + '" role="button" tabindex="0"' +
+      ' data-word="' + escAttr(f.word) + '"' +
+      ' data-fan-theme="' + f.themeKey + '"' +
+      ' data-fan-letter="' + letter + '"' +
+      ' style="--theme-color:' + f.themeColor + ';--i:' + i + ';--rot:' + rot + 'deg"' +
+      ' aria-label="' + escAttr(f.word + ' ' + f.zh + ' ' + f.themeName) + '">' +
+      '<span class="fan-theme">' + f.themeEmoji + ' ' + f.themeName.replace(/^[^\s]+\s/, '') + '</span>' +
+      mediaHTML(f, 'fan-emoji', 'div') +
+      '<div class="fan-word">' + f.word + '</div>' +
+      '<div class="fan-zh">' + f.zh + '</div>' +
+      '<button class="fan-more" type="button" aria-label="看更多 ' + escAttr(f.themeName) + ' 的 ' + letter + ' 開頭單字"' +
+      ' data-fan-more-theme="' + f.themeKey + '" data-fan-more-letter="' + letter + '">···</button>' +
+      '</div>';
+  }).join('');
+}
+
+function closeLetterFan() {
+  LETTERFAN.overlay.classList.remove('open');
+  _letterFanLetter = null;
+  if (_letterFanLastFocused && _letterFanLastFocused.focus) _letterFanLastFocused.focus();
 }
 
 // cache modal element references once
@@ -5393,6 +5551,9 @@ document.getElementById('reset-progress').addEventListener('click', () => {
   learned.clear();
   try { localStorage.removeItem(STORE_KEY); } catch (e) {}
   document.querySelectorAll('.learned').forEach(el => el.classList.remove('learned'));
+  document.querySelectorAll('.partial').forEach(el => el.classList.remove('partial'));
+  refreshLetterTiles();
+  if (_letterFanLetter) renderLetterFan(_letterFanLetter);
   updateProgressUI();
 });
 
@@ -5504,6 +5665,25 @@ document.addEventListener('keydown', e => {
     // avoid double-trigger when a button inside has focus
     if (!e.target.closest('.flash-btn, .flash-close')) { e.preventDefault(); FLASH.card.classList.toggle('flipped'); }
   }
+});
+
+// ── Letter fan modal wiring ──────────────────────
+document.getElementById('letterfan-close').addEventListener('click', closeLetterFan);
+LETTERFAN.overlay.addEventListener('click', e => { if (e.target === e.currentTarget) closeLetterFan(); });
+LETTERFAN.cards.addEventListener('click', e => {
+  const more = e.target.closest('.fan-more');
+  if (more) {
+    e.stopPropagation();
+    const theme = THEMES.find(t => t.key === more.dataset.fanMoreTheme);
+    const letter = more.dataset.fanMoreLetter;
+    if (theme && letter) {
+      closeLetterFan();
+      openModal(theme, letter);
+    }
+  }
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && LETTERFAN.overlay.classList.contains('open')) closeLetterFan();
 });
 
 // ── Matching game (聽音配對) ──────────────────────
