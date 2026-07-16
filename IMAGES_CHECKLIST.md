@@ -155,7 +155,7 @@
 - [ ] `eggshell.jpg` 🟡 **Eggshell** — 蛋殼白
 - [ ] `electric_blue.jpg` ⚡ **Electric Blue** — 電藍色
 - [ ] `electric_car.jpg` 🔋 **Electric Car** — 電動車
-- [ ] `elephant.jpg` 🐘 **Elephant** — 大象
+- [x] `elephant.jpg` 🐘 **Elephant** — 大象
 - [ ] `elk.jpg` 🦌 **Elk** — 麋鹿
 - [ ] `emerald.jpg` 💚 **Emerald** — 翠綠色
 - [ ] `engineer.jpg` 👷 **Engineer** — 工程師
