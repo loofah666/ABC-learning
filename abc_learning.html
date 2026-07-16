@@ -120,10 +120,17 @@
 
   /* ── Progress tracking ── */
   .word-row.learned, .modal-extra-row.learned { background:#e6f9ed; }
+  .modal-extra-row.unlearned { position:relative; }
+  .modal-extra-row.unlearned::before { content:''; position:absolute; top:6px; right:6px; width:8px; height:8px; border-radius:50%; background:#f5a623; box-shadow:0 0 0 2px #fff; }
+  .modal-progress { display:inline-block; font-size:0.86rem; font-weight:800; color:#666; padding:3px 10px; border-radius:20px; background:#f5f5f5; letter-spacing:0; text-transform:none; }
+  .modal-progress.partial { background:#fff4d6; color:#a56e00; }
+  .modal-progress.complete { background:#e6f9ed; color:#1a8f4e; }
   .word-row.learned .word-en::after, .modal-extra-row.learned .modal-extra-en::after,
   .modal-main-word.learned .modal-main-en::after { content:' ✓'; color:#22b866; font-weight:900; }
   .theme-card.learned { box-shadow: 0 0 0 2.5px #22b866, var(--card-shadow); }
   .theme-card.learned::after { content:'✓'; position:absolute; top:6px; left:6px; background:#22b866; color:#fff; font-size:0.82rem; font-weight:900; width:22px; height:22px; line-height:22px; border-radius:50%; text-align:center; z-index:2; box-shadow:0 1px 4px rgba(0,0,0,0.25); }
+  .theme-card.partial { box-shadow: 0 0 0 2.5px #f5a623, var(--card-shadow); }
+  .theme-card.partial::after { content:'…'; position:absolute; top:6px; left:6px; background:#f5a623; color:#fff; font-size:0.9rem; font-weight:900; width:22px; height:22px; line-height:18px; border-radius:50%; text-align:center; z-index:2; box-shadow:0 1px 4px rgba(0,0,0,0.25); }
 
   /* ── Featured-word star ── */
   .star-btn { background:none; border:none; cursor:pointer; font-size:1.15rem; padding:0 2px; line-height:1; color:#e0c060; transition:transform 0.15s; }
@@ -4999,6 +5006,21 @@ function updateProgressUI() {
   document.getElementById('progress-text').textContent = `已學 ${n} / ${TOTAL_WORDS} 個單字 (${pct}%)`;
 }
 
+// completion state for one theme+letter card:
+//   'unlearned' — no words heard yet
+//   'partial'   — some words heard, but not all featured + extras
+//   'complete'  — every word (featured + every extra) has been heard
+function computeCardState(theme, letter) {
+  const item = theme.data[letter];
+  if (!item || !item.available) return { done: 0, total: 0, state: 'unlearned' };
+  const { featured, extras } = resolveEntry(theme.key, letter, item);
+  const all = [featured, ...extras].filter(Boolean);
+  const total = all.length;
+  const done = all.filter(w => learned.has(normWord(w.word))).length;
+  const state = done === 0 ? 'unlearned' : (done >= total ? 'complete' : 'partial');
+  return { done, total, state };
+}
+
 function refreshThemeCardStatus() {
   THEMES.forEach(t => {
     ALPHABET.forEach(l => {
@@ -5006,8 +5028,9 @@ function refreshThemeCardStatus() {
       if (!item || !item.available || !item.word) return;
       const card = document.getElementById('tc-' + t.key + '-' + l);
       if (!card) return;
-      const { featured } = resolveEntry(t.key, l, item);
-      if (learned.has(normWord(featured.word))) card.classList.add('learned');
+      const { state } = computeCardState(t, l);
+      card.classList.toggle('learned', state === 'complete');
+      card.classList.toggle('partial', state === 'partial');
     });
   });
 }
@@ -5232,10 +5255,18 @@ function renderModal(theme, letter) {
     (_modalFocusWord ? '' : '<span class="modal-main-star" title="目前的代表字">⭐<small>代表字</small></span>');
 
   if (extras.length > 0) {
+    const total = 1 + extras.length;
+    const done = (learned.has(normWord(featured.word)) ? 1 : 0)
+      + extras.filter(x => learned.has(normWord(x.word))).length;
+    const progressLabel = done >= total
+      ? '<span class="modal-progress complete">🎯 ' + done + '/' + total + ' 全部學過!</span>'
+      : (done > 0
+        ? '<span class="modal-progress partial">🎯 ' + done + '/' + total + ' 學過(還有 ' + (total - done) + ' 個沒聽)</span>'
+        : '<span class="modal-progress">🎯 0/' + total + ' 學過</span>');
     MODAL.divider.style.display = 'block';
-    MODAL.divider.textContent = '更多「' + letter + '」開頭的單字（點 ☆ 設為代表字）↓';
+    MODAL.divider.innerHTML = progressLabel + '<br>更多「' + letter + '」開頭的單字（點 ☆ 設為代表字）↓';
     MODAL.extra.innerHTML = extras.map(e => {
-      const cls = learned.has(normWord(e.word)) ? 'modal-extra-row learned' : 'modal-extra-row';
+      const cls = learned.has(normWord(e.word)) ? 'modal-extra-row learned' : 'modal-extra-row unlearned';
       return '<div class="' + cls + '" role="button" tabindex="0" data-word="' + escAttr(e.word) + '" aria-label="' + escAttr(e.word + ' ' + e.zh) + '">' +
         mediaHTML(e, 'modal-extra-emoji') +
         '<span class="modal-extra-en">' + e.word + '</span>' +
@@ -5263,7 +5294,9 @@ function makeThemeCard(theme, l) {
   const extraCount = (item.extra || []).length;
   if (item.available) {
     const { featured } = resolveEntry(theme.key, l, item);
-    card.className = 'theme-card' + (learned.has(normWord(featured.word)) ? ' learned' : '');
+    const { state } = computeCardState(theme, l);
+    const stateClass = state === 'complete' ? ' learned' : (state === 'partial' ? ' partial' : '');
+    card.className = 'theme-card' + stateClass;
     card.style.borderTop = '4px solid ' + theme.color;
     card.setAttribute('role', 'button');
     card.setAttribute('tabindex', '0');
