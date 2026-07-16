@@ -196,8 +196,7 @@
   .star-btn.is-set { cursor:default; }
   .star-btn.is-set:hover { transform:none; }
   .modal-extra-row.is-focused { box-shadow: 0 0 0 3px #4a9eff, 0 4px 12px rgba(74,158,255,0.25); transform: translateY(-2px); }
-  .modal-extra-row.is-focused::before { content:'在看'; position:absolute; top:-8px; left:50%; transform:translateX(-50%); background:#4a9eff; color:#fff; font-size:0.65rem; font-weight:900; padding:2px 8px; border-radius:20px; letter-spacing:1px; white-space:nowrap; z-index:1; }
-  .modal-extra-row.is-focused.unlearned::before { content:'在看'; }
+  .modal-extra-row.is-focused::after { content:'👁'; position:absolute; top:4px; left:4px; font-size:1.05rem; filter: drop-shadow(0 1px 2px rgba(74,158,255,0.6)); z-index:2; pointer-events:none; }
   .modal-extra-row.is-featured .modal-extra-en { position:relative; }
   .modal-main-star { margin-left:auto; display:inline-flex; align-items:center; gap:4px; font-size:1.25rem; color:#f5b301; font-weight:700; }
   .modal-main-star small { font-size:0.62rem; color:#c99; font-weight:700; white-space:nowrap; }
@@ -5378,6 +5377,13 @@ function openModal(theme, letter) {
   renderModal(theme, letter);
   MODAL.overlay.classList.add('open');
   document.getElementById('modal-close').focus();
+  // Auto-speak + mark learned for the hero — seeing the focus view counts as exposure.
+  const item = theme.data[letter];
+  const { featured } = resolveEntry(theme.key, letter, item);
+  if (featured && featured.word) {
+    speak(featured.word, MODAL.main);
+    markLearned(featured.word);
+  }
 }
 
 // re-render the modal in place (after a featured change) without touching focus/open state
