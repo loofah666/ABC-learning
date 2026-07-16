@@ -66,11 +66,11 @@
   .letterfan-progress { margin-left:auto; font-size:0.9rem; font-weight:800; color:#666; padding:8px 14px; border-radius:20px; background:#f5f5f5; }
   .letterfan-progress.partial { background:#fff4d6; color:#a56e00; }
   .letterfan-progress.complete { background:#e6f9ed; color:#1a8f4e; }
-  .letterfan-cards { display:grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap:18px 14px; padding: 4px; }
+  .letterfan-cards { display:grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap:22px 16px; padding: 4px; }
   .fan-card {
-    position:relative; background:#fff; border-top: 4px solid var(--theme-color, #ccc); border-radius:18px;
-    padding:14px 10px 14px; text-align:center; cursor:pointer; box-shadow: var(--card-shadow);
-    display:flex; flex-direction:column; align-items:center; gap:3px;
+    position:relative; background:#fff; border-top: 5px solid var(--theme-color, #ccc); border-radius:20px;
+    padding:18px 14px 18px; text-align:center; cursor:pointer; box-shadow: var(--card-shadow);
+    display:flex; flex-direction:column; align-items:center; gap:6px;
     opacity:0; transform: translateY(20px) rotate(0deg) scale(0.85);
     animation: fanIn 0.42s cubic-bezier(0.2, 0.9, 0.35, 1.15) forwards;
     animation-delay: calc(var(--i, 0) * 45ms);
@@ -78,10 +78,10 @@
   .fan-card:hover, .fan-card:focus-visible { transform: rotate(0deg) translateY(-4px) scale(1.05) !important; box-shadow: 0 10px 26px rgba(0,0,0,0.16); outline:none; }
   .fan-card.learned { background:#f6fff9; }
   .fan-card.learned .fan-word::after { content:' ✓'; color:#22b866; }
-  .fan-theme { font-size:0.7rem; color:#888; font-weight:700; letter-spacing:0.5px; }
-  .fan-emoji { font-size:3.6rem; margin: 4px 0; }
-  .fan-word { font-size:1.05rem; font-weight:800; color:#333; word-break:break-word; }
-  .fan-zh { font-size:0.82rem; color:#888; }
+  .fan-theme { font-size:0.78rem; color:#888; font-weight:700; letter-spacing:0.5px; }
+  .fan-emoji { font-size:5.8rem; margin: 6px 0; }
+  .fan-word { font-size:1.4rem; font-weight:900; color:#333; word-break:break-word; }
+  .fan-zh { font-size:0.98rem; color:#888; }
   .fan-more { position:absolute; top:6px; right:6px; background:transparent; border:none; color:#bbb; font-size:1.2rem; font-weight:900; cursor:pointer; padding:2px 6px; border-radius:8px; line-height:1; }
   .fan-more:hover { background:#f0f0f0; color:#666; }
   @keyframes fanIn {
@@ -133,9 +133,9 @@
   .modal-close { margin-left: auto; background: #f5f5f5; border: none; border-radius: 50%; width: 34px; height: 34px; font-size: 1.2rem; cursor: pointer; color: #666; transition: background 0.15s; }
   .modal-close:hover { background: #e0e0e0; }
   .modal-body { padding: 16px 22px 22px; }
-  .modal-main-word { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 34px 20px; border-radius: 22px; margin-bottom: 18px; cursor: pointer; transition: transform 0.15s; background: #fafafa; border: 2px solid #f0f0f0; }
+  .modal-main-word { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 34px 20px 30px; border-radius: 28px; margin: 4px 8px 22px; cursor: pointer; transition: transform 0.15s; background: #fffaf0; border: 2.5px solid #f0e2c9; box-shadow: 0 8px 22px rgba(180,140,60,0.14), inset 0 0 0 4px #fff; transform: rotate(-1deg); }
   .modal-main-word > div { text-align: center; }
-  .modal-main-word:hover { transform: scale(1.02); }
+  .modal-main-word:hover { transform: rotate(0deg) scale(1.02); }
   .modal-main-emoji { font-size: 8.5rem; line-height: 1; }
   .modal-main-en { font-size: 2.6rem; font-weight: 900; color: #222; }
   .modal-main-zh { font-size: 1.3rem; color: #777; margin-top: 2px; }
@@ -143,7 +143,7 @@
   .modal-main-word { position: relative; }
   .modal-divider { font-size: 0.82rem; color: #bbb; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
   .modal-extra-list { display: flex; flex-direction: row; gap: 12px; overflow-x: auto; padding-bottom: 6px; }
-  .modal-extra-row { flex: none; width: 118px; display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 12px 8px; border-radius: 16px; background: #fafafa; cursor: pointer; transition: background 0.15s, transform 0.15s; }
+  .modal-extra-row { position: relative; flex: none; width: 118px; display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 12px 8px; border-radius: 16px; background: #fafafa; cursor: pointer; transition: background 0.15s, transform 0.15s, box-shadow 0.2s; }
   .modal-extra-row:hover { background: #f0f0f0; transform: translateY(-3px); }
   .modal-extra-emoji { font-size: 3.4rem; }
   .modal-extra-en { font-size: 1rem; font-weight: 700; color: #333; text-align: center; }
@@ -193,6 +193,12 @@
   /* ── Featured-word star ── */
   .star-btn { background:none; border:none; cursor:pointer; font-size:1.15rem; padding:0 2px; line-height:1; color:#e0c060; transition:transform 0.15s; }
   .star-btn:hover, .star-btn:focus-visible { transform:scale(1.25); color:#f5b301; }
+  .star-btn.is-set { cursor:default; }
+  .star-btn.is-set:hover { transform:none; }
+  .modal-extra-row.is-focused { box-shadow: 0 0 0 3px #4a9eff, 0 4px 12px rgba(74,158,255,0.25); transform: translateY(-2px); }
+  .modal-extra-row.is-focused::before { content:'在看'; position:absolute; top:-8px; left:50%; transform:translateX(-50%); background:#4a9eff; color:#fff; font-size:0.65rem; font-weight:900; padding:2px 8px; border-radius:20px; letter-spacing:1px; white-space:nowrap; z-index:1; }
+  .modal-extra-row.is-focused.unlearned::before { content:'在看'; }
+  .modal-extra-row.is-featured .modal-extra-en { position:relative; }
   .modal-main-star { margin-left:auto; display:inline-flex; align-items:center; gap:4px; font-size:1.25rem; color:#f5b301; font-weight:700; }
   .modal-main-star small { font-size:0.62rem; color:#c99; font-weight:700; white-space:nowrap; }
   .progress-wrap { max-width:1120px; margin:0 auto; padding:10px 16px 0; }
@@ -5385,57 +5391,59 @@ function openModalFor(theme, letter) {
 function renderModal(theme, letter) {
   _modalCtx = { themeKey: theme.key, letter };
   const item = theme.data[letter];
-  let { featured, extras } = resolveEntry(theme.key, letter, item);
+  const { featured: permanentFeatured, extras: permanentExtras } = resolveEntry(theme.key, letter, item);
 
+  // Stable ordered list — the extras row shows these in the same order every render.
+  // Hero shows whichever word is currently focused (default = the permanent featured).
+  const allWords = [permanentFeatured, ...permanentExtras];
+  let hero = permanentFeatured;
   if (_modalFocusWord) {
-    const idx = extras.findIndex(x => x.word === _modalFocusWord);
-    if (idx !== -1) {
-      const chosen = extras[idx];
-      extras = extras.slice(0, idx).concat(extras.slice(idx + 1));
-      extras.unshift(featured);
-      featured = chosen;
-    } else {
-      _modalFocusWord = null;
-    }
+    const found = allWords.find(w => normWord(w.word) === normWord(_modalFocusWord));
+    if (found) hero = found;
+    else _modalFocusWord = null;
   }
+  const heroIsPermanent = normWord(hero.word) === normWord(permanentFeatured.word);
 
   MODAL.letter.textContent = letter;
   MODAL.letter.className = 'modal-letter lc-' + letter;
-  MODAL.title.textContent = featured.word;
+  MODAL.title.textContent = hero.word;
   MODAL.theme.textContent = theme.name;
-  MODAL.main.className = 'modal-main-word' + (learned.has(normWord(featured.word)) ? ' learned' : '');
+  MODAL.main.className = 'modal-main-word' + (learned.has(normWord(hero.word)) ? ' learned' : '');
   MODAL.main.setAttribute('role', 'button');
   MODAL.main.setAttribute('tabindex', '0');
-  MODAL.main.dataset.word = featured.word;
+  MODAL.main.dataset.word = hero.word;
   MODAL.main.innerHTML =
-    mediaHTML(featured, 'modal-main-emoji') +
-    '<div><div class="modal-main-en">' + featured.word + '</div><div class="modal-main-zh">' + featured.zh + '</div></div>' +
-    (_modalFocusWord ? '' : '<span class="modal-main-star" title="目前的代表字">⭐<small>代表字</small></span>');
+    mediaHTML(hero, 'modal-main-emoji') +
+    '<div><div class="modal-main-en">' + hero.word + '</div><div class="modal-main-zh">' + hero.zh + '</div></div>' +
+    (heroIsPermanent ? '<span class="modal-main-star" title="目前的代表字">⭐<small>代表字</small></span>' : '');
 
-  if (extras.length > 0) {
-    const total = 1 + extras.length;
-    const done = (learned.has(normWord(featured.word)) ? 1 : 0)
-      + extras.filter(x => learned.has(normWord(x.word))).length;
-    const progressLabel = done >= total
-      ? '<span class="modal-progress complete">🎯 ' + done + '/' + total + ' 全部學過!</span>'
-      : (done > 0
-        ? '<span class="modal-progress partial">🎯 ' + done + '/' + total + ' 學過(還有 ' + (total - done) + ' 個沒聽)</span>'
-        : '<span class="modal-progress">🎯 0/' + total + ' 學過</span>');
-    MODAL.divider.style.display = 'block';
-    MODAL.divider.innerHTML = progressLabel + '<br>更多「' + letter + '」開頭的單字（點 ☆ 設為代表字）↓';
-    MODAL.extra.innerHTML = extras.map(e => {
-      const cls = learned.has(normWord(e.word)) ? 'modal-extra-row learned' : 'modal-extra-row unlearned';
-      return '<div class="' + cls + '" role="button" tabindex="0" data-word="' + escAttr(e.word) + '" aria-label="' + escAttr(e.word + ' ' + e.zh) + '">' +
-        mediaHTML(e, 'modal-extra-emoji') +
-        '<span class="modal-extra-en">' + e.word + '</span>' +
-        '<span class="modal-extra-zh">' + e.zh + '</span>' +
-        '<button class="star-btn" type="button" data-feature="' + escAttr(e.word) + '" title="設為代表字" aria-label="將 ' + escAttr(e.word) + ' 設為代表字">☆</button>' +
-        '</div>';
-    }).join('');
-  } else {
-    MODAL.divider.style.display = 'none';
-    MODAL.extra.innerHTML = '';
-  }
+  const total = allWords.length;
+  const done = allWords.filter(w => learned.has(normWord(w.word))).length;
+  const progressLabel = done >= total
+    ? '<span class="modal-progress complete">🎯 ' + done + '/' + total + ' 全部學過!</span>'
+    : (done > 0
+      ? '<span class="modal-progress partial">🎯 ' + done + '/' + total + ' 學過(還有 ' + (total - done) + ' 個沒聽)</span>'
+      : '<span class="modal-progress">🎯 0/' + total + ' 學過</span>');
+  MODAL.divider.style.display = 'block';
+  MODAL.divider.innerHTML = progressLabel + '<br>「' + letter + '」開頭的字(點 ☆ 設為代表字)↓';
+  MODAL.extra.innerHTML = allWords.map(e => {
+    const isPermanent = normWord(e.word) === normWord(permanentFeatured.word);
+    const isFocused = normWord(e.word) === normWord(hero.word);
+    const parts = ['modal-extra-row'];
+    parts.push(learned.has(normWord(e.word)) ? 'learned' : 'unlearned');
+    if (isPermanent) parts.push('is-featured');
+    if (isFocused)   parts.push('is-focused');
+    const cls = parts.join(' ');
+    const starMarkup = isPermanent
+      ? '<span class="star-btn is-set" title="目前的代表字" aria-hidden="true">⭐</span>'
+      : '<button class="star-btn" type="button" data-feature="' + escAttr(e.word) + '" title="設為代表字" aria-label="將 ' + escAttr(e.word) + ' 設為代表字">☆</button>';
+    return '<div class="' + cls + '" role="button" tabindex="0" data-word="' + escAttr(e.word) + '" aria-label="' + escAttr(e.word + ' ' + e.zh) + '">' +
+      mediaHTML(e, 'modal-extra-emoji') +
+      '<span class="modal-extra-en">' + e.word + '</span>' +
+      '<span class="modal-extra-zh">' + e.zh + '</span>' +
+      starMarkup +
+      '</div>';
+  }).join('');
 }
 
 function closeModal() {
@@ -5507,8 +5515,12 @@ function handleSpeakEvent(e) {
   el.classList.add('pop');
   setTimeout(() => el.classList.remove('pop'), 300);
   if (el.classList.contains('modal-extra-row') && _modalCtx) {
-    _modalFocusWord = el.dataset.word;
-    renderModal(THEMES.find(t => t.key === _modalCtx.themeKey), _modalCtx.letter);
+    // clicking the permanent featured in the list = clear focus (back to default hero)
+    const theme = THEMES.find(t => t.key === _modalCtx.themeKey);
+    const item = theme.data[_modalCtx.letter];
+    const perm = resolveEntry(_modalCtx.themeKey, _modalCtx.letter, item).featured;
+    _modalFocusWord = normWord(el.dataset.word) === normWord(perm.word) ? null : el.dataset.word;
+    renderModal(theme, _modalCtx.letter);
   }
 }
 document.body.addEventListener('click', handleSpeakEvent);
