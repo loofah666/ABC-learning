@@ -33,27 +33,33 @@
   .section { display: none; padding: 24px 16px; max-width: 1120px; margin: 0 auto; }
   .section.active { display: block; }
   .section-title { text-align: center; font-size: 1.6rem; font-weight: 900; margin-bottom: 24px; color: #333; }
-  .basics-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; }
+  .basics-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 24px; }
   .letter-card { background: white; border-radius: var(--radius); box-shadow: var(--card-shadow); overflow: hidden; transition: transform 0.2s; }
   .letter-card:hover { transform: translateY(-4px); }
-  .letter-header { display: flex; align-items: center; gap: 14px; padding: 16px 18px 12px; border-bottom: 2px solid #f5f5f5; }
-  .big-letter { font-size: 3rem; font-weight: 900; line-height: 1; min-width: 50px; text-align: center; }
-  .letter-label { font-size: 1rem; color: #999; font-weight: 600; }
-  .words-list { padding: 12px 16px 14px; display: flex; flex-direction: column; gap: 7px; }
-  .word-row { display: flex; align-items: center; gap: 10px; padding: 6px 10px; border-radius: 10px; background: #fafafa; cursor: pointer; transition: background 0.15s, transform 0.15s; user-select: none; }
+  .letter-header { display: flex; align-items: center; gap: 16px; padding: 20px 20px 16px; border-bottom: 2px solid #f5f5f5; }
+  .big-letter { font-size: 3.8rem; font-weight: 900; line-height: 1; min-width: 62px; text-align: center; }
+  .letter-label { font-size: 1.25rem; color: #999; font-weight: 600; }
+  .words-list { padding: 14px 18px 18px; display: flex; flex-direction: column; gap: 10px; }
+  .word-row { display: flex; align-items: center; gap: 14px; padding: 10px 14px; border-radius: 12px; background: #fafafa; cursor: pointer; transition: background 0.15s, transform 0.15s; user-select: none; }
   .word-row:hover { background: #f0f0f0; transform: translateX(4px); }
-  .word-emoji { font-size: 2rem; }
-  .word-en { font-size: 1rem; font-weight: 700; color: #333; }
-  .word-zh { font-size: 0.82rem; color: #888; margin-left: auto; }
-  .theme-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(145px, 1fr)); gap: 13px; }
-  .theme-card { background: white; border-radius: var(--radius); box-shadow: var(--card-shadow); padding: 15px 10px; text-align: center; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; position: relative; overflow: hidden; }
-  .theme-card:hover { transform: translateY(-5px); box-shadow: 0 8px 24px rgba(0,0,0,0.13); }
+  .word-emoji { font-size: 2.8rem; }
+  .word-en { font-size: 1.15rem; font-weight: 700; color: #333; }
+  .word-zh { font-size: 0.95rem; color: #888; margin-left: auto; }
+  .theme-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 22px 20px; padding: 6px 4px 20px; }
+  .theme-card { background: white; border-radius: 22px; box-shadow: var(--card-shadow); padding: 20px 14px; text-align: center; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; position: relative; overflow: hidden; border: 3px solid transparent; }
+  .theme-card:nth-child(6n+1) { transform: rotate(-2deg); }
+  .theme-card:nth-child(6n+2) { transform: rotate(1.5deg); }
+  .theme-card:nth-child(6n+3) { transform: rotate(-1deg); }
+  .theme-card:nth-child(6n+4) { transform: rotate(2deg); }
+  .theme-card:nth-child(6n+5) { transform: rotate(-1.5deg); }
+  .theme-card:nth-child(6n+6) { transform: rotate(1deg); }
+  .theme-card:hover { transform: translateY(-5px) rotate(0deg) scale(1.03); box-shadow: 0 10px 28px rgba(0,0,0,0.16); }
   .theme-card.unavailable { opacity: 0.4; cursor: default; }
-  .theme-card.unavailable:hover { transform: none; box-shadow: var(--card-shadow); }
-  .tc-letter { font-size: 2.2rem; font-weight: 900; line-height: 1.1; }
-  .tc-emoji { font-size: 3.6rem; margin: 6px 0; }
-  .tc-word { font-size: 0.92rem; font-weight: 700; color: #333; word-break: break-word; }
-  .tc-zh { font-size: 0.76rem; color: #888; margin-top: 2px; }
+  .theme-card.unavailable:hover { transform: rotate(0deg); box-shadow: var(--card-shadow); }
+  .tc-letter { font-size: 3.4rem; font-weight: 900; line-height: 1.1; }
+  .tc-emoji { font-size: 5.6rem; margin: 8px 0; }
+  .tc-word { font-size: 1.15rem; font-weight: 700; color: #333; word-break: break-word; }
+  .tc-zh { font-size: 0.9rem; color: #888; margin-top: 2px; }
   .tc-na { font-size: 0.76rem; color: #bbb; font-style: italic; margin-top: 4px; }
   .tc-type-badge { display:inline-block; font-size:0.62rem; padding:2px 7px; border-radius:20px; margin-top:4px; font-weight:700; text-transform:uppercase; }
   .badge-color { background:#fdefc3; color:#b7791f; }
@@ -61,7 +67,7 @@
   .more-badge { position: absolute; top: 7px; right: 8px; background: #ff6b9d; color: white; font-size: 0.6rem; font-weight: 800; padding: 2px 6px; border-radius: 20px; opacity: 0.9; }
   .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 500; align-items: center; justify-content: center; padding: 20px; }
   .modal-overlay.open { display: flex; }
-  .modal { background: white; border-radius: 24px; width: 100%; max-width: 480px; max-height: 80vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.3); animation: slideUp 0.25s ease; }
+  .modal { background: white; border-radius: 28px; width: 100%; max-width: 600px; max-height: 88vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.3); animation: slideUp 0.25s ease; }
   @keyframes slideUp { from { transform: translateY(30px); opacity:0; } to { transform: translateY(0); opacity:1; } }
   .modal-header { padding: 20px 22px 14px; border-bottom: 2px solid #f5f5f5; display: flex; align-items: center; gap: 12px; position: sticky; top: 0; background: white; border-radius: 24px 24px 0 0; z-index: 1; }
   .modal-letter { font-size: 3rem; font-weight: 900; line-height: 1; }
@@ -69,18 +75,21 @@
   .modal-close { margin-left: auto; background: #f5f5f5; border: none; border-radius: 50%; width: 34px; height: 34px; font-size: 1.2rem; cursor: pointer; color: #666; transition: background 0.15s; }
   .modal-close:hover { background: #e0e0e0; }
   .modal-body { padding: 16px 22px 22px; }
-  .modal-main-word { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-radius: 14px; margin-bottom: 14px; cursor: pointer; transition: transform 0.15s; }
+  .modal-main-word { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 34px 20px; border-radius: 22px; margin-bottom: 18px; cursor: pointer; transition: transform 0.15s; background: #fafafa; border: 2px solid #f0f0f0; }
+  .modal-main-word > div { text-align: center; }
   .modal-main-word:hover { transform: scale(1.02); }
-  .modal-main-emoji { font-size: 4.2rem; }
-  .modal-main-en { font-size: 1.3rem; font-weight: 900; color: #222; }
-  .modal-main-zh { font-size: 0.9rem; color: #777; margin-top: 2px; }
-  .modal-divider { font-size: 0.78rem; color: #bbb; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
-  .modal-extra-list { display: flex; flex-direction: column; gap: 8px; }
-  .modal-extra-row { display: flex; align-items: center; gap: 12px; padding: 9px 14px; border-radius: 12px; background: #fafafa; cursor: pointer; transition: background 0.15s, transform 0.15s; }
-  .modal-extra-row:hover { background: #f0f0f0; transform: translateX(5px); }
-  .modal-extra-emoji { font-size: 2.2rem; }
-  .modal-extra-en { font-size: 1rem; font-weight: 700; color: #333; }
-  .modal-extra-zh { font-size: 0.78rem; color: #888; margin-left: auto; }
+  .modal-main-emoji { font-size: 8.5rem; line-height: 1; }
+  .modal-main-en { font-size: 2.6rem; font-weight: 900; color: #222; }
+  .modal-main-zh { font-size: 1.3rem; color: #777; margin-top: 2px; }
+  .modal-main-word .modal-main-star { position: absolute; top: 16px; right: 16px; margin-left: 0; }
+  .modal-main-word { position: relative; }
+  .modal-divider { font-size: 0.82rem; color: #bbb; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+  .modal-extra-list { display: flex; flex-direction: row; gap: 12px; overflow-x: auto; padding-bottom: 6px; }
+  .modal-extra-row { flex: none; width: 118px; display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 12px 8px; border-radius: 16px; background: #fafafa; cursor: pointer; transition: background 0.15s, transform 0.15s; }
+  .modal-extra-row:hover { background: #f0f0f0; transform: translateY(-3px); }
+  .modal-extra-emoji { font-size: 3.4rem; }
+  .modal-extra-en { font-size: 1rem; font-weight: 700; color: #333; text-align: center; }
+  .modal-extra-zh { font-size: 0.82rem; color: #888; margin-left: 0; }
   .alpha-bar { display:flex; flex-wrap:wrap; justify-content:center; gap:6px; padding:14px 16px; background:rgba(255,255,255,0.8); border-radius:var(--radius); margin-bottom:20px; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
   .alpha-btn { width:34px; height:34px; border-radius:50%; border:none; font-size:1rem; font-weight:800; cursor:pointer; transition:all 0.15s; background:#f5f5f5; }
   .alpha-btn:hover { transform: scale(1.2); }
@@ -188,26 +197,30 @@
   .match-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.55); z-index:600; align-items:center; justify-content:center; padding:16px; }
   .match-overlay.open { display:flex; }
   .match-close { position:absolute; top:16px; right:18px; background:rgba(255,255,255,0.9); border:none; border-radius:50%; width:40px; height:40px; font-size:1.3rem; cursor:pointer; color:#666; z-index:2; }
-  .match-panel { background:#fff9f0; border-radius:24px; width:100%; max-width:560px; max-height:92vh; overflow-y:auto; padding:22px 18px; box-shadow:0 20px 60px rgba(0,0,0,0.35); }
+  .match-panel { background:#fff9f0; border-radius:24px; width:100%; max-width:640px; max-height:92vh; overflow-y:auto; padding:22px 18px; box-shadow:0 20px 60px rgba(0,0,0,0.35); }
   .match-title { text-align:center; font-size:1.4rem; font-weight:900; color:#2193b0; }
   .match-sub { text-align:center; font-size:0.86rem; color:#999; margin:4px 0 18px; }
-  .match-board { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
-  .match-col { display:flex; flex-direction:column; gap:10px; }
+  .match-board { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+  .match-col { display:flex; flex-direction:column; gap:14px; }
   .match-card {
-    display:flex; align-items:center; justify-content:center; gap:8px; text-align:center;
-    height:76px; padding:10px 12px; border-radius:16px; cursor:pointer;
+    position:relative; display:flex; align-items:center; justify-content:center; gap:6px; text-align:center;
+    flex-direction:column; height:140px; padding:16px 14px 12px; border-radius:18px; cursor:pointer;
     background:#fff; border:3px solid #eee; box-shadow:0 2px 8px rgba(0,0,0,0.07);
     font-weight:800; transition:border-color 0.15s, background 0.15s, transform 0.1s;
   }
-  .match-card.left { flex-direction:row; gap:10px; }
-  .match-card.matched { flex-direction:column; gap:1px; }
-  .match-card .mc-letter { font-size:1.5rem; font-weight:900; line-height:1; }
-  .match-card .mc-emoji { font-size:3.4rem; line-height:1; }
-  .match-card .mc-en { font-size:1.15rem; color:#333; word-break:break-word; }
-  .match-card .mc-zh { font-size:0.88rem; color:#3a7d5c; font-weight:800; }
-  .match-card.matched .mc-emoji { font-size:2.4rem; }
-  .match-card.matched .mc-letter { font-size:1.15rem; }
-  .match-card.matched .mc-en { font-size:1rem; }
+  .match-card.left { padding-top:30px; }
+  .mc-hint {
+    position:absolute; top:8px; left:8px; width:30px; height:30px; border-radius:50%; border:none;
+    background:#fff3d6; color:#c98a00; font-size:0.95rem; cursor:pointer; padding:0;
+    display:flex; align-items:center; justify-content:center; transition:background 0.15s;
+  }
+  .mc-hint:hover { background:#ffe6ad; }
+  .mc-hint.revealed { background:transparent; font-size:1.3rem; font-weight:900; cursor:default; }
+  .match-card .mc-media { display:flex; align-items:center; justify-content:center; }
+  .match-card .mc-emoji { font-size:3.6rem; line-height:1; }
+  .match-card .mc-en { font-size:1.3rem; color:#333; word-break:break-word; }
+  .match-card .mc-zh { font-size:0.95rem; color:#3a7d5c; font-weight:800; height:1.2em; opacity:0; transition:opacity 0.2s; }
+  .match-card.matched .mc-zh { opacity:1; }
   .match-card.selected { border-color:#2193b0; background:#eafaff; transform:scale(1.04); }
   .match-card.speaking { border-color:#ffb300; box-shadow:0 0 0 4px rgba(255,179,0,0.28); }
   .match-card.matched { border-color:#22b866; background:#e6f9ed; cursor:default; }
@@ -5169,10 +5182,12 @@ const MODAL = {
 };
 let _lastFocused = null;
 let _modalCtx = null;   // { themeKey, letter } of the currently open modal
+let _modalFocusWord = null;   // temporary "in focus" word (not persisted) chosen from the extras row
 
 // entry point from cards
 function openModal(theme, letter) {
   _lastFocused = document.activeElement;
+  _modalFocusWord = null;
   renderModal(theme, letter);
   MODAL.overlay.classList.add('open');
   document.getElementById('modal-close').focus();
@@ -5189,13 +5204,24 @@ function openModalFor(theme, letter) {
 function renderModal(theme, letter) {
   _modalCtx = { themeKey: theme.key, letter };
   const item = theme.data[letter];
-  const { featured, extras } = resolveEntry(theme.key, letter, item);
+  let { featured, extras } = resolveEntry(theme.key, letter, item);
+
+  if (_modalFocusWord) {
+    const idx = extras.findIndex(x => x.word === _modalFocusWord);
+    if (idx !== -1) {
+      const chosen = extras[idx];
+      extras = extras.slice(0, idx).concat(extras.slice(idx + 1));
+      extras.unshift(featured);
+      featured = chosen;
+    } else {
+      _modalFocusWord = null;
+    }
+  }
 
   MODAL.letter.textContent = letter;
   MODAL.letter.className = 'modal-letter lc-' + letter;
   MODAL.title.textContent = featured.word;
   MODAL.theme.textContent = theme.name;
-  MODAL.main.style.background = theme.color + '22';
   MODAL.main.className = 'modal-main-word' + (learned.has(normWord(featured.word)) ? ' learned' : '');
   MODAL.main.setAttribute('role', 'button');
   MODAL.main.setAttribute('tabindex', '0');
@@ -5203,7 +5229,7 @@ function renderModal(theme, letter) {
   MODAL.main.innerHTML =
     mediaHTML(featured, 'modal-main-emoji') +
     '<div><div class="modal-main-en">' + featured.word + '</div><div class="modal-main-zh">' + featured.zh + '</div></div>' +
-    '<span class="modal-main-star" title="目前的代表字">⭐<small>代表字</small></span>';
+    (_modalFocusWord ? '' : '<span class="modal-main-star" title="目前的代表字">⭐<small>代表字</small></span>');
 
   if (extras.length > 0) {
     MODAL.divider.style.display = 'block';
@@ -5280,7 +5306,7 @@ function handleSpeakEvent(e) {
   const star = e.target.closest('[data-feature]');
   if (star) {
     e.stopPropagation();
-    if (_modalCtx) setFeatured(_modalCtx.themeKey, _modalCtx.letter, star.dataset.feature);
+    if (_modalCtx) { _modalFocusWord = null; setFeatured(_modalCtx.themeKey, _modalCtx.letter, star.dataset.feature); }
     return;
   }
   const el = e.target.closest('[data-word]');
@@ -5289,6 +5315,10 @@ function handleSpeakEvent(e) {
   markLearned(el.dataset.word);
   el.classList.add('pop');
   setTimeout(() => el.classList.remove('pop'), 300);
+  if (el.classList.contains('modal-extra-row') && _modalCtx) {
+    _modalFocusWord = el.dataset.word;
+    renderModal(THEMES.find(t => t.key === _modalCtx.themeKey), _modalCtx.letter);
+  }
 }
 document.body.addEventListener('click', handleSpeakEvent);
 document.body.addEventListener('keydown', e => {
@@ -5296,7 +5326,7 @@ document.body.addEventListener('keydown', e => {
   if (e.target.matches('[data-feature]')) {
     e.preventDefault();
     e.stopPropagation();
-    if (_modalCtx) setFeatured(_modalCtx.themeKey, _modalCtx.letter, e.target.dataset.feature);
+    if (_modalCtx) { _modalFocusWord = null; setFeatured(_modalCtx.themeKey, _modalCtx.letter, e.target.dataset.feature); }
   } else if (e.target.matches('[data-word]')) {
     e.preventDefault();
     handleSpeakEvent(e);
@@ -5490,7 +5520,7 @@ function startMatch() {
     c.setAttribute('role', 'button');
     c.setAttribute('tabindex', '0');
     c.setAttribute('aria-label', '聽發音 ' + w.letter);
-    c.innerHTML = '<span class="mc-letter lc-' + w.letter + '">' + w.letter + '</span>' + mediaHTML(w, 'mc-emoji');
+    c.innerHTML = '<button class="mc-hint" type="button" data-hint-letter="' + w.letter + '" aria-label="提示字母">💡</button><span class="mc-media">' + mediaHTML(w, 'mc-emoji') + '</span><span class="mc-zh"></span>';
     leftCol.appendChild(c);
   });
 
@@ -5503,7 +5533,7 @@ function startMatch() {
     c.setAttribute('role', 'button');
     c.setAttribute('tabindex', '0');
     c.setAttribute('aria-label', w.word);
-    c.innerHTML = '<span class="mc-en">' + w.word + '</span>';
+    c.innerHTML = '<span class="mc-en">' + w.word + '</span><span class="mc-zh"></span>';
     rightCol.appendChild(c);
   });
 
@@ -5529,8 +5559,8 @@ function selectRight(card) {
     left.classList.add('matched');
     card.classList.add('matched');
     // reveal Chinese on both for bilingual reinforcement
-    left.innerHTML += '<span class="mc-zh">' + left.dataset.zh + '</span>';
-    card.innerHTML += '<span class="mc-zh">' + left.dataset.zh + '</span>';
+    left.querySelector('.mc-zh').textContent = left.dataset.zh;
+    card.querySelector('.mc-zh').textContent = left.dataset.zh;
     speak(left.dataset.mword);
     markLearned(left.dataset.mword);
     _matchSelLeft = null;
@@ -5568,8 +5598,18 @@ function closeMatch() {
   if (_matchLastFocused && _matchLastFocused.focus) _matchLastFocused.focus();
 }
 
+function revealHint(btn) {
+  if (btn.classList.contains('revealed')) return;
+  const letter = btn.dataset.hintLetter;
+  btn.classList.add('revealed', 'lc-' + letter);
+  btn.textContent = letter;
+  btn.setAttribute('aria-label', '字母 ' + letter);
+}
+
 // delegated clicks on the board
 MATCH.board.addEventListener('click', e => {
+  const hint = e.target.closest('.mc-hint');
+  if (hint) { e.stopPropagation(); revealHint(hint); return; }
   if (_matchLock) return;
   const card = e.target.closest('.match-card');
   if (!card) return;
@@ -5578,6 +5618,7 @@ MATCH.board.addEventListener('click', e => {
 });
 MATCH.board.addEventListener('keydown', e => {
   if (e.key !== 'Enter' && e.key !== ' ') return;
+  if (e.target.closest('.mc-hint')) { e.preventDefault(); revealHint(e.target.closest('.mc-hint')); return; }
   const card = e.target.closest('.match-card');
   if (!card || _matchLock) return;
   e.preventDefault();
