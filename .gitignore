@@ -1,6 +1,9 @@
 # Claude Code local settings & memory
 .claude/
 
+# Raw source images (converted to images/*.jpg — see scripts/)
+images_raw/
+
 # OS junk
 Thumbs.db
 Desktop.ini

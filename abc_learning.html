@@ -218,6 +218,13 @@
   .match-done-emoji { font-size:3.4rem; animation:pop 0.5s ease; }
   .match-done div { font-size:1.15rem; font-weight:800; color:#333; margin:8px 0 16px; }
 
+  /* ── Word image (optional; falls back to emoji) ── */
+  .has-img { display:inline-flex; align-items:center; justify-content:center; overflow:hidden; line-height:1; vertical-align:middle; }
+  .has-img > img { width:1em; height:1em; object-fit:contain; border-radius:0.14em; }
+  .flash-emoji.has-img > img { border-radius:16px; }
+  .tc-emoji.has-img > img { border-radius:10px; }
+  .mc-emoji.has-img > img { border-radius:8px; }
+
   /* ── Speaking indicator ── */
   .speaking-badge {
     position:fixed; left:50%; bottom:24px; transform:translateX(-50%) translateY(20px);
@@ -4859,6 +4866,40 @@ const STORE_KEY = 'abc-learning-progress-v1';
 const FEATURED_KEY = 'abc-learning-featured-v1';
 const normWord = w => w.trim().toLowerCase();
 
+// ── Word images (optional) ─────────────────────────
+// Convention: every word looks for images/<slug>.jpg where slug = lowercase, spaces & hyphens → underscore.
+// e.g. "Apple" → apple.jpg, "Ice Cream" → ice_cream.jpg, "X-ray" → x_ray.jpg
+// Missing files fall back to the emoji automatically (no error shown to user).
+// Override this convention per-word here (e.g. different extension or custom filename):
+const IMAGES = {
+  // "apple": "apple.png",
+};
+
+// slug for auto-derived filenames: lowercase, spaces & hyphens → underscore
+function imgSlug(word) {
+  return normWord(word).replace(/[\s-]+/g, '_');
+}
+
+// html for a word's visual: <img> if we have a picture, otherwise the emoji span.
+// tag defaults to 'span'; pass 'div' for block-layout slots (tc-emoji, flash-emoji).
+function mediaHTML(w, cls, tag) {
+  tag = tag || 'span';
+  const emoji = (w && w.emoji) || '';
+  if (!w || !w.word) return '<' + tag + ' class="' + cls + '" aria-hidden="true">' + emoji + '</' + tag + '>';
+  const file = IMAGES[normWord(w.word)] || (imgSlug(w.word) + '.jpg');
+  return '<' + tag + ' class="' + cls + ' has-img" aria-hidden="true">' +
+    '<img src="images/' + escAttr(file) + '" alt="" loading="lazy" data-emoji="' + escAttr(emoji) + '" onerror="imgFallback(this)">' +
+    '</' + tag + '>';
+}
+
+// swap a broken/missing image for its emoji fallback in-place
+function imgFallback(img) {
+  const parent = img.parentElement;
+  if (!parent) return;
+  parent.classList.remove('has-img');
+  parent.textContent = img.dataset.emoji || '';
+}
+
 let learned = new Set();
 try {
   const raw = localStorage.getItem(STORE_KEY);
@@ -5107,7 +5148,7 @@ function rebuildBasics() {
     let h = '<div class="letter-header"><div class="big-letter lc-' + l + '">' + l + '</div><div class="letter-label">' + l.toLowerCase() + '</div></div><div class="words-list">';
     words.forEach(w => {
       const cls = learned.has(normWord(w.word)) ? 'word-row learned' : 'word-row';
-      h += '<div class="' + cls + '" role="button" tabindex="0" data-word="' + escAttr(w.word) + '" aria-label="' + escAttr(w.word + ' ' + w.zh) + '"><span class="word-emoji" aria-hidden="true">' + w.emoji + '</span><span class="word-en">' + w.word + '</span><span style="font-size:0.78rem;margin-left:auto;opacity:0.45" aria-hidden="true">' + w.theme + '</span><span class="word-zh" style="margin-left:4px">' + w.zh + '</span></div>';
+      h += '<div class="' + cls + '" role="button" tabindex="0" data-word="' + escAttr(w.word) + '" aria-label="' + escAttr(w.word + ' ' + w.zh) + '">' + mediaHTML(w, 'word-emoji') + '<span class="word-en">' + w.word + '</span><span style="font-size:0.78rem;margin-left:auto;opacity:0.45" aria-hidden="true">' + w.theme + '</span><span class="word-zh" style="margin-left:4px">' + w.zh + '</span></div>';
     });
     h += '</div>';
     card.innerHTML = h;
@@ -5161,7 +5202,7 @@ function renderModal(theme, letter) {
   MODAL.main.setAttribute('tabindex', '0');
   MODAL.main.dataset.word = featured.word;
   MODAL.main.innerHTML =
-    '<span class="modal-main-emoji" aria-hidden="true">' + featured.emoji + '</span>' +
+    mediaHTML(featured, 'modal-main-emoji') +
     '<div><div class="modal-main-en">' + featured.word + '</div><div class="modal-main-zh">' + featured.zh + '</div></div>' +
     '<span class="modal-main-star" title="目前的代表字">⭐<small>代表字</small></span>';
 
@@ -5171,7 +5212,7 @@ function renderModal(theme, letter) {
     MODAL.extra.innerHTML = extras.map(e => {
       const cls = learned.has(normWord(e.word)) ? 'modal-extra-row learned' : 'modal-extra-row';
       return '<div class="' + cls + '" role="button" tabindex="0" data-word="' + escAttr(e.word) + '" aria-label="' + escAttr(e.word + ' ' + e.zh) + '">' +
-        '<span class="modal-extra-emoji" aria-hidden="true">' + e.emoji + '</span>' +
+        mediaHTML(e, 'modal-extra-emoji') +
         '<span class="modal-extra-en">' + e.word + '</span>' +
         '<span class="modal-extra-zh">' + e.zh + '</span>' +
         '<button class="star-btn" type="button" data-feature="' + escAttr(e.word) + '" title="設為代表字" aria-label="將 ' + escAttr(e.word) + ' 設為代表字">☆</button>' +
@@ -5204,7 +5245,7 @@ function makeThemeCard(theme, l) {
     card.setAttribute('aria-label', featured.word + ' ' + featured.zh);
     const typeBadge = item.type ? '<span class="tc-type-badge badge-' + item.type + '">' + item.type + '</span>' : '';
     const moreBadge = extraCount > 0 ? '<span class="more-badge">+' + extraCount + '</span>' : '';
-    card.innerHTML = moreBadge + '<div class="tc-letter lc-' + l + '">' + l + '</div><div class="tc-emoji" aria-hidden="true">' + featured.emoji + '</div><div class="tc-word">' + featured.word + '</div>' + typeBadge + '<div class="tc-zh">' + featured.zh + '</div>';
+    card.innerHTML = moreBadge + '<div class="tc-letter lc-' + l + '">' + l + '</div>' + mediaHTML(featured, 'tc-emoji', 'div') + '<div class="tc-word">' + featured.word + '</div>' + typeBadge + '<div class="tc-zh">' + featured.zh + '</div>';
     card.addEventListener('click', () => openModal(theme, l));
     card.addEventListener('keydown', e => {
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openModal(theme, l); }
@@ -5354,12 +5395,12 @@ function renderFlash(w) {
   FLASH.card.classList.remove('flipped');
   const learnedMark = learned.has(normWord(w.word)) ? '<div class="flash-learned" title="已學過">✓</div>' : '';
   FLASH.front.innerHTML = learnedMark +
-    '<div class="flash-emoji" aria-hidden="true">' + w.emoji + '</div>' +
+    mediaHTML(w, 'flash-emoji', 'div') +
     '<div class="flash-en">' + w.word + '</div>' +
     '<div class="flash-theme">' + w.theme + '</div>' +
     '<div class="flash-flip-hint">👆 點卡片看中文</div>';
   FLASH.back.innerHTML =
-    '<div class="flash-emoji" aria-hidden="true">' + w.emoji + '</div>' +
+    mediaHTML(w, 'flash-emoji', 'div') +
     '<div class="flash-zh">' + w.zh + '</div>' +
     '<div class="flash-en" style="font-size:1.4rem;color:#888">' + w.word + '</div>' +
     '<div class="flash-flip-hint">👆 點卡片翻回正面</div>';
@@ -5450,7 +5491,7 @@ function startMatch() {
     c.setAttribute('role', 'button');
     c.setAttribute('tabindex', '0');
     c.setAttribute('aria-label', '聽發音 ' + w.letter);
-    c.innerHTML = '<span class="mc-letter lc-' + w.letter + '">' + w.letter + '</span><span class="mc-emoji" aria-hidden="true">' + w.emoji + '</span>';
+    c.innerHTML = '<span class="mc-letter lc-' + w.letter + '">' + w.letter + '</span>' + mediaHTML(w, 'mc-emoji');
     leftCol.appendChild(c);
   });
 
