@@ -1,6 +1,6 @@
 # 圖片補充清單 · Image checklist
 
-共 **629** 張圖。命名規則:`images/<小寫單字>.jpg`,空格與連字號改底線。
+共 **630** 張圖。命名規則:`images/<小寫單字>.jpg`,空格與連字號改底線。
 
 打勾方式:把 `[ ]` 改成 `[x]`,或用支援 GitHub Markdown 的編輯器(VS Code、Obsidian 都可以直接點)。
 
@@ -538,7 +538,7 @@
 - [ ] `skateboarding.jpg` 🛹 **Skateboarding** — 滑板
 - [ ] `skiing.jpg` ⛷️ **Skiing** — 滑雪
 - [ ] `sky_blue.jpg` 🌤️ **Sky Blue** — 天空藍
-- [ ] `snake.jpg` 🐍 **Snake** — 蛇
+- [x] `snake.jpg` 🐍 **Snake** — 蛇
 - [ ] `soap.jpg` 🧼 **Soap** — 肥皂
 - [ ] `soccer.jpg` ⚽ **Soccer** — 足球
 - [ ] `soup.jpg` 🍲 **Soup** — 湯
@@ -571,7 +571,7 @@
 - [ ] `tennis.jpg` 🎾 **Tennis** — 網球
 - [ ] `thorn.jpg` 🌵 **Thorn** — 刺
 - [ ] `tide.jpg` 🌊 **Tide** — 潮汐
-- [ ] `tiger.jpg` 🐯 **Tiger** — 老虎
+- [x] `tiger.jpg` 🐯 **Tiger** — 老虎
 - [ ] `tissue.jpg` 🤧 **Tissue** — 衛生紙
 - [ ] `toast.jpg` 🍞 **Toast** — 吐司
 - [x] `tomato.jpg` 🍅 **Tomato** — 番茄
@@ -602,17 +602,18 @@
 - [ ] `uncle.jpg` 👨 **Uncle** — 叔叔
 - [ ] `undertaker.jpg` 🪦 **Undertaker** — 殯儀業者
 - [ ] `underwater.jpg` 🌊 **Underwater** — 水下
-- [ ] `unicorn.jpg` 🦄 **Unicorn** — 獨角獸
+- [x] `unicorn.jpg` 🦄 **Unicorn** — 獨角獸
 - [ ] `unicycle.jpg` 🚲 **Unicycle** — 獨輪車
 - [ ] `upland.jpg` ⛰️ **Upland** — 高地
 - [ ] `upside_down_cake.jpg` 🎂 **Upside-down Cake** — 翻轉蛋糕
 - [ ] `urchin.jpg` 🦔 **Urchin** — 海膽
 - [ ] `usb.jpg` 💾 **USB** — 隨身碟
 
-## V  (20)
+## V  (21)
 
 - [ ] `vacuum_cleaner.jpg` 🧹 **Vacuum Cleaner** — 吸塵器
 - [ ] `valley.jpg` 🏔️ **Valley** — 山谷
+- [x] `vampire_bat.jpg` 🦇 **Vampire Bat** — 吸血蝙蝠
 - [ ] `van.jpg` 🚐 **Van** — 廂型車
 - [ ] `vanilla.jpg` 🍦 **Vanilla** — 香草
 - [ ] `vase.jpg` 🏺 **Vase** — 花瓶
@@ -630,7 +631,7 @@
 - [ ] `viper.jpg` 🐍 **Viper** — 蝮蛇
 - [ ] `volcano.jpg` 🌋 **Volcano** — 火山
 - [ ] `volleyball.jpg` 🏐 **Volleyball** — 排球
-- [ ] `vulture.jpg` 🦅 **Vulture** — 禿鷹
+- [x] `vulture.jpg` 🦅 **Vulture** — 禿鷹
 
 ## W  (24)
 
@@ -646,24 +647,25 @@
 - [ ] `wave.jpg` 🌊 **Wave** — 海浪
 - [ ] `wax_apple.jpg` 🍎 **Wax Apple** — 蓮霧
 - [ ] `weightlifting.jpg` 🏋️ **Weightlifting** — 舉重
-- [ ] `whale.jpg` 🐳 **Whale** — 鯨魚
+- [x] `whale.jpg` 🐳 **Whale** — 鯨魚
 - [ ] `wheelchair.jpg` ♿ **Wheelchair** — 輪椅
 - [ ] `white.jpg` ⬜ **White** — 白色
 - [ ] `willow.jpg` 🌿 **Willow** — 柳樹
 - [ ] `wind.jpg` 💨 **Wind** — 風
 - [ ] `window.jpg` 🪟 **Window** — 窗戶
 - [ ] `wine_red.jpg` 🍷 **Wine Red** — 酒紅色
-- [ ] `wolf.jpg` 🐺 **Wolf** — 狼
+- [x] `wolf.jpg` 🐺 **Wolf** — 狼
 - [ ] `wombat.jpg` 🐾 **Wombat** — 袋熊
 - [ ] `woodpecker.jpg` 🐦 **Woodpecker** — 啄木鳥
 - [ ] `worm.jpg` 🪱 **Worm** — 蚯蚓
 - [ ] `wrestling.jpg` 🤼 **Wrestling** — 摔跤
 
-## X  (14)
+## X  (15)
 
 - [ ] `x_games.jpg` 🛹 **X Games** — 極限運動大賽
 - [ ] `x_country.jpg` 🏃 **X-country** — 越野跑／越野滑雪
 - [ ] `x_ray.jpg` 🩻 **X-ray** — X光
+- [x] `x_ray_fish.jpg` 🐟 **X-ray Fish** — X光魚
 - [ ] `x_ray_technician.jpg` 🩻 **X-ray Technician** — X光技師
 - [ ] `x_wing.jpg` 🚀 **X-wing** — X翼飛行器（太空）
 - [ ] `xanthic.jpg` 🟡 **Xanthic** — 黃色系
@@ -676,11 +678,11 @@
 - [x] `xo_sauce.jpg` 🌶️ **XO Sauce** — XO醬
 - [ ] `xylophone.jpg` 🎹 **Xylophone** — 木琴
 
-## Y  (15)
+## Y  (14)
 
 - [ ] `yacht.jpg` ⛵ **Yacht** — 遊艇
 - [ ] `yachting.jpg` ⛵ **Yachting** — 帆船競賽
-- [ ] `yak.jpg` 🐂 **Yak** — 犛牛
+- [x] `yak.jpg` 🐂 **Yak** — 犛牛
 - [ ] `yam.jpg` 🍠 **Yam** — 山藥
 - [ ] `yardmaster.jpg` 🚂 **Yardmaster** — 調車場長
 - [ ] `yardstick.jpg` 📏 **Yardstick** — 量尺
@@ -689,7 +691,6 @@
 - [ ] `yellow_flower.jpg` 🌼 **Yellow Flower** — 黃色花
 - [ ] `yellow_squash.jpg` 🍋 **Yellow Squash** — 黃南瓜
 - [ ] `yellow_green.jpg` 🟡 **Yellow-Green** — 黃綠色
-- [ ] `yellowfin_tuna.jpg` 🐟 **Yellowfin Tuna** — 黃鰭鮪魚
 - [ ] `yew_tree.jpg` 🌲 **Yew Tree** — 紫杉樹
 - [ ] `yoga.jpg` 🧘 **Yoga** — 瑜珈
 - [x] `yogurt.jpg` 🥛 **Yogurt** — 優格
@@ -697,7 +698,7 @@
 ## Z  (16)
 
 - [ ] `zaffre.jpg` 🔵 **Zaffre** — 深藍色
-- [ ] `zebra.jpg` 🦓 **Zebra** — 斑馬
+- [x] `zebra.jpg` 🦓 **Zebra** — 斑馬
 - [ ] `zebu.jpg` 🐄 **Zebu** — 瘤牛
 - [ ] `zephyr.jpg` 💨 **Zephyr** — 微風
 - [ ] `zeppelin.jpg` 🎈 **Zeppelin** — 飛船
