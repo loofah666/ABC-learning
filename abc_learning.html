@@ -15,13 +15,19 @@
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: var(--font); background: var(--bg); min-height: 100vh; padding-bottom: 60px; }
-  header { background: linear-gradient(135deg, #ff6b9d 0%, #ffa94d 50%, #ffd43b 100%); padding: 28px 20px 24px; text-align: center; color: white; box-shadow: 0 4px 12px rgba(255,107,157,0.3); }
-  header h1 { font-size: 2.4rem; font-weight: 900; letter-spacing: 2px; text-shadow: 2px 2px 4px rgba(0,0,0,0.15); }
-  header p { font-size: 1.05rem; margin-top: 6px; opacity: 0.95; }
-  nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; padding: 16px 12px 10px; background: white; box-shadow: 0 2px 8px rgba(0,0,0,0.08); position: sticky; top: 0; z-index: 100; }
-  .tab-btn { padding: 8px 15px; border-radius: 50px; border: 2.5px solid transparent; font-size: 0.88rem; font-weight: 700; cursor: pointer; transition: all 0.2s; background: #f0f0f0; color: #555; }
-  .tab-btn:hover { transform: translateY(-2px); }
-  .tab-btn.active { color: white; box-shadow: 0 4px 12px rgba(0,0,0,0.18); transform: translateY(-2px); }
+  header { background: linear-gradient(135deg, #ff6b9d 0%, #ffa94d 50%, #ffd43b 100%); padding: 28px 20px 24px; text-align: center; color: white; box-shadow: 0 4px 12px rgba(255,107,157,0.3); position: relative; }
+  header h1 { font-size: 2.4rem; font-weight: 900; letter-spacing: 2px; text-shadow: 2px 2px 4px rgba(0,0,0,0.18); display: inline-flex; align-items: center; gap: 12px; transform: rotate(-1.2deg); }
+  header h1 .h-emoji { display: inline-block; transform: rotate(6deg); animation: wobble 3.6s ease-in-out infinite; }
+  @keyframes wobble { 0%,100%{transform:rotate(6deg)} 50%{transform:rotate(-4deg)} }
+  header p { font-size: 1.05rem; margin-top: 8px; opacity: 0.95; font-weight: 600; }
+  nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 8px; padding: 18px 12px 14px; background: #fff9f0; border-bottom: 2px dashed #f0d0a0; position: sticky; top: 0; z-index: 100; box-shadow: 0 3px 12px rgba(0,0,0,0.06); }
+  .tab-btn { padding: 9px 16px; border-radius: 16px; border: 2.5px solid #f0e2c9; font-size: 0.92rem; font-weight: 800; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s, background 0.2s; background: #fff; color: #666; box-shadow: 0 3px 8px rgba(0,0,0,0.08); }
+  .tab-btn:nth-child(4n+1) { transform: rotate(-1.6deg); }
+  .tab-btn:nth-child(4n+2) { transform: rotate(1.2deg); }
+  .tab-btn:nth-child(4n+3) { transform: rotate(-0.8deg); }
+  .tab-btn:nth-child(4n+4) { transform: rotate(1.4deg); }
+  .tab-btn:hover, .tab-btn:focus-visible { transform: rotate(0deg) translateY(-3px) scale(1.06); box-shadow: 0 8px 20px rgba(0,0,0,0.14); outline: none; }
+  .tab-btn.active { color: white; border-color: transparent; transform: rotate(0deg) translateY(-2px) scale(1.05); box-shadow: 0 6px 18px rgba(0,0,0,0.22); }
   .tab-btn[data-tab="basics"].active { background: linear-gradient(135deg,#4ecdc4,#44cf6c); }
   .tab-btn[data-tab="animals"].active { background: linear-gradient(135deg,#f7971e,#ffd200); }
   .tab-btn[data-tab="food"].active { background: linear-gradient(135deg,#ff416c,#ff4b2b); }
@@ -157,23 +163,29 @@
 
   /* ── Voice Settings ── */
   .voice-bar {
-    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
-    justify-content: center; padding: 8px 14px;
-    background: #fff3f8; border-bottom: 1px solid #ffe0ed;
-    font-size: 0.82rem; color: #888;
+    display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+    justify-content: center; padding: 12px 16px;
+    background: #fff3d6; border-bottom: 2px dashed #f0d0a0;
+    font-size: 0.86rem; color: #7a5a20;
   }
-  .voice-bar label { font-weight: 700; color: #e91e63; white-space: nowrap; }
+  .voice-bar label { font-weight: 800; color: #a56e00; white-space: nowrap; display:inline-flex; align-items:center; gap:4px; }
   .voice-bar select, .voice-bar input[type=range] {
-    border: 1.5px solid #f8c0d8; border-radius: 8px;
-    padding: 3px 8px; font-size: 0.8rem; background: white; cursor: pointer;
+    border: 2px solid #f0c98a; border-radius: 12px;
+    padding: 5px 10px; font-size: 0.84rem; background: white; cursor: pointer;
+    font-weight: 700; color:#7a5a20;
+    box-shadow: 0 2px 6px rgba(180,140,60,0.1);
   }
   .voice-bar select { max-width: 220px; }
-  .voice-bar .speed-val { font-weight: 800; color: #e91e63; min-width: 28px; text-align:center; }
+  .voice-bar input[type=range] { padding: 0; height: 22px; }
+  .voice-bar .speed-val { font-weight: 900; color: #a56e00; min-width: 34px; text-align:center; background:#fff; padding:3px 8px; border-radius:12px; border:2px solid #f0c98a; }
   .test-btn {
-    padding: 4px 12px; border-radius: 20px; border: none;
+    padding: 6px 14px; border-radius: 18px; border: 2.5px solid #fff;
     background: linear-gradient(135deg,#ff6b9d,#ffa94d);
-    color: white; font-size: 0.78rem; font-weight: 700; cursor: pointer;
+    color: white; font-size: 0.84rem; font-weight: 800; cursor: pointer;
+    box-shadow: 0 4px 12px rgba(255,107,157,0.35);
+    transform: rotate(1.5deg); transition: transform 0.2s;
   }
+  .test-btn:hover, .test-btn:focus-visible { transform: rotate(0deg) scale(1.08); outline:none; }
   footer { text-align:center; padding:30px 16px 10px; color:#bbb; font-size:0.85rem; }
 
   /* ── Progress tracking ── */
@@ -200,11 +212,11 @@
   .modal-extra-row.is-featured .modal-extra-en { position:relative; }
   .modal-main-star { margin-left:auto; display:inline-flex; align-items:center; gap:4px; font-size:1.25rem; color:#f5b301; font-weight:700; }
   .modal-main-star small { font-size:0.62rem; color:#c99; font-weight:700; white-space:nowrap; }
-  .progress-wrap { max-width:1120px; margin:0 auto; padding:10px 16px 0; }
-  .progress-track { height:10px; background:#f0e6dd; border-radius:20px; overflow:hidden; }
-  .progress-fill { height:100%; width:0; background:linear-gradient(90deg,#4ecdc4,#44cf6c); border-radius:20px; transition:width 0.4s ease; }
-  .progress-label { text-align:center; font-size:0.78rem; color:#999; margin-top:5px; font-weight:600; }
-  .progress-label button { background:none; border:none; color:#e57; font-size:0.72rem; cursor:pointer; text-decoration:underline; padding:0 0 0 8px; }
+  .progress-wrap { max-width:1120px; margin:0 auto; padding:14px 16px 4px; }
+  .progress-track { height:14px; background:#f5e6d5; border:2px solid #e6d0b3; border-radius:30px; overflow:hidden; box-shadow: inset 0 2px 4px rgba(180,140,60,0.08); }
+  .progress-fill { height:100%; width:0; background:linear-gradient(90deg,#4ecdc4,#44cf6c); border-radius:30px; transition:width 0.4s ease; box-shadow: inset 0 -3px 0 rgba(0,0,0,0.08); }
+  .progress-label { text-align:center; font-size:0.85rem; color:#7a5a20; margin-top:8px; font-weight:700; }
+  .progress-label button { background:none; border:none; color:#e57; font-size:0.76rem; cursor:pointer; text-decoration:underline; padding:0 0 0 10px; font-weight:700; }
 
   .tab-btn:focus-visible, .alpha-btn:focus-visible, .word-row:focus-visible, .theme-card:focus-visible,
   .modal-extra-row:focus-visible, .modal-main-word:focus-visible, .test-btn:focus-visible, .modal-close:focus-visible {
@@ -335,7 +347,7 @@
 </head>
 <body>
 <header>
-  <h1>&#x1F524; A-Z 英文學習</h1>
+  <h1><span class="h-emoji">&#x1F524;</span> A-Z 英文學習</h1>
   <p>點擊單字聽發音 ✨ Click words to hear pronunciation</p>
 </header>
 
