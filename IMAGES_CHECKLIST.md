@@ -258,7 +258,7 @@
 - [ ] `hunter.jpg` 🏹 **Hunter** — 獵人
 - [ ] `hurricane.jpg` 🌀 **Hurricane** — 颶風
 
-## I  (23)
+## I  (24)
 
 - [ ] `ibis.jpg` 🐦 **Ibis** — 朱鷺
 - [ ] `ice.jpg` ❄️ **Ice** — 冰
@@ -278,6 +278,7 @@
 - [ ] `ink.jpg` ✒️ **Ink** — 墨水
 - [ ] `insect.jpg` 🐛 **Insect** — 昆蟲
 - [ ] `inspector.jpg` 🔍 **Inspector** — 督察員
+- [ ] `iphone.jpg` 📱 **iPhone** — 蘋果手機
 - [ ] `iris.jpg` 🌸 **Iris** — 鳶尾花
 - [ ] `iron.jpg` 🧺 **Iron** — 熨斗
 - [ ] `island.jpg` 🏝️ **Island** — 島嶼
