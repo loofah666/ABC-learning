@@ -247,7 +247,7 @@
 - [ ] `hiking.jpg` 🥾 **Hiking** — 健行
 - [ ] `hill.jpg` ⛰️ **Hill** — 小山丘
 - [ ] `hippo.jpg` 🦛 **Hippo** — 河馬
-- [ ] `hockey.jpg` 🏒 **Hockey** — 曲棍球
+- [x] `hockey.jpg` 🏒 **Hockey** — 曲棍球
 - [ ] `honey.jpg` 🍯 **Honey** — 蜂蜜
 - [x] `horse.jpg` 🐴 **Horse** — 馬
 - [ ] `horse_carriage.jpg` 🐴 **Horse Carriage** — 馬車
@@ -518,7 +518,7 @@
 - [ ] `ruby.jpg` 💎 **Ruby** — 紅寶石色
 - [ ] `rug.jpg` 🟫 **Rug** — 地毯
 - [ ] `rugby.jpg` 🏉 **Rugby** — 橄欖球
-- [ ] `running.jpg` 🏃 **Running** — 跑步
+- [x] `running.jpg` 🏃 **Running** — 跑步
 
 ## S  (36)
 
