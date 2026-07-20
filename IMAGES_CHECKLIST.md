@@ -26,7 +26,7 @@
 - [ ] `apricot.jpg` 🍑 **Apricot** — 杏桃
 - [ ] `apron.jpg` 👔 **Apron** — 圍裙
 - [x] `aqua.jpg` 🩵 **Aqua** — 水藍色
-- [ ] `archery.jpg` 🏹 **Archery** — 射箭
+- [x] `archery.jpg` 🏹 **Archery** — 射箭
 - [ ] `armadillo.jpg` 🐾 **Armadillo** — 犰狳
 - [ ] `artist.jpg` 🎨 **Artist** — 藝術家
 - [ ] `asparagus.jpg` 🌿 **Asparagus** — 蘆筍
@@ -45,7 +45,7 @@
 - [ ] `bamboo.jpg` 🎋 **Bamboo** — 竹子
 - [x] `banana.jpg` 🍌 **Banana** — 香蕉
 - [ ] `baseball.jpg` ⚾ **Baseball** — 棒球
-- [ ] `basketball.jpg` 🏀 **Basketball** — 籃球
+- [x] `basketball.jpg` 🏀 **Basketball** — 籃球
 - [ ] `bat.jpg` 🦇 **Bat** — 蝙蝠
 - [ ] `beach.jpg` 🏖️ **Beach** — 海灘
 - [x] `bear.jpg` 🐻 **Bear** — 熊
@@ -108,7 +108,7 @@
 - [ ] `crab.jpg` 🦀 **Crab** — 螃蟹
 - [ ] `cream.jpg` 🟡 **Cream** — 奶油色
 - [ ] `creek.jpg` 🌊 **Creek** — 小溪
-- [ ] `cricket.jpg` 🏏 **Cricket** — 板球
+- [x] `cricket.jpg` 🏏 **Cricket** — 板球
 - [ ] `cup.jpg` 🍵 **Cup** — 杯子
 - [ ] `cyan.jpg` 🩵 **Cyan** — 青色
 - [ ] `cycling.jpg` 🚴 **Cycling** — 騎自行車
@@ -116,7 +116,7 @@
 ## D  (28)
 
 - [ ] `daisy.jpg` 🌼 **Daisy** — 雛菊
-- [ ] `dancing.jpg` 💃 **Dancing** — 舞蹈
+- [x] `dancing.jpg` 💃 **Dancing** — 舞蹈
 - [ ] `dark_blue.jpg` 🔵 **Dark Blue** — 深藍色
 - [ ] `dark_green.jpg` 🟢 **Dark Green** — 深綠色
 - [ ] `date.jpg` 🌴 **Date** — 椰棗
@@ -164,7 +164,7 @@
 - [ ] `eraser.jpg` 📝 **Eraser** — 橡皮擦
 - [ ] `erosion.jpg` 🪨 **Erosion** — 侵蝕
 - [ ] `evergreen.jpg` 🌲 **Evergreen** — 常青樹
-- [ ] `exercise.jpg` 🏋️ **Exercise** — 運動健身
+- [x] `exercise.jpg` 🏋️ **Exercise** — 運動健身
 - [ ] `eyeglasses.jpg` 👓 **Eyeglasses** — 眼鏡
 
 ## F  (29)
@@ -185,7 +185,7 @@
 - [ ] `flashlight.jpg` 🔦 **Flashlight** — 手電筒
 - [ ] `flatbread.jpg` 🫓 **Flatbread** — 薄餅
 - [ ] `flower.jpg` 🌸 **Flower** — 花
-- [ ] `football.jpg` 🏈 **Football** — 美式橄欖球
+- [x] `football.jpg` 🏈 **Football** — 美式橄欖球
 - [ ] `forest.jpg` 🌲 **Forest** — 森林
 - [ ] `forest_green.jpg` 🌲 **Forest Green** — 森林綠
 - [ ] `fork.jpg` 🍴 **Fork** — 叉子
@@ -214,7 +214,7 @@
 - [ ] `glue.jpg` 🫙 **Glue** — 膠水
 - [ ] `goat.jpg` 🐐 **Goat** — 山羊
 - [ ] `gold.jpg` 🌟 **Gold** — 金色
-- [ ] `golf.jpg` ⛳ **Golf** — 高爾夫球
+- [x] `golf.jpg` ⛳ **Golf** — 高爾夫球
 - [ ] `goose.jpg` 🪿 **Goose** — 鵝
 - [ ] `gorilla.jpg` 🦍 **Gorilla** — 大猩猩
 - [ ] `granola.jpg` 🥣 **Granola** — 燕麥脆片
@@ -266,7 +266,7 @@
 - [x] `ice_cream.jpg` 🍦 **Ice cream** — 冰淇淋
 - [ ] `ice_hockey.jpg` 🏒 **Ice Hockey** — 冰球
 - [ ] `ice_pop.jpg` 🧊 **Ice Pop** — 冰棒
-- [ ] `ice_skating.jpg` ⛸️ **Ice Skating** — 溜冰
+- [x] `ice_skating.jpg` ⛸️ **Ice Skating** — 溜冰
 - [ ] `iceberg.jpg` 🧊 **Iceberg** — 冰山
 - [ ] `icebreaker.jpg` 🚢 **Icebreaker** — 破冰船
 - [ ] `icing.jpg` 🎂 **Icing** — 糖霜
@@ -299,7 +299,7 @@
 - [x] `jellyfish.jpg` 🪼 **Jellyfish** — 水母
 - [ ] `jet.jpg` ✈️ **Jet** — 噴射機
 - [x] `jigsaw.jpg` 🧩 **Jigsaw** — 拼圖
-- [ ] `jogging.jpg` 🏃 **Jogging** — 慢跑
+- [x] `jogging.jpg` 🏃 **Jogging** — 慢跑
 - [ ] `judge.jpg` ⚖️ **Judge** — 法官
 - [ ] `judo.jpg` 🥋 **Judo** — 柔道
 - [x] `juice.jpg` 🧃 **Juice** — 果汁
@@ -308,7 +308,7 @@
 ## K  (19)
 
 - [x] `kangaroo.jpg` 🦘 **Kangaroo** — 袋鼠
-- [ ] `karate.jpg` 🥋 **Karate** — 空手道
+- [x] `karate.jpg` 🥋 **Karate** — 空手道
 - [ ] `kayak.jpg` 🛶 **Kayak** — 皮艇
 - [ ] `kayaking.jpg` 🛶 **Kayaking** — 划獨木舟
 - [ ] `kebab.jpg` 🍢 **Kebab** — 烤肉串
@@ -329,7 +329,7 @@
 
 ## L  (26)
 
-- [ ] `lacrosse.jpg` 🥍 **Lacrosse** — 曲棍網球
+- [x] `lacrosse.jpg` 🥍 **Lacrosse** — 曲棍網球
 - [ ] `ladder.jpg` 🪜 **Ladder** — 梯子
 - [ ] `ladybug.jpg` 🐞 **Ladybug** — 瓢蟲
 - [ ] `lake.jpg` 🌊 **Lake** — 湖泊
@@ -360,7 +360,7 @@
 
 - [x] `magenta.jpg` 🩷 **Magenta** — 洋紅色
 - [x] `mango.jpg` 🥭 **Mango** — 芒果
-- [ ] `marathon.jpg` 🏃 **Marathon** — 馬拉松
+- [x] `marathon.jpg` 🏃 **Marathon** — 馬拉松
 - [ ] `maroon.jpg` 🟤 **Maroon** — 栗色
 - [ ] `martial_arts.jpg` 🥋 **Martial Arts** — 武術
 - [ ] `mat.jpg` 🟫 **Mat** — 地墊
@@ -398,7 +398,7 @@
 - [ ] `neon_green.jpg` 💚 **Neon Green** — 螢光綠
 - [ ] `neon_pink.jpg` 🩷 **Neon Pink** — 螢光粉
 - [ ] `nest.jpg` 🪹 **Nest** — 鳥巢
-- [ ] `netball.jpg` 🏐 **Netball** — 無板籃球
+- [x] `netball.jpg` 🏐 **Netball** — 無板籃球
 - [ ] `newt.jpg` 🦎 **Newt** — 蠑螈
 - [ ] `night.jpg` 🌃 **Night** — 夜晚
 - [ ] `nightingale.jpg` 🐦 **Nightingale** — 夜鶯
@@ -418,7 +418,7 @@
 - [x] `octopus.jpg` 🐙 **Octopus** — 章魚
 - [ ] `officer.jpg` 👮 **Officer** — 警察
 - [ ] `olive.jpg` 🫒 **Olive** — 橄欖
-- [ ] `olympics.jpg` 🏅 **Olympics** — 奧運
+- [x] `olympics.jpg` 🏅 **Olympics** — 奧運
 - [ ] `omelette.jpg` 🍳 **Omelette** — 歐姆蛋
 - [ ] `onion.jpg` 🧅 **Onion** — 洋蔥
 - [ ] `operator.jpg` 🎛️ **Operator** — 操作員
@@ -456,7 +456,7 @@
 - [ ] `pilot.jpg` ✈️ **Pilot** — 飛行員
 - [ ] `pine.jpg` 🌲 **Pine** — 松樹
 - [ ] `pineapple.jpg` 🍍 **Pineapple** — 鳳梨
-- [ ] `ping_pong.jpg` 🏓 **Ping Pong** — 乒乓球
+- [x] `ping_pong.jpg` 🏓 **Ping Pong** — 乒乓球
 - [ ] `pink.jpg` 🩷 **Pink** — 粉紅色
 - [ ] `pitaya.jpg` 🐉 **Pitaya** — 火龍果
 - [x] `pizza.jpg` 🍕 **Pizza** — 披薩
@@ -477,7 +477,7 @@
 - [x] `quadrilateral.jpg` 🔷 **Quadrilateral** — 四邊形
 - [x] `quail.jpg` 🐦 **Quail** — 鵪鶉
 - [ ] `quarter.jpg` 🪙 **Quarter** — 硬幣
-- [ ] `quarterback.jpg` 🏈 **Quarterback** — 四分衛
+- [x] `quarterback.jpg` 🏈 **Quarterback** — 四分衛
 - [ ] `quartz.jpg` 💎 **Quartz** — 石英粉
 - [ ] `queen.jpg` 👸 **Queen** — 女王
 - [x] `quesadilla.jpg` 🫓 **Quesadilla** — 墨西哥夾餅
@@ -543,7 +543,7 @@
 - [ ] `sky_blue.jpg` 🌤️ **Sky Blue** — 天空藍
 - [x] `snake.jpg` 🐍 **Snake** — 蛇
 - [ ] `soap.jpg` 🧼 **Soap** — 肥皂
-- [ ] `soccer.jpg` ⚽ **Soccer** — 足球
+- [x] `soccer.jpg` ⚽ **Soccer** — 足球
 - [ ] `soup.jpg` 🍲 **Soup** — 湯
 - [ ] `sponge.jpg` 🧽 **Sponge** — 海綿
 - [ ] `spoon.jpg` 🥄 **Spoon** — 湯匙
@@ -571,7 +571,7 @@
 - [ ] `tea.jpg` ☕ **Tea** — 茶
 - [ ] `teacher.jpg` 👨‍🏫 **Teacher** — 老師
 - [ ] `teal.jpg` 🌊 **Teal** — 藍綠色
-- [ ] `tennis.jpg` 🎾 **Tennis** — 網球
+- [x] `tennis.jpg` 🎾 **Tennis** — 網球
 - [ ] `thorn.jpg` 🌵 **Thorn** — 刺
 - [ ] `tide.jpg` 🌊 **Tide** — 潮汐
 - [x] `tiger.jpg` 🐯 **Tiger** — 老虎
@@ -597,7 +597,7 @@
 - [ ] `uber.jpg` 🚗 **Uber** — 網約車
 - [x] `udon.jpg` 🍜 **Udon** — 烏龍麵
 - [ ] `ufo.jpg` 🛸 **UFO** — 飛碟
-- [ ] `ultimate_frisbee.jpg` 🥏 **Ultimate Frisbee** — 極限飛盤
+- [x] `ultimate_frisbee.jpg` 🥏 **Ultimate Frisbee** — 極限飛盤
 - [x] `ultramarine.jpg` 🔵 **Ultramarine** — 群青藍
 - [ ] `umbrella.jpg` ☂️ **Umbrella** — 雨傘
 - [ ] `umbrellabird.jpg` 🐦 **Umbrellabird** — 傘鳥
@@ -633,7 +633,7 @@
 - [ ] `violin.jpg` 🎻 **Violin** — 小提琴
 - [ ] `viper.jpg` 🐍 **Viper** — 蝮蛇
 - [ ] `volcano.jpg` 🌋 **Volcano** — 火山
-- [ ] `volleyball.jpg` 🏐 **Volleyball** — 排球
+- [x] `volleyball.jpg` 🏐 **Volleyball** — 排球
 - [x] `vulture.jpg` 🦅 **Vulture** — 禿鷹
 
 ## W  (24)
@@ -661,11 +661,11 @@
 - [ ] `wombat.jpg` 🐾 **Wombat** — 袋熊
 - [ ] `woodpecker.jpg` 🐦 **Woodpecker** — 啄木鳥
 - [ ] `worm.jpg` 🪱 **Worm** — 蚯蚓
-- [ ] `wrestling.jpg` 🤼 **Wrestling** — 摔跤
+- [x] `wrestling.jpg` 🤼 **Wrestling** — 摔跤
 
 ## X  (15)
 
-- [ ] `x_games.jpg` 🛹 **X Games** — 極限運動大賽
+- [x] `x_games.jpg` 🛹 **X Games** — 極限運動大賽
 - [ ] `x_country.jpg` 🏃 **X-country** — 越野跑／越野滑雪
 - [ ] `x_ray.jpg` 🩻 **X-ray** — X光
 - [x] `x_ray_fish.jpg` 🐟 **X-ray Fish** — X光魚
@@ -695,7 +695,7 @@
 - [ ] `yellow_squash.jpg` 🍋 **Yellow Squash** — 黃南瓜
 - [ ] `yellow_green.jpg` 🟡 **Yellow-Green** — 黃綠色
 - [ ] `yew_tree.jpg` 🌲 **Yew Tree** — 紫杉樹
-- [ ] `yoga.jpg` 🧘 **Yoga** — 瑜珈
+- [x] `yoga.jpg` 🧘 **Yoga** — 瑜珈
 - [x] `yogurt.jpg` 🥛 **Yogurt** — 優格
 
 ## Z  (16)
@@ -715,5 +715,5 @@
 - [ ] `zoologist.jpg` 🔬 **Zoologist** — 動物學家
 - [ ] `zorilla.jpg` 🦡 **Zorilla** — 條紋鼬
 - [x] `zucchini.jpg` 🥒 **Zucchini** — 櫛瓜
-- [ ] `zumba.jpg` 💃 **Zumba** — 尊巴舞
+- [x] `zumba.jpg` 💃 **Zumba** — 尊巴舞
 
