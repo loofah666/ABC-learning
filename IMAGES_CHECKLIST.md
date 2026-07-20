@@ -111,7 +111,7 @@
 - [x] `cricket.jpg` 🏏 **Cricket** — 板球
 - [ ] `cup.jpg` 🍵 **Cup** — 杯子
 - [ ] `cyan.jpg` 🩵 **Cyan** — 青色
-- [ ] `cycling.jpg` 🚴 **Cycling** — 騎自行車
+- [x] `cycling.jpg` 🚴 **Cycling** — 騎自行車
 
 ## D  (28)
 
