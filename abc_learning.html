@@ -15,19 +15,30 @@
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: var(--font); background: var(--bg); min-height: 100vh; padding-bottom: 60px; }
-  header { background: linear-gradient(135deg, #ff6b9d 0%, #ffa94d 50%, #ffd43b 100%); padding: 28px 20px 24px; text-align: center; color: white; box-shadow: 0 4px 12px rgba(255,107,157,0.3); position: relative; }
-  header h1 { font-size: 2.4rem; font-weight: 900; letter-spacing: 2px; text-shadow: 2px 2px 4px rgba(0,0,0,0.18); display: inline-flex; align-items: center; gap: 12px; transform: rotate(-1.2deg); }
-  header h1 .h-emoji { display: inline-block; transform: rotate(6deg); animation: wobble 3.6s ease-in-out infinite; }
+  header {
+    background: #fff5e6;
+    padding: 28px 20px 22px;
+    text-align: center;
+    position: relative;
+    border-bottom: 1px solid #f4dfbc;
+  }
+  header h1 {
+    font-size: 2.4rem; font-weight: 900; letter-spacing: 2px;
+    display: inline-flex; align-items: center; gap: 12px;
+    background: linear-gradient(135deg, #ff6b9d 0%, #ffa94d 50%, #f5a623 100%);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent; color: transparent;
+  }
+  header h1 .h-emoji {
+    display: inline-block;
+    -webkit-text-fill-color: initial; color: initial;
+    animation: wobble 3.6s ease-in-out infinite;
+  }
   @keyframes wobble { 0%,100%{transform:rotate(6deg)} 50%{transform:rotate(-4deg)} }
-  header p { font-size: 1.05rem; margin-top: 8px; opacity: 0.95; font-weight: 600; }
-  nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 8px; padding: 18px 12px 14px; background: #fff9f0; border-bottom: 2px dashed #f0d0a0; position: sticky; top: 0; z-index: 100; box-shadow: 0 3px 12px rgba(0,0,0,0.06); }
-  .tab-btn { padding: 9px 16px; border-radius: 16px; border: 2.5px solid #f0e2c9; font-size: 0.92rem; font-weight: 800; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s, background 0.2s; background: #fff; color: #666; box-shadow: 0 3px 8px rgba(0,0,0,0.08); }
-  .tab-btn:nth-child(4n+1) { transform: rotate(-1.6deg); }
-  .tab-btn:nth-child(4n+2) { transform: rotate(1.2deg); }
-  .tab-btn:nth-child(4n+3) { transform: rotate(-0.8deg); }
-  .tab-btn:nth-child(4n+4) { transform: rotate(1.4deg); }
-  .tab-btn:hover, .tab-btn:focus-visible { transform: rotate(0deg) translateY(-3px) scale(1.06); box-shadow: 0 8px 20px rgba(0,0,0,0.14); outline: none; }
-  .tab-btn.active { color: white; border-color: transparent; transform: rotate(0deg) translateY(-2px) scale(1.05); box-shadow: 0 6px 18px rgba(0,0,0,0.22); }
+  nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; padding: 14px 12px; background: #fff9f0; border-bottom: 1px solid #f0e2c9; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.04); }
+  .tab-btn { padding: 9px 16px; border-radius: 999px; border: 1.5px solid transparent; font-size: 0.92rem; font-weight: 700; cursor: pointer; transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.2s, color 0.2s; background: #fff2e0; color: #7a5a20; }
+  .tab-btn:hover, .tab-btn:focus-visible { background: #ffe4c0; color: #5a3a10; transform: translateY(-1px); box-shadow: 0 4px 10px rgba(0,0,0,0.06); outline: none; }
+  .tab-btn.active { color: white; border-color: transparent; transform: translateY(-1px); box-shadow: 0 4px 14px rgba(0,0,0,0.18); }
   .tab-btn[data-tab="basics"].active { background: linear-gradient(135deg,#4ecdc4,#44cf6c); }
   .tab-btn[data-tab="animals"].active { background: linear-gradient(135deg,#f7971e,#ffd200); }
   .tab-btn[data-tab="food"].active { background: linear-gradient(135deg,#ff416c,#ff4b2b); }
@@ -162,30 +173,47 @@
   .pop { animation: pop 0.28s ease; }
 
   /* ── Voice Settings ── */
+  .settings-btn {
+    position: absolute; top: 20px; right: 20px;
+    width: 42px; height: 42px; border-radius: 50%;
+    border: 1.5px solid #f4d8ac; background: #fff;
+    color: #a56e00; font-size: 1.2rem; cursor: pointer;
+    display: inline-flex; align-items: center; justify-content: center;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+    transition: transform 0.25s ease, box-shadow 0.2s, background 0.2s;
+  }
+  .settings-btn:hover, .settings-btn:focus-visible {
+    background: #fff9f0; transform: rotate(60deg);
+    box-shadow: 0 5px 14px rgba(0,0,0,0.12); outline: none;
+  }
+  .settings-btn[aria-expanded="true"] { transform: rotate(90deg); background:#fff9f0; }
   .voice-bar {
-    display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
-    justify-content: center; padding: 12px 16px;
-    background: #fff3d6; border-bottom: 2px dashed #f0d0a0;
-    font-size: 0.86rem; color: #7a5a20;
+    display: none;
+    position: absolute; top: calc(100% - 10px); right: 20px; z-index: 300;
+    flex-direction: column; align-items: stretch; gap: 12px;
+    padding: 16px 18px; min-width: 300px;
+    background: #fff; border: 1.5px solid #f4d8ac; border-radius: 18px;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.15);
+    font-size: 0.88rem; color: #7a5a20;
   }
-  .voice-bar label { font-weight: 800; color: #a56e00; white-space: nowrap; display:inline-flex; align-items:center; gap:4px; }
+  .voice-bar.open { display: flex; }
+  .voice-bar .voice-row { display: flex; align-items: center; gap: 10px; }
+  .voice-bar label { font-weight: 800; color: #a56e00; white-space: nowrap; display:inline-flex; align-items:center; gap:4px; min-width: 62px; }
   .voice-bar select, .voice-bar input[type=range] {
-    border: 2px solid #f0c98a; border-radius: 12px;
-    padding: 5px 10px; font-size: 0.84rem; background: white; cursor: pointer;
-    font-weight: 700; color:#7a5a20;
-    box-shadow: 0 2px 6px rgba(180,140,60,0.1);
+    border: 1.5px solid #f0c98a; border-radius: 10px;
+    padding: 6px 10px; font-size: 0.86rem; background: #fffdf7; cursor: pointer;
+    font-weight: 700; color:#7a5a20; flex: 1; min-width: 0;
   }
-  .voice-bar select { max-width: 220px; }
   .voice-bar input[type=range] { padding: 0; height: 22px; }
-  .voice-bar .speed-val { font-weight: 900; color: #a56e00; min-width: 34px; text-align:center; background:#fff; padding:3px 8px; border-radius:12px; border:2px solid #f0c98a; }
+  .voice-bar .speed-val { font-weight: 900; color: #a56e00; min-width: 40px; text-align:center; background:#fff9ec; padding:4px 8px; border-radius:10px; border:1.5px solid #f0c98a; }
   .test-btn {
-    padding: 6px 14px; border-radius: 18px; border: 2.5px solid #fff;
+    padding: 8px 14px; border-radius: 12px; border: none;
     background: linear-gradient(135deg,#ff6b9d,#ffa94d);
-    color: white; font-size: 0.84rem; font-weight: 800; cursor: pointer;
-    box-shadow: 0 4px 12px rgba(255,107,157,0.35);
-    transform: rotate(1.5deg); transition: transform 0.2s;
+    color: white; font-size: 0.9rem; font-weight: 800; cursor: pointer;
+    box-shadow: 0 4px 12px rgba(255,107,157,0.3);
+    transition: transform 0.15s, box-shadow 0.15s;
   }
-  .test-btn:hover, .test-btn:focus-visible { transform: rotate(0deg) scale(1.08); outline:none; }
+  .test-btn:hover, .test-btn:focus-visible { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(255,107,157,0.4); outline:none; }
   footer { text-align:center; padding:30px 16px 10px; color:#bbb; font-size:0.85rem; }
 
   /* ── Progress tracking ── */
@@ -348,26 +376,30 @@
 <body>
 <header>
   <h1><span class="h-emoji">&#x1F524;</span> A-Z 英文學習</h1>
-  <p>點擊單字聽發音 ✨ Click words to hear pronunciation</p>
+  <button class="settings-btn" id="settings-btn" type="button" aria-label="聲音設定" aria-expanded="false" aria-controls="voice-bar">&#x2699;&#xFE0F;</button>
+  <div class="voice-bar" id="voice-bar" role="dialog" aria-label="聲音設定">
+    <div class="voice-row">
+      <label for="voice-select">🔊 聲音</label>
+      <select id="voice-select"><option>載入中...</option></select>
+    </div>
+    <div class="voice-row">
+      <label for="speed-range">⚡ 速度</label>
+      <input type="range" id="speed-range" min="0.5" max="1.5" step="0.05" value="0.85">
+      <span class="speed-val" id="speed-val">0.85</span>
+    </div>
+    <button class="test-btn" id="test-btn" type="button">🔊 試聽</button>
+  </div>
 </header>
 
-<div class="voice-bar" id="voice-bar">
-  <label>🔊 聲音</label>
-  <select id="voice-select"><option>載入中...</option></select>
-  <label>⚡ 速度</label>
-  <input type="range" id="speed-range" min="0.5" max="1.5" step="0.05" value="0.85" style="width:90px">
-  <span class="speed-val" id="speed-val">0.85</span>
-  <button class="test-btn" id="test-btn" type="button">試聽</button>
-</div>
 <nav>
   <button class="tab-btn active" data-tab="basics">📖 基礎字母</button>
   <button class="tab-btn" data-tab="animals">&#x1F43E; 動物</button>
   <button class="tab-btn" data-tab="food">&#x1F34E; 食物</button>
-  <button class="tab-btn" data-tab="colors">🎨 顏色&形狀</button>
-  <button class="tab-btn" data-tab="nature">🌿 自然&植物</button>
+  <button class="tab-btn" data-tab="daily">🏠 日常用品</button>
   <button class="tab-btn" data-tab="sports">⚽ 運動</button>
   <button class="tab-btn" data-tab="transport">🚗 交通&職業</button>
-  <button class="tab-btn" data-tab="daily">🏠 日常用品</button>
+  <button class="tab-btn" data-tab="colors">🎨 顏色&形狀</button>
+  <button class="tab-btn" data-tab="nature">🌿 自然&植物</button>
 </nav>
 
 <div class="progress-wrap">
@@ -5213,8 +5245,37 @@ if (SPEECH_OK) {
     document.getElementById('speed-val').textContent = _speed.toFixed(2);
   });
   document.getElementById('test-btn').addEventListener('click', () => speak('Hello! Apple, Banana, Cherry.'));
+
+  // ── Settings popover toggle ─────────────────────
+  const _settingsBtn = document.getElementById('settings-btn');
+  const _voiceBar = document.getElementById('voice-bar');
+  function _closeSettings() {
+    _voiceBar.classList.remove('open');
+    _settingsBtn.setAttribute('aria-expanded', 'false');
+  }
+  function _openSettings() {
+    _voiceBar.classList.add('open');
+    _settingsBtn.setAttribute('aria-expanded', 'true');
+  }
+  _settingsBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (_voiceBar.classList.contains('open')) _closeSettings();
+    else _openSettings();
+  });
+  _voiceBar.addEventListener('click', (e) => e.stopPropagation());
+  document.addEventListener('click', () => {
+    if (_voiceBar.classList.contains('open')) _closeSettings();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && _voiceBar.classList.contains('open')) {
+      _closeSettings();
+      _settingsBtn.focus();
+    }
+  });
 } else {
-  // no speech support: hide the voice controls, keep progress tracking working
+  // no speech support: hide the settings button and voice controls, keep progress tracking working
+  const sb = document.getElementById('settings-btn');
+  if (sb) sb.style.display = 'none';
   const vb = document.getElementById('voice-bar');
   if (vb) vb.style.display = 'none';
 }
